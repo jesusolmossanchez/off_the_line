@@ -4,6 +4,10 @@
 ** MOBILE CLASS
 **************************************************/
 var Mobile = function(juego) {
+
+
+    var self = this;
+
     this.pinta_cosas_mobile_gira_ = function() {
 
         document.getElementById('controles_mobile').style.display = "none";
@@ -45,12 +49,12 @@ var Mobile = function(juego) {
     this.pinta_cosas_mobile_ = function() {
         document.getElementById('canvas_mobile_gira').style.display = "none";
 
-        canvas_mobile   = document.getElementById('canvas_mobile');
-        ctx_mobile      = canvas_mobile.getContext('2d');
-        canvas_mobile.style.display = "block";
+        this.canvas_mobile   = document.getElementById('canvas_mobile');
+        this.ctx_mobile      = this.canvas_mobile.getContext('2d');
+        this.canvas_mobile.style.display = "block";
         var ancho_window = window.innerWidth
-        canvas_mobile.width  = juego.ancho_total_;
-        canvas_mobile.height = 100;
+        this.canvas_mobile.width  = juego.ancho_total_;
+        this.canvas_mobile.height = 100;
 
 
         var flecha_der =  [
@@ -85,10 +89,10 @@ var Mobile = function(juego) {
 
         var size_flecha_px = 12;
 
-        juego.pinta_filas_columnas_(ctx_mobile, 20, 20, flecha_izq, size_flecha_px);
-        juego.pinta_filas_columnas_(ctx_mobile, 120, 20, flecha_der, size_flecha_px);
-        juego.pinta_filas_columnas_(ctx_mobile, ancho_window - 180, 20, flecha_arr, size_flecha_px);
-        juego.pinta_filas_columnas_(ctx_mobile, ancho_window - 80, 20, accion_boton, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, 20, 20, flecha_izq, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, 120, 20, flecha_der, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 180, 20, flecha_arr, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 80, 20, accion_boton, size_flecha_px);
 
         document.getElementById('controles_mobile').style.display = "block";
 
@@ -144,10 +148,6 @@ var Mobile = function(juego) {
           
     }
 
-
-    var canvas_mobile;
-    var ctx_mobile;
-    var self = this;
     
     this.controla_orientacion_ = function(){
         if(juego.is_touch_device_()){
