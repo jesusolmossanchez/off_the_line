@@ -139,26 +139,10 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         }
 
 
-        //SI va pabajo
-        /*
-        if (this.dy >= 0) {
-            if(this.y + this.alto_ > juego.alto_total_/1.5){
-                //this.y = juego.alto_total_/1.5 - this.alto_;
-                this.dy = - this.dy/3;
-                this.jumping = false;
-            }
-        }
-        //Si va parriba
-        /* Lo comento, porque nunca debería tocar el techo, no? ... lo dejo por si hago algo al saltar
-        else if (this.dy < 0) {
-            
-        }
-        */
-
 
         //NUEVA COMPROBACION...
 
-        var x_relativo = Math.ceil(this.x/4);
+        var x_relativo = Math.ceil(this.x/4) + 2;
         var alto_cuerda = juego.cuerda_[x_relativo];
         var altura_jugador = Math.ceil(this.y + this.alto_);
 
@@ -169,21 +153,6 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
                 //this.y = juego.alto_total_/1.5 - this.alto_;
                 this.dy = - this.dy/3;
                 this.jumping = false;
-            }
-        }
-        else{
-            x_relativo = x_relativo + 3;
-            alto_cuerda = juego.cuerda_[x_relativo];
-            altura_jugador = Math.ceil(this.y + this.alto_);
-
-            
-            if(altura_jugador > alto_cuerda){
-                this.y = alto_cuerda - this.alto_;
-                if (this.dy >= 0) {
-                    //this.y = juego.alto_total_/1.5 - this.alto_;
-                    this.dy = - this.dy/3;
-                    this.jumping = false;
-                }
             }
         }
         

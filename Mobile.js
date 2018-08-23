@@ -150,6 +150,8 @@ var Mobile = function(juego) {
 
     
     this.controla_orientacion_ = function(){
+        self.pinta_cosas_mobile_();
+        /*
         if(juego.is_touch_device_()){
             if (window.innerHeight > window.innerWidth) {
                 self.pinta_cosas_mobile_gira_();
@@ -166,6 +168,7 @@ var Mobile = function(juego) {
                 },300);
             });
         }
+        */
     };
 
 }

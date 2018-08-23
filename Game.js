@@ -381,9 +381,9 @@ var Game = function() {
         ctx.clearRect(0, 0, this.ancho_total_, this.alto_total_);
 
         //Renderizo los objetos
-        this.render_cuerda_(ctx, dt);
         this.render_player_(ctx, dt);
         this.render_player2_(ctx, dt);
+        this.render_cuerda_(ctx, dt);
         
     };
 
