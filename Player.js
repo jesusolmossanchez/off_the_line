@@ -101,15 +101,13 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
                 this.ddy = this.ddy - this.impulse_; // an instant big force impulse
                 this.jumping = true;
                
-
-                
             }
 
         
             //Si se pulsa acción
             if(this.accion){
                 if (juego.timestamp_() > this.tiempo_enfadado_ + 300){
-                    this.tiempo_enfadado_ = juego.timestamp_()+400;
+                    this.tiempo_enfadado_ = juego.timestamp_()+200;
                 }
             }
         }
@@ -180,8 +178,6 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
 
         var x_player = this.x + (this.dx * dt);
         var y_player = this.y + (this.dy * dt);
-        var ancho_player = this.ancho_;
-        var alto_player = this.alto_;
 
 
 
@@ -197,8 +193,27 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
 
         var cuerpo = [];
         cuerpo["up"] = [];
+        cuerpo["middle"] = [];
         cuerpo["down"] = [];
         cuerpo["up"][0] = [
+            [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1,  ,  ],
+            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        ];
+        cuerpo["up"][1] = [
+            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  , 1,  ],
+            [ ,  ,  , 1, 1, 1, 1, 1, 1,  , 1,  ,  ],
+            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        ];
+        cuerpo["middle"][0] = [
             [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
             [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
             [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
@@ -207,7 +222,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
             [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
         ];
-        cuerpo["up"][1] = [
+        cuerpo["middle"][1] = [
             [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
             [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
             [ ,  , 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
@@ -217,18 +232,18 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
         ];
         cuerpo["down"][0] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1,  ,  ],
         ];
         cuerpo["down"][1] = [
             [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
             [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  , 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
         ];
 
         var pies = [];
@@ -277,10 +292,13 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1],
         ];
         palo[1] = [
-            [,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1],
-            [,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1],
+            [ ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ],
             [1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
         ];
+
+        var paloprueba = [
+            [1]]
 
         ctx.beginPath();
         
@@ -288,7 +306,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         var que_pie = 0;
         var que_palo = 0;
         var que_cuerpo = 0;
-        var pos_cuerpo = "up";
+        var pos_cuerpo = "middle";
         var mas_menos = 0;
         var tween = this.tween_frames_(counter, 60);
         var negativo_tween = tween - 1;
@@ -326,39 +344,56 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             mas_abajo = 3 * this.block_size_;
         }
 
+        if(this.up){
+            pos_cuerpo = "up";
+        }
+
 
         if(this.jumping){
             que_pie = 3;
         }
 
         ctx.save();
-        ctx.translate(x_player, y_player);
+        ctx.translate(x_player + this.ancho_/2, y_player + this.alto_/2);
+
         x_player = 0;
         y_player = 0;
         if(this.izquierda_){
-            x_player = -this.ancho_;
+            //x_player = -this.ancho_;
             ctx.scale(-1, 1);
         }
 
         var idle_movimiento = negativo_tween * 3;
         var idle_movimiento2 = negativo_tween * 2.5;
 
-        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 6) - (mas_menos * this.block_size_/2), y_player + mas_abajo + idle_movimiento, cabeza, this.block_size_, "#00ff00");
-        juego.pinta_filas_columnas_(ctx, x_player, y_player + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");
-        
-        juego.pinta_filas_columnas_(ctx, x_player, y_player + (this.block_size_ * 12), pies[que_pie], this.block_size_, "#ffff00");
 
+        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos * this.block_size_/2), y_player - this.alto_/2 + mas_abajo + idle_movimiento, cabeza, this.block_size_, "#00ff00");
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");
+        
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), pies[que_pie], this.block_size_, "#ffff00");
+
+
+        
+        
+        var corrige_x_palo = 12;
+        var corrige_y_palo = 1;
         if(this.tiempo_enfadado_ > juego.timestamp_()){
 
             //PRUEBA PINTANDO ATAQUE 1
-            if((this.tiempo_enfadado_ - juego.timestamp_()) > 300){
-                ctx.rotate(270 * Math.PI / 180);
-            }
-            else if((this.tiempo_enfadado_ - juego.timestamp_()) > 200){
-                ctx.rotate(300 * Math.PI / 180);
+            if((this.tiempo_enfadado_ - juego.timestamp_()) > 150){
+                ctx.rotate(50 * Math.PI / 180);
+                corrige_x_palo = 15;
+                corrige_y_palo = 8;
             }
             else if((this.tiempo_enfadado_ - juego.timestamp_()) > 100){
-                ctx.rotate(350 * Math.PI / 180);
+                ctx.rotate(100 * Math.PI / 180);
+                corrige_x_palo = 20;
+                corrige_y_palo = 8;
+            }
+            else if((this.tiempo_enfadado_ - juego.timestamp_()) > 50){
+                ctx.rotate(150 * Math.PI / 180);
+                corrige_x_palo = 25;
+                corrige_y_palo = 5;
             }
 
         }
@@ -366,9 +401,24 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
 
         }
         
-        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * 5), y_player + (this.block_size_ * 8) + mas_abajo + idle_movimiento2, palo[que_palo], this.block_size_, "#ff0000");
+        if(this.down){
+            ctx.rotate(10 * Math.PI / 180);
+        }
         
         
+        if(this.up){
+            ctx.rotate(65 * Math.PI / 180);
+            corrige_x_palo = 18;
+            corrige_y_palo = 8;
+        }
+        
+        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * corrige_y_palo) + mas_abajo + idle_movimiento2, palo[que_palo], this.block_size_, "#ff0000");
+        
+        
+        //para debug del centro de la escena
+        juego.pinta_filas_columnas_(ctx, 0, 0, paloprueba, this.block_size_, "#ffffff");
+
+
         //ctx.fillStyle = "green";
         //ctx.fillRect(x_player,y_player,this.ancho_,this.alto)
 
