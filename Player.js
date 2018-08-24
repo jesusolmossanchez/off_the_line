@@ -323,25 +323,6 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         ];
 
 
-        var ostiazo = [];
-        ostiazo[0] = [
-            [ ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1,  ],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ],
-            [ ,  ,  ,  ,  ,  , 1, 1, 1,  , 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-        ];
-
         var paloprueba = [
             [1]]
 
@@ -399,7 +380,10 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         }
 
         ctx.save();
-        ctx.translate(x_player + this.ancho_/2, y_player + this.alto_/2);
+
+        var x_translate = x_player + this.ancho_/2;
+        var y_translate = y_player + this.alto_/2;
+        ctx.translate(x_translate, y_translate);
 
         x_player = 0;
         y_player = 0;
@@ -417,28 +401,43 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
 
             //PRUEBA PINTANDO ATAQUE 1
             if((this.tiempo_enfadado_ - juego.timestamp_()) > 150){
-                ctx.rotate(-1 * Math.PI / 180);
+                var rotacion = -1 * Math.PI / 180;
+                ctx.rotate(rotacion);
                 corrige_x_palo = 8;
                 corrige_y_palo = 1;
                 que_cuerpo = 2;
                 que_pie = 4;
                 mas_abajo = 2 * this.block_size_;
-                juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 9), y_player - this.alto_/2 + (this.block_size_ * 3), ostiazo[0], this.block_size_, "#ffffff");
+
+                var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 9),  y_player - this.alto_/2 + (this.block_size_ * 3), 0, this.block_size_, "#ffffff", x_translate, y_translate, this.izquierda_, rotacion);
+
+                juego.ostiazos_.push(ostia_nueva);
+
+                //juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 9), y_player - this.alto_/2 + (this.block_size_ * 3), ostiazo[0], this.block_size_, "#ffffff");
             }
             else if((this.tiempo_enfadado_ - juego.timestamp_()) > 50){
-                ctx.rotate(-15 * Math.PI / 180);
+
+                var rotacion = -15 * Math.PI / 180;
+                ctx.rotate(rotacion);
+
                 corrige_x_palo = -3;
                 corrige_y_palo = 4;
                 que_cuerpo = 3;
                 que_pie = 4;
                 mas_abajo = 2 * this.block_size_;
-                juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 11), y_player - this.alto_/2 + (this.block_size_ * 0), ostiazo[0], this.block_size_*1.3, "#ff00ff");
+
+                var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 11), y_player - this.alto_/2 + (this.block_size_ * 0), 0, this.block_size_*1.3, "#ff00ff", x_translate, y_translate, this.izquierda_, rotacion);
+
+                juego.ostiazos_.push(ostia_nueva);
+                //juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 11), y_player - this.alto_/2 + (this.block_size_ * 0), ostiazo[0], this.block_size_*1.3, "#ff00ff");
             }
 
         }
         else{
 
         }
+
+
 
         juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos * this.block_size_/2), y_player - this.alto_/2 + mas_abajo + idle_movimiento, cabeza, this.block_size_, "#00ff00");
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");

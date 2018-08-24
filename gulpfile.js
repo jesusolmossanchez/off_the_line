@@ -40,6 +40,7 @@ gulp.task('deploy-js', function () {
                     'Engine.js',
                     'Music.js',
                     'Mobile.js',
+                    'Ostiazo.js',
                     'Player.js',
                     'Cuerda.js',
                     'tiny_music.js',

@@ -384,6 +384,8 @@ var Game = function() {
         this.render_player_(ctx, dt);
         this.render_player2_(ctx, dt);
         this.render_cuerda_(ctx, dt);
+
+        this.render_ostiazo_(ctx, dt);
         
     };
 
@@ -396,6 +398,33 @@ var Game = function() {
   
     this.render_player2_ = function(ctx, dt) {  
         player2.pinta_player_(dt, ctx, this.counter);    
+    };
+
+
+        
+
+    this.render_cuerda_ = function(ctx, dt) {
+        cuerda.render_(dt, ctx, this.counter);
+    };
+    
+    this.render_ostiazo_ = function(ctx, dt) {
+
+        while((ostia_actual=this.ostiazos_.pop()) != null){ 
+            
+            ctx.save();
+            ctx.translate(ostia_actual.x_translate_, ostia_actual.y_translate_);
+
+            if(ostia_actual.izquierda_){  
+                ctx.scale(-1, 1);
+            }
+
+            ctx.rotate(ostia_actual.rotacion_);
+
+            this.pinta_filas_columnas_(ctx, ostia_actual.x, ostia_actual.y, ostia_actual.que_ostia_, ostia_actual.block_size_, ostia_actual.color_);
+        
+            ctx.restore();
+        }
+
     };
 
 
@@ -436,11 +465,6 @@ var Game = function() {
 
 
   
-        
-
-    this.render_cuerda_ = function(ctx, dt) {
-        cuerda.render_(dt, ctx, this.counter);
-    };
 
 
 
@@ -1075,6 +1099,9 @@ var Game = function() {
     this.cuerda_ = [];  //puntos que ocupa la cuerda
 
     this.marcador_size_ = 4,
+
+
+    this.ostiazos_ = [];
 
 
     //Se muestra logo nada más empezar
