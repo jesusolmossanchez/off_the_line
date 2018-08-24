@@ -437,7 +437,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
 
             
             if(this.up){
-                //PRUEBA PINTANDO ATAQUE MIDDLE
+                //PRUEBA PINTANDO ATAQUE UP
                 if((this.tiempo_enfadado_ - juego.timestamp_()) > 150){
                     
                     var ostia_rotacion = 35 * Math.PI / 180;
@@ -449,7 +449,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
                     mas_abajo = 2 * this.block_size_;
                     rotacion = 95 * Math.PI / 180;
                     
-                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 2),  y_player - this.alto_/2 + (this.block_size_ * -19), 0, this.block_size_, "#ffffff", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 2),  y_player - this.alto_/2 + (this.block_size_ * -19), 0, this.block_size_, "rgba(255,255,255, 0.4)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
                     
                     juego.ostiazos_.push(ostia_nueva);
 
@@ -467,16 +467,52 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
                     mas_abajo = 2 * this.block_size_;
                     rotacion = 145 * Math.PI / 180;
                     
-                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 3), y_player - this.alto_/2 + (this.block_size_ * -20), 0, this.block_size_*1.3, "#ff00ff", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 3), y_player - this.alto_/2 + (this.block_size_ * -20), 0, this.block_size_*1.3, "rgba(241,143,1, 0.6)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
                     juego.ostiazos_.push(ostia_nueva);
 
                 }
             }
-            /*
+            
             else if(this.down){
+                //PRUEBA PINTANDO ATAQUE DOWN
+                if((this.tiempo_enfadado_ - juego.timestamp_()) > 150){
+                    
+                    var ostia_rotacion = -35 * Math.PI / 180;
+                    
+                    rotacion = -125 * Math.PI / 180;
+                    
+                    corrige_x_palo = 22;
+                    corrige_y_palo = 7;
+                    que_cuerpo = 2;
+                    que_pie = 4;
+                    mas_abajo = 2 * this.block_size_;
+                    
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 1),  y_player - this.alto_/2 + (this.block_size_ * 25), 0, this.block_size_, "rgba(255,255,255, 0.4)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    
+                    juego.ostiazos_.push(ostia_nueva);
 
+
+
+                }
+                else if((this.tiempo_enfadado_ - juego.timestamp_()) > 50){
+
+                    var ostia_rotacion = -35 * Math.PI / 180;
+
+                    
+                    rotacion = -195 * Math.PI / 180;
+                    
+                    corrige_x_palo = 23;
+                    corrige_y_palo = 7;
+                    que_cuerpo = 2;
+                    que_pie = 4;
+                    mas_abajo = 2 * this.block_size_;
+                    
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 5), y_player - this.alto_/2 + (this.block_size_ * 17), 0, this.block_size_*1.3, "rgba(8,19,127,0.6)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    juego.ostiazos_.push(ostia_nueva);
+
+                }
             }
-            */
+            
             else{
 
                 //PINTANDO ATAQUE MIDDLE
@@ -504,7 +540,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
                     que_pie = 4;
                     mas_abajo = 2 * this.block_size_;
 
-                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 11), y_player - this.alto_/2 + (this.block_size_ * 0), 0, this.block_size_*1.3, "rgba(255,0,255, 0.4)", x_translate, y_translate, this.izquierda_, rotacion);
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 11), y_player - this.alto_/2 + (this.block_size_ * 0), 0, this.block_size_*1.3, "rgba(216,17,89, 0.4)", x_translate, y_translate, this.izquierda_, rotacion);
                     juego.ostiazos_.push(ostia_nueva);
                 }
             }
@@ -533,6 +569,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             corrige_x_palo = 20;
             corrige_y_palo = 7;
         }
+
 
         if(rotacion){
             
