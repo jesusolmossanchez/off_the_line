@@ -115,6 +115,27 @@ var Game = function() {
                     }
                 }
                 return false;
+            case this.KEY.SHIFT: 
+                ev.preventDefault(); 
+                if(!this.empezado_){
+                    if(down){
+                        if(!this.numero_jugadores_){
+                            this.selecciona_menu_();
+                        }
+                        else{
+                            this.selec_player_(true);
+                        }
+                    }
+                }
+                else{
+                    if(this.modo_ === 1){
+                        player.jump  = down; 
+                    }
+                    else{
+                        player2.jump  = down; 
+                    }
+                }
+                return false;
             case this.KEY.Z: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
@@ -128,18 +149,13 @@ var Game = function() {
                     }
                 }
                 else{
-                    player.accion  = down; 
+                    player.accion  = down;  
                 }
                 return false;
             case this.KEY.X: 
                 ev.preventDefault(); 
                 if(this.empezado_){
-                    if(this.modo_ === 1){
-                        player.jump  = down; 
-                    }
-                    else{
-                        player2.jump  = down; 
-                    } 
+                    player.jump  = down; 
                 }
                 return false;
             case this.KEY.R: 
@@ -156,7 +172,7 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 2){
-                        player.jump  = down; 
+                        player.up  = down; 
                     }
                 }
                 return false;
@@ -703,20 +719,24 @@ var Game = function() {
                     [  ,  ,  , 1, ],
                     [  ,  , 1,  , ],
                     [  , 1,  ,  , ],
-                    [ 1,  ,  ,  , ],
                     [ 1, 1, 1, 1, ]
+            ];
+        var equis=  [
+                    [ 1,  ,  ,  ,1],
+                    [  , 1,  , 1, ],
+                    [  ,  , 1,  , ],
+                    [  , 1,  , 1, ],
+                    [ 1,  ,  ,  ,1]
             ];
         var erre=  [
                     [ 1, 1, 1, 1, ],
                     [ 1,  ,  , 1, ],
                     [ 1,  , 1,  , ],
                     [ 1, 1, 1,  , ],
-                    [ 1,  , 1,  , ],
                     [ 1,  ,  , 1, ]
             ];
         var de=  [
                     [ 1, 1, 1, 1, ],
-                    [ 1,  ,  , 1, ],
                     [ 1,  ,  , 1, ],
                     [ 1,  ,  , 1, ],
                     [ 1,  ,  , 1, ],
@@ -725,14 +745,12 @@ var Game = function() {
         var efe=  [
                     [ 1, 1, 1, 1, ],
                     [ 1,  ,  ,  , ],
-                    [ 1,  ,  ,  , ],
                     [ 1, 1, 1,  , ],
                     [ 1,  ,  ,  , ],
                     [ 1,  ,  ,  , ]
             ];
         var ge=  [
                     [ 1, 1, 1, 1, ],
-                    [ 1,  ,  ,  , ],
                     [ 1,  ,  ,  , ],
                     [ 1,  , 1, 1, ],
                     [ 1,  ,  , 1, ],
@@ -745,9 +763,16 @@ var Game = function() {
                     [ 1, 1, 1, 1, ],
                     [  , 1,  ,  , ]
             ];
+        var shift_key=  [
+                    [  ,  ,  , 1,  ,  ,  ],
+                    [  ,  , 1,  , 1,  ,  ],
+                    [  , 1,  ,  ,  , 1,  ],
+                    [ 1, 1, 1,  , 1, 1, 1],
+                    [  ,  , 1, 1, 1,  ,  ]
+            ];
 
 
-        var size_flecha_px = 5;
+        var size_flecha_px = 3;
 
 
         this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 130, usa_keys, 3);
@@ -756,27 +781,30 @@ var Game = function() {
             y_select = y_select + size_menu_px * 14;
 
 
-            size_flecha_px = size_flecha_px/1.8;
+            //size_flecha_px = size_flecha_px/2;
             this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 50, de, size_flecha_px);
             this.pinta_filas_columnas_(ctx, 105, this.alto_total_ - 50, ge, size_flecha_px);
             this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 75, erre, size_flecha_px);
             this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 50, efe, size_flecha_px);
             this.pinta_filas_columnas_(ctx, 160, this.alto_total_ - 50, zeta, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 200, this.alto_total_ - 50, equis, size_flecha_px);
 
 
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 170, this.alto_total_ - 50, flecha_izq, size_flecha_px*1.4);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 105, this.alto_total_ - 50, flecha_der, size_flecha_px*1.4);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 140, this.alto_total_ - 70, flecha_arr, size_flecha_px*1.4);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 140, this.alto_total_ - 45, flecha_abj, size_flecha_px*1.4);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 60, this.alto_total_ - 60, enter_key, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 220, this.alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 155, this.alto_total_ - 50, flecha_der, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 100, this.alto_total_ - 55, enter_key, size_flecha_px*2);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 60, this.alto_total_ - 50, shift_key, size_flecha_px*1.3);
         }
         else{
 
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 90, this.alto_total_ - 50, flecha_izq, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 5, this.alto_total_ - 50, flecha_der, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 80, flecha_arr, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 45, flecha_abj, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 75, this.alto_total_ - 50, zeta, size_flecha_px/1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 90, this.alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 5, this.alto_total_ - 50, flecha_der, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 75, this.alto_total_ - 50, zeta, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 125, this.alto_total_ - 50, equis, size_flecha_px*1.5);
 
         }
 
@@ -1081,7 +1109,7 @@ var Game = function() {
                       GOLD: 'gold'
                   },
    
-    this.KEY      = { ENTER: 13, SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
+    this.KEY      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
       
     this.fps_            = 60,
     this.step_           = 1/this.fps_,
