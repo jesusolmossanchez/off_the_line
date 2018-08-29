@@ -1,14 +1,20 @@
 
 (function() { // module pattern
 
+    
+        
+    var ancho_total_ = window.innerWidth;
+    var alto_total_  = window.innerHeight;
+
     //instancia del juego
     var juego = new Game();
 
     //instancia de movil para controlar sus cosas
     var mobile = new Mobile(juego);
     
-    //Controlo orientación (solo para movil)
-    mobile.controla_orientacion_();
+    //Muestro cosas para moviles
+    mobile.controla_if_mobile_();
+    mobile.mobile_listeners_();
 
     //el bucle general del juego
     var engine = new Engine(juego, mobile);
@@ -29,7 +35,6 @@
             juego.pausa_ = true;
         } else  {
             juego.pausa_ = false;
-            mobile.controla_orientacion_();
         }
     }
 

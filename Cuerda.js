@@ -13,7 +13,7 @@ var Cuerda = function(juego) {
     this.render_ = function(dt, ctx, counter){
         
         //ctx.beginPath();
-        alto_linea = juego.alto_total_/ 1.5;
+        alto_linea = alto_total_/ 1.5;
         //ctx.moveTo(-10, alto_linea);
 
         
@@ -33,15 +33,14 @@ var Cuerda = function(juego) {
 
 
         /*
-        ctx.bezierCurveTo(x1, maximo_rebote_1, x2, maximo_rebote_2, this.ancho_total_ + 10, alto_linea);
+        ctx.bezierCurveTo(x1, maximo_rebote_1, x2, maximo_rebote_2, ancho_total_ + 10, alto_linea);
         ctx.strokeStyle="#ffffff";
         ctx.lineWidth=4;
         ctx.stroke();
         */
 
-   
         juego.cuerda_ = [];      
-        this.curva_guay(ctx, Math.ceil(-10/4), Math.ceil(alto_linea/4), Math.ceil(x1/4), Math.ceil(maximo_rebote_1/4), Math.ceil(x2/4), Math.ceil(maximo_rebote_2/4), Math.ceil((juego.ancho_total_ + 10)/4), Math.ceil(alto_linea/4));
+        this.curva_guay(ctx, Math.ceil(-10/4), Math.ceil(alto_linea/4), Math.ceil(x1/4), Math.ceil(maximo_rebote_1/4), Math.ceil(x2/4), Math.ceil(maximo_rebote_2/4), Math.ceil((ancho_total_ + 10)/4), Math.ceil(alto_linea/4));
         
     }
 

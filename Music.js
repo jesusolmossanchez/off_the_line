@@ -45,9 +45,6 @@ var Music = function(juego, mobile, engine) {
             if (done) {
                 //Cuando todo está cargado inicio el asunto...
 
-                //Controlo la orientación
-                mobile.controla_orientacion_();
-
                 //Pinto el meni
                 juego.muestra_menu_(juego.ctx, false);
 

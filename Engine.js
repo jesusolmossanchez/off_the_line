@@ -7,6 +7,8 @@ var Engine = function(juego, mobile) {
 
     juego.counter = 0; 
 
+    
+
     this.dt = 0;
     this.now,
     this.last = juego.timestamp_();
@@ -16,6 +18,13 @@ var Engine = function(juego, mobile) {
     this.then_ = juego.timestamp_();
 
     this.frame_ = function(){
+
+        
+        mobile.controla_if_mobile_();
+        ancho_total_ = window.innerWidth,
+        alto_total_  = window.innerHeight;
+
+
         if(!juego.empezado_ || juego.pausa_){
             requestAnimationFrame(this.frame_.bind(this));
             return;

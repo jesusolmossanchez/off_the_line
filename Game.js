@@ -303,6 +303,13 @@ var Game = function() {
     /*** UPDATE ***/
     //Función que se debe ejecutar cada frame
     this.update_ = function(dt) {
+
+        
+        
+        this.canvas_.width  = ancho_total_;
+        this.canvas_.height = alto_total_;
+
+
         if(this.is_game_over_){
             return;
         }
@@ -320,10 +327,10 @@ var Game = function() {
         //TODO: parametrizar donde empiezan los jugadores
 
         player.x = 96;
-        player.y = this.alto_total_ - player2.alto_ - 50;
+        player.y = alto_total_ - player2.alto_ - 50;
         
-        player2.x = this.ancho_total_ - 96 - player2.ancho_;
-        player2.y = this.alto_total_ - player2.alto_ - 50;
+        player2.x = ancho_total_ - 96 - player2.ancho_;
+        player2.y = alto_total_ - player2.alto_ - 50;
 
 
         this.hay_muerte_ = false;
@@ -374,7 +381,7 @@ var Game = function() {
         }
 
 
-        this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
+        this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
         
         this.is_game_over_ = true;
 
@@ -388,13 +395,16 @@ var Game = function() {
   
     this.render = function(ctx, frame, dt) {
 
+        
+        
+
         //Si hay game over return y hago otra cosa -> TODO
         if(this.is_game_over_){
             return;
         }
 
         //Limpio lo que hay
-        ctx.clearRect(0, 0, this.ancho_total_, this.alto_total_);
+        ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         //Renderizo los objetos
         this.render_player_(ctx, dt);
@@ -494,7 +504,7 @@ var Game = function() {
                 ];
 
         var size_logo_px = 8;
-        var x_logo = this.ancho_total_/2 - (size_logo_px * logo[0].length)/2;
+        var x_logo = ancho_total_/2 - (size_logo_px * logo[0].length)/2;
 
         this.pinta_filas_columnas_(ctx, x_logo, 200, logo, size_logo_px);
         
@@ -506,11 +516,11 @@ var Game = function() {
     this.pinta_cargador_ = function(percent, ctx) {
         var ancho_cargador = 200;
         var alto_cargador = 80;
-        ctx.fillRect((this.ancho_total_ - ancho_cargador)/2, this.alto_total_/2 + 50, percent * ancho_cargador, alto_cargador);
+        ctx.fillRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, percent * ancho_cargador, alto_cargador);
 
         ctx.strokeStyle="#ffffff";
         ctx.lineWidth=10;
-        ctx.strokeRect((this.ancho_total_ - ancho_cargador)/2, this.alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
+        ctx.strokeRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
     };
 
 
@@ -523,7 +533,7 @@ var Game = function() {
             return
         }
 
-        ctx.clearRect(0, 0, this.ancho_total_, this.alto_total_);
+        ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
         //Mestro el menu de 1 player / 2 player
@@ -556,7 +566,7 @@ var Game = function() {
         var size_menu_px = 8;
         var largo_menu = size_menu_px * menu[0].length;
         var largo_menu = size_menu_px * menu[0].length;
-        var x_menu = this.ancho_total_/2 - largo_menu/2;
+        var x_menu = ancho_total_/2 - largo_menu/2;
         var y_menu = 200;
 
 
@@ -775,36 +785,36 @@ var Game = function() {
         var size_flecha_px = 3;
 
 
-        this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 130, usa_keys, 3);
+        this.pinta_filas_columnas_(ctx, 50, alto_total_ - 130, usa_keys, 3);
         var y_select = y_menu - (size_menu_px * 4);
         if(this.modo_ == 2){
             y_select = y_select + size_menu_px * 14;
 
 
             //size_flecha_px = size_flecha_px/2;
-            this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 50, de, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 105, this.alto_total_ - 50, ge, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 75, erre, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 50, efe, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 160, this.alto_total_ - 50, zeta, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 200, this.alto_total_ - 50, equis, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 50, alto_total_ - 50, de, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 105, alto_total_ - 50, ge, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 80, alto_total_ - 75, erre, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 80, alto_total_ - 50, efe, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 160, alto_total_ - 50, zeta, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 200, alto_total_ - 50, equis, size_flecha_px);
 
 
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 220, this.alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 155, this.alto_total_ - 50, flecha_der, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 100, this.alto_total_ - 55, enter_key, size_flecha_px*2);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_ - 60, this.alto_total_ - 50, shift_key, size_flecha_px*1.3);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, flecha_der, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
+            this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
         }
         else{
 
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 90, this.alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 5, this.alto_total_ - 50, flecha_der, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 75, this.alto_total_ - 50, zeta, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 125, this.alto_total_ - 50, equis, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, flecha_der, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
+            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
 
         }
 
@@ -860,7 +870,7 @@ var Game = function() {
                 ctx.strokeRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
                 if(this.player2_selected_){
                     this.ctx.globalAlpha = 0.5;
-                    this.ctx.fillStyle = this.COLOR_.YELLOW;
+                    this.ctx.fillStyle = this.COLOR_.PURPLE;
                     this.ctx.fillRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
                     this.ctx.globalAlpha = 1.0;
                 }
@@ -1013,6 +1023,16 @@ var Game = function() {
         var alto_selec_player = 140;
 
         var player_pinta = this.player1_tipo_;
+
+        
+        if(player1 && this.player1_selected_){
+            return;
+        }
+        else if(!player1 && this.player2_selected_){
+            return;
+        }
+        
+
         var color = this.COLOR_.YELLOW;
         if(!player1){
             this.player2_selected_ = true;
@@ -1092,8 +1112,12 @@ var Game = function() {
     this.player1_selected_ = false;
     this.player2_selected_ = false;
 
-    this.ancho_total_ = 840,
-    this.alto_total_  = 600,
+    /*
+    ancho_total_ = 840,
+    alto_total_  = 600,
+    */
+    ancho_total_ = window.innerWidth,
+    alto_total_  = window.innerHeight,
   
     
     this.ACCEL_    = 0.01,     // default take 1/2 second to reach maxdx (horizontal acceleration)
@@ -1115,8 +1139,8 @@ var Game = function() {
     this.step_           = 1/this.fps_,
     this.canvas_         = document.getElementById('canvas'),
     this.ctx            = this.canvas_.getContext('2d'),
-    this.canvas_.width  = this.ancho_total_,
-    this.canvas_.height = this.alto_total_,
+    this.canvas_.width  = ancho_total_,
+    this.canvas_.height = alto_total_,
     
     
     this.hay_muerte_      = false, //Aqui voy a controlar cuando se mate a alguien

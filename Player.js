@@ -60,15 +60,6 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
     }
 
 
-    if(posicion == 1){
-        this.limite_derecha_    = juego.ancho_total_;
-        this.limite_izquierda_  = 0; 
-    }
-    else{
-        this.limite_derecha_    = juego.ancho_total_;
-        this.limite_izquierda_  = 0;   
-    } 
-
     this.update = function(dt) {
         //Control de si iba hacia la izquierda o a la derecha y friccion y aceleración... Ahora no lo uso, pero puede ser util
         this.wasleft    = this.dx  < 0;
@@ -148,7 +139,7 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         if(altura_jugador > alto_cuerda){
             this.y = alto_cuerda - this.alto_;
             if (this.dy >= 0) {
-                //this.y = juego.alto_total_/1.5 - this.alto_;
+                //this.y = alto_total_/1.5 - this.alto_;
                 this.dy = - this.dy/3;
                 this.jumping = false;
             }
@@ -156,19 +147,19 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
         
         
         //Si va a la derecha
-        if (this.dx > 0) {
+        //if (this.dx > 0) {
 
             //Choco con la red
-            if(this.x + this.ancho_ >= this.limite_derecha_){
-                this.x = this.limite_derecha_ - this.ancho_;
+            if(this.x + this.ancho_ >= ancho_total_){
+                this.x = ancho_total_ - this.ancho_;
                 this.dx = 0;
             }
-        }
+        //}
         //Si va a la izquierda
         else if (this.dx < 0) {
 
-            if(this.x <= this.limite_izquierda_){
-                this.x = this.limite_izquierda_;
+            if(this.x <= 0){
+                this.x = 0;
                 this.dx = 0;
             }
         }
