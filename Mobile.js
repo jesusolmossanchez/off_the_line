@@ -70,25 +70,25 @@ var Mobile = function(juego) {
             document.getElementById('controles_mobile').style.display = "block";
 
             document.getElementById('der_mobile').addEventListener('touchstart', function(e){
-                player.right = true;
+                juego.player_.right = true;
                 this.className = "tecla_mobile pulsada";
                 e.preventDefault();
             });
 
             document.getElementById('izq_mobile').addEventListener('touchstart', function(e){ 
-                player.left = true;
+                juego.player_.left = true;
                 this.className = "tecla_mobile pulsada";
                 e.preventDefault();
             });
 
             document.getElementById('arr_mobile').addEventListener('touchstart', function(e){ 
-                player.jump = true;
+                juego.player_.jump = true;
                 this.className = "tecla_mobile pulsada";
                 e.preventDefault();
             });
 
             document.getElementById('accion_mobile').addEventListener('touchstart', function(e){ 
-                player.accion = true;
+                juego.player_.accion = true;
                 this.className = "tecla_mobile pulsada";
                 e.preventDefault();
             });
@@ -96,25 +96,25 @@ var Mobile = function(juego) {
 
 
             document.getElementById('der_mobile').addEventListener('touchend', function(e){
-                player.right = false;
+                juego.player_.right = false;
                 this.className = "tecla_mobile";
                 e.preventDefault();
             });
 
             document.getElementById('izq_mobile').addEventListener('touchend', function(e){ 
-                player.left = false;
+                juego.player_.left = false;
                 this.className = "tecla_mobile";
                 e.preventDefault();
             });
 
             document.getElementById('arr_mobile').addEventListener('touchend', function(e){ 
-                player.jump = false;
+                juego.player_.jump = false;
                 this.className = "tecla_mobile";
                 e.preventDefault();
             });
 
             document.getElementById('accion_mobile').addEventListener('touchend', function(e){ 
-                player.accion = false;
+                juego.player_.accion = false;
                 this.className = "tecla_mobile";
                 e.preventDefault();
             });

@@ -24,7 +24,7 @@ var Engine = function(juego, mobile) {
         alto_total_  = window.innerHeight;
 
         if(!juego.empezado_){
-            juego.muestra_menu_(juego.ctx);
+            juego.muestra_menu_(juego.ctx, juego.modo_seleccionado);
             requestAnimationFrame(this.frame_.bind(this));
             return;
         }

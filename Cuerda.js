@@ -17,18 +17,18 @@ var Cuerda = function(juego) {
         //ctx.moveTo(-10, alto_linea);
 
         
-        var x1 = player.x;
-        var x2 = player2.x;
+        var x1 = juego.player_.x;
+        var x2 = juego.player2_.x;
 
 
-        var maximo_rebote_1 = Math.max(player.y + player.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
-        var maximo_rebote_2 = Math.max(player2.y + player2.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
-        if(player.x > player2.x){
+        var maximo_rebote_1 = Math.max(juego.player_.y + juego.player_.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
+        var maximo_rebote_2 = Math.max(juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
+        if(juego.player_.x > juego.player2_.x){
 
-            x1 = player2.x;
-            x2 = player.x;
-            maximo_rebote_2 = Math.max(player.y + player.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
-            maximo_rebote_1 = Math.max(player2.y + player2.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
+            x1 = juego.player2_.x;
+            x2 = juego.player_.x;
+            maximo_rebote_2 = Math.max(juego.player_.y + juego.player_.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
+            maximo_rebote_1 = Math.max(juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
         }
 
 

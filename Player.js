@@ -3,22 +3,23 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
+var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
     this.x                 = x;
     this.y                 = y;
     this.block_size_       = 3;
-    this.alto_              = this.block_size_ * 17;
-    this.ancho_             = this.block_size_ * 13;
+    this.alto_             = this.block_size_ * 17;
+    this.ancho_            = this.block_size_ * 13;
     this.dx                = 0;
     this.dy                = 0;
     
+    this.player_num_       = player_num;
 
     this.wasleft           = false;
     this.wasright          = false;
-    this.gravity_           = gravedad*2;
+    this.gravity_          = gravedad*2;
 
-    this.rotacion_          = 0;
+    this.rotacion_         = 0;
 
 
     if(tipo){
@@ -145,24 +146,65 @@ var Player = function(juego, x, y, gravedad, impulso, posicion, cpu, tipo) {
             }
         }
         
-        
-        //Si va a la derecha
-        //if (this.dx > 0) {
+        //Comprobación que no pasa de limite a la derecha
+        if(this.dx > 0 && (this.x + this.ancho_ >= ancho_total_)
+            || this.x >= ancho_total_){ //Comprobación de si está fuera de la pantalla
+            this.x = ancho_total_ - this.ancho_;
+            this.dx = 0;
+        }
+        //Comprobación que no pasa de limite a la izquierda
+        if(this.dx < 0 && (this.x <= 0)){
+            this.x = 0;
+            this.dx = 0;
+        }
 
-            //Choco con la red
-            if(this.x + this.ancho_ >= ancho_total_){
-                this.x = ancho_total_ - this.ancho_;
+        //comprobación con el otro jugador
+        //TODO: esto habría que rehacerlo
+        //TODO: ALTURAS
+        if(this.player_num_ === 1){
+            if(this.dx > 0 
+                && (this.x + this.ancho_ >= juego.player2_.x)
+                && (this.x < juego.player2_.x)
+                && (this.y > juego.player2_.y - this.alto_)
+                && (this.y < juego.player2_.y + this.alto_*2)
+            ){
+                this.x = this.x;
                 this.dx = 0;
             }
-        //}
-        //Si va a la izquierda
-        else if (this.dx < 0) {
-
-            if(this.x <= 0){
-                this.x = 0;
+            if(this.dx < 0
+                &&(this.x <= juego.player2_.x + this.ancho_)
+                &&(this.x > juego.player2_.x)
+                && (this.y > juego.player2_.y - this.alto_)
+                && (this.y < juego.player2_.y + this.alto_*2)
+            ){
+                this.x = juego.player2_.x + this.ancho_;
                 this.dx = 0;
             }
         }
+        
+        else{
+            if(this.dx > 0 
+                && (this.x + this.ancho_ >= juego.player_.x)
+                && (this.x < juego.player_.x)
+                && (this.y > juego.player_.y - this.alto_)
+                && (this.y < juego.player_.y + this.alto_*2)
+            ){
+                this.x = this.x;
+                this.dx = 0;
+            }
+            if(this.dx < 0
+                &&(this.x <= juego.player_.x + this.ancho_)
+                &&(this.x > juego.player_.x)
+                && (this.y > juego.player_.y - this.alto_)
+                && (this.y < juego.player_.y + this.alto_*2)
+            ){
+                this.x = juego.player_.x + this.ancho_;
+                this.dx = 0;
+            }
+        }
+        
+        
+        
     };
 
     this.pinta_player_ = function( dt, ctx, counter) {

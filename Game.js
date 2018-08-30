@@ -27,10 +27,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.left  = down; 
+                        this.player_.left  = down; 
                     }
                     else{
-                        player2.left  = down; 
+                        this.player2_.left  = down; 
                     }
                 }
                 return false;
@@ -45,10 +45,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.right  = down; 
+                        this.player_.right  = down; 
                     }
                     else{
-                        player2.right  = down; 
+                        this.player2_.right  = down; 
                     } 
                 } 
                 return false;
@@ -66,10 +66,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.up  = down; 
+                        this.player_.up  = down; 
                     }
                     else{
-                        player2.up  = down; 
+                        this.player2_.up  = down; 
                     } 
                 }
                 return false;
@@ -87,10 +87,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.down  = down; 
+                        this.player_.down  = down; 
                     }
                     else{
-                        player2.down  = down; 
+                        this.player2_.down  = down; 
                     }
                 }
                 return false;
@@ -108,10 +108,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.accion  = down; 
+                        this.player_.accion  = down; 
                     }
                     else{
-                        player2.accion  = down; 
+                        this.player2_.accion  = down; 
                     }
                 }
                 return false;
@@ -129,10 +129,10 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 1){
-                        player.jump  = down; 
+                        this.player_.jump  = down; 
                     }
                     else{
-                        player2.jump  = down; 
+                        this.player2_.jump  = down; 
                     }
                 }
                 return false;
@@ -149,13 +149,13 @@ var Game = function() {
                     }
                 }
                 else{
-                    player.accion  = down;  
+                    this.player_.accion  = down;  
                 }
                 return false;
             case this.KEY.X: 
                 ev.preventDefault(); 
                 if(this.empezado_){
-                    player.jump  = down; 
+                    this.player_.jump  = down; 
                 }
                 return false;
             case this.KEY.R: 
@@ -172,7 +172,7 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 2){
-                        player.up  = down; 
+                        this.player_.up  = down; 
                     }
                 }
                 return false;
@@ -187,7 +187,7 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 2){
-                        player.left  = down; 
+                        this.player_.left  = down; 
                     }
                 }
                 return false;
@@ -205,7 +205,7 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 2){
-                        player.down  = down; 
+                        this.player_.down  = down; 
                     }
                 }
                 return false;
@@ -220,7 +220,7 @@ var Game = function() {
                 }
                 else{
                     if(this.modo_ === 2){
-                        player.right  = down; 
+                        this.player_.right  = down; 
                     }
                 }
                 return false;
@@ -314,8 +314,8 @@ var Game = function() {
             return;
         }
 
-        player.update(dt);
-        player2.update(dt);
+        this.player_.update(dt);
+        this.player2_.update(dt);
     };
 
 
@@ -326,11 +326,11 @@ var Game = function() {
         
         //TODO: parametrizar donde empiezan los jugadores
 
-        player.x = 96;
-        player.y = alto_total_ - player2.alto_ - 50;
+        this.player_.x = 96;
+        this.player_.y = alto_total_ - this.player2_.alto_ - 50;
         
-        player2.x = ancho_total_ - 96 - player2.ancho_;
-        player2.y = alto_total_ - player2.alto_ - 50;
+        this.player2_.x = ancho_total_ - 96 - this.player2_.ancho_;
+        this.player2_.y = alto_total_ - this.player2_.alto_ - 50;
 
 
         this.hay_muerte_ = false;
@@ -418,12 +418,12 @@ var Game = function() {
     
 
     this.render_player_ = function(ctx, dt) {
-        player.pinta_player_(dt, ctx, this.counter);
+        this.player_.pinta_player_(dt, ctx, this.counter);
     };
 
   
     this.render_player2_ = function(ctx, dt) {  
-        player2.pinta_player_(dt, ctx, this.counter);    
+        this.player2_.pinta_player_(dt, ctx, this.counter);    
     };
 
 
@@ -558,7 +558,7 @@ var Game = function() {
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
-        //Mestro el menu de 1 player / 2 player
+        //Mestro el menu de 1 this.player_ / 2 this.player_
 
         //TODO: optimizar estos arrays gordisimos
         menu =  [
@@ -841,10 +841,10 @@ var Game = function() {
         }
 
 
+        ctx.lineWidth=10;
         if(!select_player){
             
             ctx.strokeStyle="#ffffff";
-            ctx.lineWidth=10;
             ctx.strokeRect(x_menu - (size_menu_px * 4), y_select, largo_menu + (size_menu_px * 8), 12 * size_menu_px);
             this.pinta_filas_columnas_(ctx, x_menu, y_menu, menu, size_menu_px);
         }
@@ -969,8 +969,6 @@ var Game = function() {
         else{
             this.modo_ = 1;
         }
-        //Y vuelvo a pintar el menu
-        this.muestra_menu_(this.ctx, false);
     }
 
     this.mueve_selec_player_ = function (player1, dir) {
@@ -1026,13 +1024,11 @@ var Game = function() {
             }
 
         }
-
-        this.muestra_menu_(this.ctx, true);
     }
 
     this.selecciona_menu_ = function () {
         window.golpe_audio2.play();
-        this.muestra_menu_(this.ctx, true);
+        this.modo_seleccionado = true;
         this.numero_jugadores_ = this.modo_;
 
         //this.setup_();
@@ -1103,14 +1099,14 @@ var Game = function() {
 
     this.setup_ = function() {
 
-        player = new Player(this, 96, 1107, 800, 60000, 1, false, this.player1_tipo_);
+        this.player_ = new Player(this, 96, 1107, 800, 60000, 1, false, this.player1_tipo_);
         var cpu = true;
         var tipo2 = false;
         if(this.modo_ == 2){
             cpu = false;
             tipo2 = this.player2_tipo_;
         }
-        player2 = new Player(this, 1850, 1107, 800, 60000, 2, cpu, tipo2);
+        this.player2_ = new Player(this, 1850, 1107, 800, 60000, 2, cpu, tipo2);
 
         cuerda = new Cuerda(this);
 
@@ -1124,6 +1120,9 @@ var Game = function() {
 
     this.modo_ = 1; // modo=1 -> 1player + modo=2 -> 2 players
     this.level_ = 1; // modo=1 -> 1player + modo=2 -> 2 players
+
+    
+    this.modo_seleccionado = false;
 
     this.empezado_ = false; // controla cuando la partida ha empezado
 
