@@ -589,7 +589,7 @@ var Game = function() {
         var largo_menu = size_menu_px * menu[0].length;
         var largo_menu = size_menu_px * menu[0].length;
         var x_menu = ancho_total_/2 - largo_menu/2;
-        var y_menu = 200;
+        var y_menu = alto_total_/4;
 
 
 
@@ -599,10 +599,15 @@ var Game = function() {
             //Me creo una instacia de jugador falso para pintar el jugador en el menu
 
             //TODO: Cambiar esto... pintar la cara de cada jugador...
-
             var size_caract = 6;
 
-            fake_player = new Player(this, 60, 100, 0, 60000, 1, false, 1);
+            this.x_selector_player_1_ = ancho_total_ / 2.3 - 6*35;
+            this.y_selector_player_1_ = alto_total_ / 4;
+            
+            this.x_selector_player_2_ = ancho_total_ / 2.3 + 6*35;
+            this.y_selector_player_2_ = alto_total_ / 2;
+
+            fake_player = new Player(this, this.x_selector_player_1_ - 80, this.y_selector_player_1_, 0, 60000, 1, false, 1);
             fake_player.pinta_player_(0, ctx, this.counter);
 
             caracteristicas1 =  [
@@ -625,11 +630,9 @@ var Game = function() {
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
                 ];
-            this.pinta_filas_columnas_(ctx, 160, 100, caracteristicas1, size_caract);
-
-
+            this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_1_, caracteristicas1, size_caract);
             
-            fake_player2 = new Player(this, 60, 300, 0, 60000, 1, false, 3);
+            fake_player2 = new Player(this, this.x_selector_player_1_ - 80, this.y_selector_player_2_, 0, 60000, 1, false, 3);
             fake_player2.pinta_player_(0, ctx, this.counter);
 
             caracteristicas2 =  [
@@ -652,9 +655,10 @@ var Game = function() {
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
                 ];
-            this.pinta_filas_columnas_(ctx, 160, 300, caracteristicas2, size_caract);
+                
+            this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_2_, caracteristicas2, size_caract);
             
-            fake_player3 = new Player(this, 440, 100, 0, 60000, 1, false, 2);
+            fake_player3 = new Player(this, this.x_selector_player_2_ - 80, this.y_selector_player_1_, 0, 60000, 1, false, 2);
             fake_player3.pinta_player_(0, ctx, this.counter);
 
             caracteristicas3 =  [
@@ -677,11 +681,10 @@ var Game = function() {
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
                 ];
-            this.pinta_filas_columnas_(ctx, 540, 100, caracteristicas3, size_caract);
+            this.pinta_filas_columnas_(ctx, this.x_selector_player_2_, this.y_selector_player_1_, caracteristicas3, size_caract);
 
 
-            
-            fake_player4 = new Player(this, 440, 300, 0, 60000, 1, false, 4);
+            fake_player4 = new Player(this, this.x_selector_player_2_ - 80, this.y_selector_player_2_, 0, 60000, 1, false, 4);
             fake_player4.pinta_player_(0, ctx, this.counter);
 
             caracteristicas4 =  [
@@ -704,7 +707,7 @@ var Game = function() {
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
                 ];
-            this.pinta_filas_columnas_(ctx, 540, 300, caracteristicas4, size_caract);
+            this.pinta_filas_columnas_(ctx, this.x_selector_player_2_, this.y_selector_player_2_, caracteristicas4, size_caract);
 
 
         }
@@ -852,102 +855,70 @@ var Game = function() {
 
 
             if(this.modo_ === 2){
-                p2 =  [
-                            [ 1, 1, 1, 1,  ,  , 1, 1, 1],
-                            [ 1, 1,  , 1,  ,  ,  ,  , 1],
-                            [ 1, 1, 1, 1,  ,  , 1, 1, 1],
-                            [ 1, 1,  ,  ,  ,  , 1,  ,  ],
-                            [ 1, 1,  ,  ,  ,  , 1, 1, 1]
-                        ];
-
-                var x_p2 = 340;
-                var y_p2 = 52;
-
-                var x_selec_player = 40;
-                var y_selec_player = 80;
-                var ancho_selec_player = 370;
-                var alto_selec_player = 140;
-                switch(this.player2_tipo_) {
                 
+
+                var x_selec_player = this.x_selector_player_1_ - 120;
+                var y_selec_player = this.y_selector_player_1_  - 20;
+
+                switch(this.player2_tipo_) {
                     case 2: 
-                        x_selec_player = 420;
-                        y_selec_player = 80;
-                        x_p2 = 720;
-                        y_p2 = 52;
+                        x_selec_player = this.x_selector_player_2_ - 120;
+                        y_selec_player = this.y_selector_player_1_  - 20;
                         break;
                     case 3: 
-                        x_selec_player = 40;
-                        y_selec_player = 280;
-                        x_p2 = 340;
-                        y_p2 = 252;
-
+                        x_selec_player = this.x_selector_player_1_ - 120;
+                        y_selec_player = this.y_selector_player_2_  - 20;
                         break;
                     case 4: 
-                        x_selec_player = 420;
-                        y_selec_player = 280;
-                        x_p2 = 720;
-                        y_p2 = 252;
-
+                        x_selec_player = this.x_selector_player_2_ - 120;
+                        y_selec_player = this.y_selector_player_2_  - 20;
                         break;
                 }
-                this.pinta_filas_columnas_(ctx, x_p2, y_p2, p2, 4, this.COLOR_.PURPLE);
+                
+                var x_p2 = x_selec_player + 320;
+                var y_p2 = y_selec_player - 30;
+                this.pinta_filas_columnas_(ctx, x_p2, y_p2, this.p2, 4, this.COLOR_.PURPLE);
                 ctx.strokeStyle = this.COLOR_.PURPLE;
-                ctx.strokeRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
+                ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 if(this.player2_selected_){
                     this.ctx.globalAlpha = 0.5;
                     this.ctx.fillStyle = this.COLOR_.PURPLE;
-                    this.ctx.fillRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
+                    this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     this.ctx.globalAlpha = 1.0;
                 }
             }
 
 
 
-            p1 =  [
-                        [ 1, 1, 1, 1,  ,  ,  , 1, 1],
-                        [ 1, 1,  , 1,  ,  , 1, 1, 1],
-                        [ 1, 1, 1, 1,  ,  ,  , 1, 1],
-                        [ 1, 1,  ,  ,  ,  ,  , 1, 1],
-                        [ 1, 1,  ,  ,  ,  ,  , 1, 1]
-                    ];
 
-            var x_p1 = 70;
-            var y_p1 = 52;
+            var x_selec_player = this.x_selector_player_1_ - 120;
+            var y_selec_player = this.y_selector_player_1_  - 20;
 
-            var x_selec_player = 40;
-            var y_selec_player = 80;
-            var ancho_selec_player = 370;
-            var alto_selec_player = 140;
             switch(this.player1_tipo_) {
-            
                 case 2: 
-                    x_selec_player = 420;
-                    y_selec_player = 80;
-                    x_p1 = 450;
-                    y_p1 = 52;
+                    x_selec_player = this.x_selector_player_2_ - 120;
+                    y_selec_player = this.y_selector_player_1_  - 20;
                     break;
                 case 3: 
-                    x_selec_player = 40;
-                    y_selec_player = 280;
-                    x_p1 = 70;
-                    y_p1 = 252;
-
+                    x_selec_player = this.x_selector_player_1_ - 120;
+                    y_selec_player = this.y_selector_player_2_  - 20;
                     break;
                 case 4: 
-                    x_selec_player = 420;
-                    y_selec_player = 280;
-                    x_p1 = 450;
-                    y_p1 = 252;
-
+                    x_selec_player = this.x_selector_player_2_ - 120;
+                    y_selec_player = this.y_selector_player_2_  - 20;
                     break;
             }
-            this.pinta_filas_columnas_(ctx, x_p1, y_p1, p1, 4, this.COLOR_.YELLOW);
+            
+            var x_p1 = x_selec_player + 15;
+            var y_p1 = y_selec_player - 30;
+
+            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.YELLOW);
             ctx.strokeStyle = this.COLOR_.YELLOW;
-            ctx.strokeRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
+            ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
             if(this.player1_selected_){
                 this.ctx.globalAlpha = 0.5;
                 this.ctx.fillStyle = this.COLOR_.YELLOW;
-                this.ctx.fillRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
+                this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 this.ctx.globalAlpha = 1.0;
             }
 
@@ -1037,15 +1008,8 @@ var Game = function() {
     }
 
     this.selec_player_ = function (player1) {
-
-        var x_selec_player = 40;
-        var y_selec_player = 80;
-        var ancho_selec_player = 370;
-        var alto_selec_player = 140;
-
-        var player_pinta = this.player1_tipo_;
-
         
+
         if(player1 && this.player1_selected_){
             return;
         }
@@ -1053,8 +1017,6 @@ var Game = function() {
             return;
         }
         
-
-        var color = this.COLOR_.YELLOW;
         if(!player1){
             this.player2_selected_ = true;
             player_pinta = this.player2_tipo_;
@@ -1064,35 +1026,15 @@ var Game = function() {
             this.player1_selected_ = true;
         }
 
-        switch(player_pinta) {
-        
-            case 2: 
-                x_selec_player = 420;
-                y_selec_player = 80;
-                break;
-            case 3: 
-                x_selec_player = 40;
-                y_selec_player = 280;
-
-                break;
-            case 4: 
-                x_selec_player = 420;
-                y_selec_player = 280;
-                break;
-        }
-
-       
-        this.ctx.globalAlpha = 0.5;
-        this.ctx.fillStyle = color;
-        this.ctx.fillRect(x_selec_player, y_selec_player, ancho_selec_player, alto_selec_player);
-        this.ctx.globalAlpha = 1.0;
-
+        //TODO: Hacer algún tipo de delay para no entrar a lo loco a la partida
         if(this.modo_ === 1 || this.player1_selected_ && this.player2_selected_){
             this.setup_();
             this.empieza_();
             this.empezado_ = true;
             
         }
+        
+        
     }
     
 
@@ -1122,6 +1064,25 @@ var Game = function() {
     this.level_ = 1; // modo=1 -> 1player + modo=2 -> 2 players
 
     
+    this.p1 =  [
+        [ 1, 1, 1, 1,  ,  ,  , 1, 1],
+        [ 1, 1,  , 1,  ,  , 1, 1, 1],
+        [ 1, 1, 1, 1,  ,  ,  , 1, 1],
+        [ 1, 1,  ,  ,  ,  ,  , 1, 1],
+        [ 1, 1,  ,  ,  ,  ,  , 1, 1]
+    ];
+
+    this.p2 =  [
+        [ 1, 1, 1, 1,  ,  , 1, 1, 1],
+        [ 1, 1,  , 1,  ,  ,  ,  , 1],
+        [ 1, 1, 1, 1,  ,  , 1, 1, 1],
+        [ 1, 1,  ,  ,  ,  , 1,  ,  ],
+        [ 1, 1,  ,  ,  ,  , 1, 1, 1]
+    ];
+
+    this.ancho_selec_player_ = 370;
+    this.alto_selec_player_ = 140;
+
     this.modo_seleccionado = false;
 
     this.empezado_ = false; // controla cuando la partida ha empezado
