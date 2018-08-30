@@ -42,6 +42,8 @@ var Music = function(juego, mobile, engine) {
         var done = false;
         var intervalo_cancion = setInterval(function () {
 
+            
+
             if (done) {
                 //Cuando todo está cargado inicio el asunto...
 

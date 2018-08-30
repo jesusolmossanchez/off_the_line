@@ -19,16 +19,20 @@ var Engine = function(juego, mobile) {
 
     this.frame_ = function(){
 
-        
         mobile.controla_if_mobile_();
         ancho_total_ = window.innerWidth,
         alto_total_  = window.innerHeight;
 
-
-        if(!juego.empezado_ || juego.pausa_){
+        if(!juego.empezado_){
+            juego.muestra_menu_(juego.ctx);
             requestAnimationFrame(this.frame_.bind(this));
             return;
         }
+        if(juego.pausa_){
+            requestAnimationFrame(this.frame_.bind(this));
+            return;
+        }
+
         this.now = juego.timestamp_();
         this.dt = this.dt + Math.min(1, (this.now - this.last) / 1000);
         while(this.dt > juego.step_) {

@@ -505,8 +505,9 @@ var Game = function() {
 
         var size_logo_px = 8;
         var x_logo = ancho_total_/2 - (size_logo_px * logo[0].length)/2;
+        var y_logo = alto_total_/4;
 
-        this.pinta_filas_columnas_(ctx, x_logo, 200, logo, size_logo_px);
+        this.pinta_filas_columnas_(ctx, x_logo, y_logo, logo, size_logo_px);
         
     };
 
@@ -514,6 +515,17 @@ var Game = function() {
     //Pinto un cargador muy simple
     //TODO: hacerlo bonito
     this.pinta_cargador_ = function(percent, ctx) {
+
+        
+        ancho_total_ = window.innerWidth,
+        alto_total_  = window.innerHeight;
+        
+        this.canvas_.width  = ancho_total_;
+        this.canvas_.height = alto_total_;
+
+
+        
+        ctx.fillStyle = "#ffffff";
         var ancho_cargador = 200;
         var alto_cargador = 80;
         ctx.fillRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, percent * ancho_cargador, alto_cargador);
@@ -521,6 +533,9 @@ var Game = function() {
         ctx.strokeStyle="#ffffff";
         ctx.lineWidth=10;
         ctx.strokeRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
+
+        
+        this.muestra_logo_(this.ctx);
     };
 
 
@@ -533,6 +548,13 @@ var Game = function() {
             return
         }
 
+        
+        ancho_total_ = window.innerWidth,
+        alto_total_  = window.innerHeight;
+        
+        this.canvas_.width  = ancho_total_;
+        this.canvas_.height = alto_total_;
+        
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
@@ -820,6 +842,9 @@ var Game = function() {
 
 
         if(!select_player){
+            
+            ctx.strokeStyle="#ffffff";
+            ctx.lineWidth=10;
             ctx.strokeRect(x_menu - (size_menu_px * 4), y_select, largo_menu + (size_menu_px * 8), 12 * size_menu_px);
             this.pinta_filas_columnas_(ctx, x_menu, y_menu, menu, size_menu_px);
         }
