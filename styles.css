@@ -107,7 +107,7 @@ body {
 
     #canvas{
         /*filter: blur(0.6px) saturate(1.3);*/
-        filter: blur(1px) saturate(1.3);
+        /*filter: blur(1px) saturate(1.3);*/
     }
 
   #off_the_line::before {
