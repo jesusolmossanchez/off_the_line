@@ -52,7 +52,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     this.accel_             = this.maxdx_ / (juego.ACCEL_);
     this.friction_          = this.maxdx_ / (juego.FRICTION_);
     this.tiempo_enfadado_   = juego.timestamp_();
-    this.no_rebota_time_    = juego.timestamp_();
+    this.tiempo_ostiazo_   = juego.timestamp_();
     
     this.CPU_ = cpu;    
     this.izquierda_ = false;
@@ -132,6 +132,17 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         //NUEVA COMPROBACION...
 
+        this.check_cuerda_colisions_();
+        this.check_players_colisions_();
+
+        
+        
+        
+        
+    };
+
+    this.check_cuerda_colisions_ = function() {
+        
         var x_relativo = Math.ceil(this.x/4) + 2;
         var alto_cuerda = juego.cuerda_[x_relativo];
         var altura_jugador = Math.ceil(this.y + this.alto_);
@@ -145,7 +156,12 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                 this.jumping = false;
             }
         }
-        
+    }
+
+
+    this.check_players_colisions_ = function() {
+
+        /** LIMITES DE LA PANTALLA */
         //Comprobación que no pasa de limite a la derecha
         if(this.dx > 0 && (this.x + this.ancho_ >= ancho_total_)
             || this.x >= ancho_total_){ //Comprobación de si está fuera de la pantalla
@@ -158,54 +174,123 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             this.dx = 0;
         }
 
-        //comprobación con el otro jugador
-        //TODO: esto habría que rehacerlo
-        //TODO: ALTURAS
+
+
+
+        
+        /** COLISION CON EL OTRO JUGADOR SIN OSTIAZO */
+        //TODO: esto habría que rehacerlo, mucho codigo...
+
+        var player_contrario = juego.player_;
+
         if(this.player_num_ === 1){
-            if(this.dx > 0 
-                && (this.x + this.ancho_ >= juego.player2_.x)
-                && (this.x < juego.player2_.x)
-                && (this.y > juego.player2_.y - this.alto_)
-                && (this.y < juego.player2_.y + this.alto_*2)
-            ){
-                this.x = this.x;
-                this.dx = 0;
-            }
-            if(this.dx < 0
-                &&(this.x <= juego.player2_.x + this.ancho_)
-                &&(this.x > juego.player2_.x)
-                && (this.y > juego.player2_.y - this.alto_)
-                && (this.y < juego.player2_.y + this.alto_*2)
-            ){
-                this.x = juego.player2_.x + this.ancho_;
-                this.dx = 0;
-            }
-        }
-        
-        else{
-            if(this.dx > 0 
-                && (this.x + this.ancho_ >= juego.player_.x)
-                && (this.x < juego.player_.x)
-                && (this.y > juego.player_.y - this.alto_)
-                && (this.y < juego.player_.y + this.alto_*2)
-            ){
-                this.x = this.x;
-                this.dx = 0;
-            }
-            if(this.dx < 0
-                &&(this.x <= juego.player_.x + this.ancho_)
-                &&(this.x > juego.player_.x)
-                && (this.y > juego.player_.y - this.alto_)
-                && (this.y < juego.player_.y + this.alto_*2)
-            ){
-                this.x = juego.player_.x + this.ancho_;
-                this.dx = 0;
-            }
+            player_contrario = juego.player2_;
         }
         
         
+        if(this.dx > 0 
+            && (this.x + this.ancho_ >= player_contrario.x)
+            && (this.x < player_contrario.x)
+            && (this.y > player_contrario.y - this.alto_)
+            && (this.y < player_contrario.y + this.alto_*2)
+        ){
+            this.x = this.x;
+            this.dx = 0;
+        }
+        if(this.dx < 0
+            &&(this.x <= player_contrario.x + this.ancho_)
+            &&(this.x > player_contrario.x)
+            && (this.y > player_contrario.y - this.alto_)
+            && (this.y < player_contrario.y + this.alto_*2)
+        ){
+            this.x = player_contrario.x + this.ancho_;
+            this.dx = 0;
+        }
+
+
         
-    };
+        /** COLISION CON EL OTRO JUGADOR CON OSTIAZO */
+
+        //TODO: hacer un "tiempo_ostiazo" y controlar que no se pueda volver a pegar en ese tiempo (¿mismo tiempo que enfado?)
+
+        if((this.tiempo_enfadado_ - juego.timestamp_()) > 0
+            && (this.tiempo_enfadado_ - juego.timestamp_()) < 150
+            && (player_contrario.tiempo_ostiazo_ <= juego.timestamp_())
+            ){
+            
+                var amplitud_ostiazo = 60; 
+            
+                if((this.x <= player_contrario.x + this.ancho_ + amplitud_ostiazo)
+                    &&(this.x > player_contrario.x)
+                    && (this.y > player_contrario.y - this.alto_)
+                    && (this.y < player_contrario.y + this.alto_*2)
+                    && (this.izquierda_)
+                ){
+                    player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                    if(this.up){ 
+                        if(player_contrario.up){  
+                            console.log("golpe parado - ARRIBA");
+                        }
+                        else{
+                            console.log("le atizo por la derecha - ARRIBA");
+                        }
+                    }
+                    else if(this.down){  
+                        if(player_contrario.up){  
+                            console.log("golpe parado - ABAJO");
+                        }
+                        else{
+                            console.log("le atizo por la derecha - ABAJO");
+                        }
+                    }
+                    else{
+                        if(!player_contrario.up & !player_contrario.down){  
+                            console.log("golpe parado - MEDIO");
+                        }
+                        else{
+                            console.log("le atizo por la derecha - MEDIO");
+                        }
+                    }
+                }
+                if((this.x + this.ancho_ >= player_contrario.x - amplitud_ostiazo)
+                    && (this.x < player_contrario.x)
+                    && (this.y > player_contrario.y - this.alto_)
+                    && (this.y < player_contrario.y + this.alto_*2)
+                    && (!this.izquierda_)
+                ){
+                    
+                    player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                    if(this.up){ 
+                        if(player_contrario.up){  
+                            console.log("golpe parado - ARRIBA");
+                        }
+                        else{
+                            console.log("le atizo por la izquierda - ARRIBA");
+                        }
+                    }
+                    else if(this.down){  
+                        if(player_contrario.up){  
+                            console.log("golpe parado - ABAJO");
+                        }
+                        else{
+                            console.log("le atizo por la izquierda - ABAJO");
+                        }
+                    }
+                    else{
+                        if(!player_contrario.up & !player_contrario.down){  
+                            console.log("golpe parado - MEDIO");
+                        }
+                        else{
+                            console.log("le atizo por la izquierda - MEDIO");
+                        }
+                    }
+                }
+                
+        }
+
+    }
+
+
 
     this.pinta_player_ = function( dt, ctx, counter) {
 
@@ -468,7 +553,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         if(this.tiempo_enfadado_ > juego.timestamp_()){
 
-            
             if(this.up){
                 //PRUEBA PINTANDO ATAQUE UP
                 if((this.tiempo_enfadado_ - juego.timestamp_()) > 150){

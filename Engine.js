@@ -19,6 +19,10 @@ var Engine = function(juego, mobile) {
 
     this.frame_ = function(){
 
+        //debug start
+        window.stats.begin();
+
+
         mobile.controla_if_mobile_();
         ancho_total_ = window.innerWidth,
         alto_total_  = window.innerHeight;
@@ -60,6 +64,11 @@ var Engine = function(juego, mobile) {
 
         this.last = this.now;
         juego.counter++;
+
+        
+        //debug start
+        window.stats.end();
+
         requestAnimationFrame(this.frame_.bind(this), canvas);
     }   
 }
