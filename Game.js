@@ -396,7 +396,6 @@ var Game = function() {
     this.render = function(ctx, frame, dt) {
 
         
-        
 
         //Si hay game over return y hago otra cosa -> TODO
         if(this.is_game_over_){
