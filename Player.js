@@ -232,7 +232,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         //TODO: hacer un "tiempo_ostiazo" y controlar que no se pueda volver a pegar en ese tiempo (¿mismo tiempo que enfado?)
 
         if((this.tiempo_enfadado_ - juego.timestamp_()) > 0
-            && (this.tiempo_enfadado_ - juego.timestamp_()) < 150
+            //&& (this.tiempo_enfadado_ - juego.timestamp_()) < 150
             && (player_contrario.tiempo_ostiazo_ <= juego.timestamp_())
             ){
             
@@ -244,7 +244,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (this.y < player_contrario.y + this.alto_*2)
                     && (this.izquierda_)
                 ){
-                    if(this.up){ 
+                    if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                         }
@@ -270,7 +270,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_ * 2;
                             console.log("le atizo por la derecha - MEDIO");
                         }
                     }
@@ -282,7 +282,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (!this.izquierda_)
                 ){
                     
-                    if(this.up){ 
+                    if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                         }
@@ -308,7 +308,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_ * 2;
                             console.log("le atizo por la izquierda - MEDIO");
                         }
                     }
