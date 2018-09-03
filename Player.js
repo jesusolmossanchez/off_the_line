@@ -21,6 +21,9 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
     this.rotacion_         = 0;
 
+    this.vida_inicial_      = 100;
+    this.vida_             = this.vida_inicial_;
+
 
     if(tipo){
         this.tipo = tipo;
@@ -32,19 +35,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
     this.maxdx_             = 250;
     this.maxdy_             = 800;
+    this.pow_               = 8;
 
     switch (this.tipo){
         case 2:
             this.maxdx_             = 150 * 1.3;
             this.maxdy_             = 600 * 1.3;
+            this.pow_               = 3;
             break;
         case 3:
             this.maxdx_             = 150 * 2;
             this.maxdy_             = 600 * 0.8;
+            this.pow_               = 4;
             break;
         case 4:
             this.maxdx_             = 150 * 0.7;
             this.maxdy_             = 600 * 0.7;
+            this.pow_               = 15;
             break;
     }
 
@@ -98,7 +105,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
             //Si se pulsa acción
             if(this.accion){
-                if (juego.timestamp_() > this.tiempo_enfadado_ + 300){
+                if ((juego.timestamp_() > this.tiempo_enfadado_ + 300)
+                    && juego.timestamp_() > this.tiempo_ostiazo_ + 100){
                     this.tiempo_enfadado_ = juego.timestamp_()+200;
                 }
             }
@@ -226,20 +234,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (this.y < player_contrario.y + this.alto_*2)
                     && (this.izquierda_)
                 ){
-                    player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
                     if(this.up){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la derecha - ARRIBA");
                         }
                     }
                     else if(this.down){  
-                        if(player_contrario.up){  
+                        if(player_contrario.down){  
                             console.log("golpe parado - ABAJO");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la derecha - ABAJO");
                         }
                     }
@@ -248,6 +259,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             console.log("golpe parado - MEDIO");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la derecha - MEDIO");
                         }
                     }
@@ -259,20 +272,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (!this.izquierda_)
                 ){
                     
-                    player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
                     if(this.up){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la izquierda - ARRIBA");
                         }
                     }
                     else if(this.down){  
-                        if(player_contrario.up){  
+                        if(player_contrario.down){  
                             console.log("golpe parado - ABAJO");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la izquierda - ABAJO");
                         }
                     }
@@ -281,6 +297,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             console.log("golpe parado - MEDIO");
                         }
                         else{
+                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
                             console.log("le atizo por la izquierda - MEDIO");
                         }
                     }
@@ -294,16 +312,25 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
     this.pinta_player_ = function( dt, ctx, counter) {
 
+
         var x_player = this.x + (this.dx * dt);
         var y_player = this.y + (this.dy * dt);
 
 
 
         //cuerpo
-
-        var cabeza = [
+        var cabeza = [];
+        cabeza[0] = [
             [ , 1, 1, 1, ],
             [1, 1, 1, 1, ],
+            [1,  , 1,  , ],
+            [1, 1, 1,  , ],
+            [1, 1,  ,  , ],
+        ];
+
+        cabeza[1] = [
+            [ , 1, 1, 1, ],
+            [1,  , 1, 1, ],
             [1,  , 1,  , ],
             [1, 1, 1,  , ],
             [1, 1,  ,  , ],
@@ -313,6 +340,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         cuerpo["up"] = [];
         cuerpo["middle"] = [];
         cuerpo["down"] = [];
+        cuerpo["golpe"] = [];
         cuerpo["up"][0] = [
             [ ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ,  ],
             [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
@@ -418,6 +446,26 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
             [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
         ];
+        
+        cuerpo["golpe"][0] = [
+            [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ],
+            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+            [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        ];
+        
+        cuerpo["golpe"][1] = [
+            [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
+            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  , 1,  , 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        ];
 
         var pies = [];
 
@@ -458,6 +506,22 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
         ];
 
+        //PIES DE OSTIAZO
+        pies[5] = [
+            [,  ,  ,  ,  ,  , 1,  , 1,  ,  ,  ,  ],
+            [,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ],
+            [,  ,  ,  ,  ,  , 1, 1,  , 1,  ,  ,  ],
+            [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
+            [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
+        ];
+        pies[6] = [
+            [,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ],
+            [,  ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ],
+            [,  ,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ],
+            [,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ],
+            [,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+        ];
+
         
 
         var palo = [];
@@ -478,12 +542,13 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         ctx.beginPath();
         
-
+        var que_cabeza = 0;
         var que_pie = 0;
         var que_palo = 0;
         var que_cuerpo = 0;
         var pos_cuerpo = "middle";
-        var mas_menos = 0;
+        var mas_menos_cabeza_x = 0;
+        var cabeza_golpe = 0;
         var tween = this.tween_frames_(counter, 60);
         var negativo_tween = tween - 1;
 
@@ -492,25 +557,25 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                 que_pie = 0;
                 que_palo = 0;
                 que_cuerpo = 0;
-                mas_menos = 0;
+                mas_menos_cabeza_x = 0;
             }
             else if(tween > 0.25 && tween <= 0.5){
                 que_pie = 1;
                 que_palo = 0;
                 que_cuerpo = 0;
-                mas_menos = 0;
+                mas_menos_cabeza_x = 0;
             }
             else if(tween > 0.5 && tween <= 0.75){
                 que_pie = 2;
                 que_palo = 1;
                 que_cuerpo = 1;
-                mas_menos = 1;
+                mas_menos_cabeza_x = 1;
             }
             else{
                 que_pie = 3;
                 que_palo = 1;
                 que_cuerpo = 1;
-                mas_menos = 1;
+                mas_menos_cabeza_x = 1;
             }
         }
 
@@ -551,7 +616,49 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         var rotacion = false;
 
-        if(this.tiempo_enfadado_ > juego.timestamp_()){
+        
+        if(this.tiempo_ostiazo_ > juego.timestamp_()){
+            
+                //PRUEBA PINTANDO ATAQUE UP
+                if((this.tiempo_ostiazo_ - juego.timestamp_()) > 80){
+                    
+                    
+                    //corrige_x_palo = -10;
+                    //corrige_y_palo = -5;
+                    
+
+                    que_cabeza = 1;
+                    mas_menos_cabeza_x = 5;
+                    cabeza_golpe = 1 * this.block_size_;
+
+                    que_cuerpo = 0;
+                    pos_cuerpo = "golpe"
+                    que_pie = 5;
+                    mas_abajo = 2 * this.block_size_;
+                    rotacion = -25 * Math.PI / 180;
+
+
+
+                }
+                else{
+
+                    //corrige_x_palo = -10;
+                    //corrige_y_palo = -5;
+
+                    que_cabeza = 1;
+                    mas_menos_cabeza_x = 5;
+                    cabeza_golpe = 1 * this.block_size_;
+
+                    que_cuerpo = 1;
+                    pos_cuerpo = "golpe"
+                    que_pie = 6;
+                    mas_abajo = 2 * this.block_size_;
+                    rotacion = -30 * Math.PI / 180;
+
+
+                }
+        }
+        else if(this.tiempo_enfadado_ > juego.timestamp_()){
 
             if(this.up){
                 //PRUEBA PINTANDO ATAQUE UP
@@ -670,10 +777,17 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         
 
-        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos * this.block_size_/2), y_player - this.alto_/2 + mas_abajo + idle_movimiento, cabeza, this.block_size_, "#00ff00");
+        
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");
         
         
+        if(this.tiempo_ostiazo_ > juego.timestamp_()){
+            ctx.rotate(20 * Math.PI / 180);
+        }
+        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, cabeza[que_cabeza], this.block_size_, "#00ff00");
+        if(this.tiempo_ostiazo_ > juego.timestamp_()){
+            ctx.rotate(-20 * Math.PI / 180);
+        }
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), pies[que_pie], this.block_size_, "#ffff00");
         
         
@@ -698,15 +812,54 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
         
         //para debug del centro de la escena
-        juego.pinta_filas_columnas_(ctx, 0, 0, paloprueba, this.block_size_, "#ffffff");
+        //juego.pinta_filas_columnas_(ctx, 0, 0, paloprueba, this.block_size_, "#ffffff");
 
-
-        //ctx.fillStyle = "green";
-        //ctx.fillRect(x_player,y_player,this.ancho_,this.alto)
 
         //console.log(this.tween_frames_(10,20));
         ctx.restore();
     };
+
+    this.pinta_vida_ = function (ctx){
+
+        var ancho_cargador = 200;
+        var alto_cargador = 50;
+        var percent = this.vida_/this.vida_inicial_;
+
+        if(percent <= 0){
+            //TODO: lanza gameover ganador el otro
+            percent = 0;
+        }
+
+        var opacidad = 1;
+        
+        ctx.fillStyle="rgba(11, 204, 0, "+opacidad+")";
+        if(percent < 0.8){
+            ctx.fillStyle="rgba(224, 239, 20, "+opacidad+")";
+        }
+        if(percent < 0.6){
+            ctx.fillStyle="rgba(204, 199, 0, "+opacidad+")";
+        }
+        if(percent < 0.4){
+            ctx.fillStyle="rgba(239, 92, 20, "+opacidad+")";
+        }
+        if(percent < 0.2){
+            ctx.fillStyle="rgba(255, 0, 0, "+opacidad+")";
+        }
+
+        var y_vida = 50;
+        var x_vida = 50;
+        if(this.player_num_ != 1){
+            x_vida = ancho_total_ - 50 - ancho_cargador;
+        }
+
+        ctx.fillRect(x_vida, y_vida, percent * ancho_cargador, alto_cargador);
+
+        ctx.strokeStyle = "rgba(255,255,255,"+opacidad+")";
+        ctx.lineWidth = 5;
+        ctx.strokeRect(x_vida, y_vida, ancho_cargador, alto_cargador);
+
+
+    }
 
     //TODO: igual lo suyo es usar esto para otras cosas y meterlo en el Game.js
     this.tween_frames_ = function(frame, duration) {

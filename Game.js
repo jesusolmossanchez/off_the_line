@@ -395,8 +395,6 @@ var Game = function() {
   
     this.render = function(ctx, frame, dt) {
 
-        
-
         //Si hay game over return y hago otra cosa -> TODO
         if(this.is_game_over_){
             return;
@@ -417,11 +415,13 @@ var Game = function() {
     
 
     this.render_player_ = function(ctx, dt) {
+        this.player_.pinta_vida_(ctx);
         this.player_.pinta_player_(dt, ctx, this.counter);
     };
 
   
     this.render_player2_ = function(ctx, dt) {  
+        this.player2_.pinta_vida_(ctx);
         this.player2_.pinta_player_(dt, ctx, this.counter);    
     };
 
