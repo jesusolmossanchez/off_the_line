@@ -102,12 +102,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                
             }
 
+            
+            //Colisiones...
+
+            this.check_cuerda_colisions_();
+            this.check_players_colisions_();
+
         
             //Si se pulsa acción
             if(this.accion){
                 if ((juego.timestamp_() > this.tiempo_enfadado_ + 300)
                     && juego.timestamp_() > this.tiempo_ostiazo_ + 100){
-                    this.tiempo_enfadado_ = juego.timestamp_()+200;
+
+                        var mas_enfado = 0;
+                        if(this.jumping){
+                            mas_enfado = 300;
+                        }
+                    this.tiempo_enfadado_ = juego.timestamp_()+200+mas_enfado;
                 }
             }
         }
@@ -138,11 +149,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
 
 
-        //NUEVA COMPROBACION...
-
-        this.check_cuerda_colisions_();
-        this.check_players_colisions_();
-
         
         
         
@@ -161,6 +167,10 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             if (this.dy >= 0) {
                 //this.y = alto_total_/1.5 - this.alto_;
                 this.dy = - this.dy/3;
+                if(this.jumping){
+                    this.tiempo_enfadado_ = juego.timestamp_();
+
+                }
                 this.jumping = false;
             }
         }
@@ -341,6 +351,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         cuerpo["middle"] = [];
         cuerpo["down"] = [];
         cuerpo["golpe"] = [];
+        cuerpo["saltando"] = [];
         cuerpo["up"][0] = [
             [ ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ,  ],
             [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
@@ -466,6 +477,14 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
             [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
         ];
+        
+        cuerpo["saltando"][0] =  [
+            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+            [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        ];
 
         var pies = [];
 
@@ -520,6 +539,14 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             [,  ,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ],
             [,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ],
             [,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+        ];
+
+        //Saltando
+        pies[7] = [
+            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+            [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
+            [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
+            [ ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ]
         ];
 
         
@@ -590,10 +617,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         }
 
 
-        if(this.jumping){
-            que_pie = 3;
-        }
-
         ctx.save();
 
         var x_translate = x_player + this.ancho_/2;
@@ -616,10 +639,38 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         var rotacion = false;
 
-        
-        if(this.tiempo_ostiazo_ > juego.timestamp_()){
+        if(this.jumping){
+            que_pie = 7;
+            que_cuerpo = 0;
+            pos_cuerpo = "saltando";
+            mas_abajo = 3 * this.block_size_;
+
+            if(this.tiempo_enfadado_ > juego.timestamp_()){
+                
+                
+
+                    var ostia_rotacion = 35 * Math.PI / 180;
+
+                    corrige_x_palo = 9;
+                    corrige_y_palo = 2;
+                    mas_abajo = 2 * this.block_size_;
+                    rotacion = 40 * Math.PI / 180;
+                    
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 2), y_player - this.alto_/2 + (this.block_size_ * 3), 0, this.block_size_*1.3, "rgba(241,143,1, 0.6)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    juego.ostiazos_.push(ostia_nueva);
+
+                
+            }
+            else{
+                var rueda = 15 * counter * Math.PI / 180;
+                if(this.izquierda_){
+                    rueda = 15 * Math.PI / 180 * counter;
+                }
+                ctx.rotate(rueda);
+            }
+        }
+        else if(this.tiempo_ostiazo_ > juego.timestamp_()){
             
-                //PRUEBA PINTANDO ATAQUE UP
                 if((this.tiempo_ostiazo_ - juego.timestamp_()) > 80){
                     
                     
@@ -778,6 +829,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
 
         
+
+        
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");
         
         
@@ -791,19 +844,19 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), pies[que_pie], this.block_size_, "#ffff00");
         
         
-        if(this.down){
+        if(this.jumping){
+
+        }
+        else if(this.down){
             ctx.rotate(10 * Math.PI / 180);
         }
-        
-        if(this.up){
+        else if(this.up){
             ctx.rotate(45 * Math.PI / 180);
             corrige_x_palo = 20;
             corrige_y_palo = 7;
         }
 
-
         if(rotacion){
-            
             ctx.rotate(rotacion);
         }
         
