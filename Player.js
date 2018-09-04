@@ -60,6 +60,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     this.friction_          = this.maxdx_ / (juego.FRICTION_);
     this.tiempo_enfadado_   = juego.timestamp_();
     this.tiempo_ostiazo_   = juego.timestamp_();
+    this.tiempo_bloqueo_   = juego.timestamp_();
     
     this.CPU_ = cpu;    
     this.izquierda_ = false;
@@ -237,15 +238,19 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             ){
             
                 var amplitud_ostiazo = 60; 
+
+                var cuanto_quita = 0;
                 
                 var bloqueo = false;
                 var ostia_rotacion = -35 * Math.PI / 180;
                 var tiempo_estimado_enfadado = 150;
+                var sumatorio = 1.5;
                 if(this.jumping){
                     tiempo_estimado_enfadado = 600;
+                    sumatorio = 0.7;
                 }
                 var percent_bloqueo = (tiempo_estimado_enfadado - (this.tiempo_enfadado_ - juego.timestamp_()))/200;
-                var bloqueo_size = this.block_size_ * (percent_bloqueo/2 + 1);
+                var bloqueo_size = this.block_size_ * (percent_bloqueo/2 + sumatorio);
             
                 if((this.x <= player_contrario.x + this.ancho_ + amplitud_ostiazo)
                     &&(this.x > player_contrario.x)
@@ -253,15 +258,17 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (this.y < player_contrario.y + this.alto_*2)
                     && (this.izquierda_)
                 ){
-                    if(this.up || this.jumping){ 
+                    if(player_contrario.jumping){
+                        //TODO: controlar ostiazo en el aire
+                    }
+                    else if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                             bloqueo = true;
 
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            cuanto_quita = 1;
                             console.log("le atizo por la derecha - ARRIBA");
                         }
                     }
@@ -271,8 +278,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             bloqueo = true;
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            cuanto_quita = 1;
                             console.log("le atizo por la derecha - ABAJO");
                         }
                     }
@@ -282,8 +288,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             bloqueo = true;
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_ * 2;
+                            cuanto_quita = 2;
                             console.log("le atizo por la derecha - MEDIO");
                         }
                     }
@@ -295,14 +300,17 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     && (!this.izquierda_)
                 ){
                     
-                    if(this.up || this.jumping){ 
+                    if(player_contrario.jumping){
+                        //TODO: controlar ostiazo en el aire
+                        
+                    }
+                    else if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
                             bloqueo = true;
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            cuanto_quita = 1;
                             console.log("le atizo por la izquierda - ARRIBA");
                         }
                     }
@@ -312,8 +320,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             bloqueo = true;
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_;
+                            cuanto_quita = 1;
                             console.log("le atizo por la izquierda - ABAJO");
                         }
                     }
@@ -324,17 +331,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             
                         }
                         else{
-                            player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
-                            player_contrario.vida_ = player_contrario.vida_ - this.pow_ * 2;
+                            cuanto_quita = 2;
                             console.log("le atizo por la izquierda - MEDIO");
                         }
                     }
                 }
 
                 if(bloqueo){
-                    console.log("hay bloqueo",percent_bloqueo);
                     var ostia_nueva = new Ostiazo(this.block_size_ * -10, 0 - this.alto_/2 + (this.block_size_ * -1), 1, bloqueo_size, "rgba(255,255,255, "+percent_bloqueo+")", player_contrario.x + player_contrario.ancho_/2, this.y + this.alto_/2, !this.izquierda_, ostia_rotacion);
                     juego.ostiazos_.push(ostia_nueva);
+
+                    
+                    player_contrario.tiempo_bloqueo_ = juego.timestamp_()+150;
+                }
+                
+                if(cuanto_quita){
+                    player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
+                    player_contrario.vida_ = player_contrario.vida_ - (this.pow_ * cuanto_quita);
                 }
                 
         }
