@@ -237,6 +237,15 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             ){
             
                 var amplitud_ostiazo = 60; 
+                
+                var bloqueo = false;
+                var ostia_rotacion = -35 * Math.PI / 180;
+                var tiempo_estimado_enfadado = 150;
+                if(this.jumping){
+                    tiempo_estimado_enfadado = 600;
+                }
+                var percent_bloqueo = (tiempo_estimado_enfadado - (this.tiempo_enfadado_ - juego.timestamp_()))/200;
+                var bloqueo_size = this.block_size_ * (percent_bloqueo/2 + 1);
             
                 if((this.x <= player_contrario.x + this.ancho_ + amplitud_ostiazo)
                     &&(this.x > player_contrario.x)
@@ -247,6 +256,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
+                            bloqueo = true;
+
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -257,6 +268,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     else if(this.down){  
                         if(player_contrario.down){  
                             console.log("golpe parado - ABAJO");
+                            bloqueo = true;
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -267,6 +279,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     else{
                         if(!player_contrario.up & !player_contrario.down){  
                             console.log("golpe parado - MEDIO");
+                            bloqueo = true;
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -285,6 +298,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     if(this.up || this.jumping){ 
                         if(player_contrario.up){  
                             console.log("golpe parado - ARRIBA");
+                            bloqueo = true;
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -295,6 +309,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     else if(this.down){  
                         if(player_contrario.down){  
                             console.log("golpe parado - ABAJO");
+                            bloqueo = true;
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -305,6 +320,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     else{
                         if(!player_contrario.up & !player_contrario.down){  
                             console.log("golpe parado - MEDIO");
+                            bloqueo = true;
+                            
                         }
                         else{
                             player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
@@ -312,6 +329,12 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             console.log("le atizo por la izquierda - MEDIO");
                         }
                     }
+                }
+
+                if(bloqueo){
+                    console.log("hay bloqueo",percent_bloqueo);
+                    var ostia_nueva = new Ostiazo(this.block_size_ * -10, 0 - this.alto_/2 + (this.block_size_ * -1), 1, bloqueo_size, "rgba(255,255,255, "+percent_bloqueo+")", player_contrario.x + player_contrario.ancho_/2, this.y + this.alto_/2, !this.izquierda_, ostia_rotacion);
+                    juego.ostiazos_.push(ostia_nueva);
                 }
                 
         }
