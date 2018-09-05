@@ -5,8 +5,7 @@
 **************************************************/
 var Cuerda = function(juego) {
 
-    this.corrección_bezier1_ = 20;
-    this.corrección_bezier2_ = 20;
+    this.corrección_bezier_ = 20;
     
     this.max_up_ = 10;
 
@@ -20,16 +19,23 @@ var Cuerda = function(juego) {
         var x1 = juego.player_.x;
         var x2 = juego.player2_.x;
 
-
-        var maximo_rebote_1 = Math.max(juego.player_.y + juego.player_.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
-        var maximo_rebote_2 = Math.max(juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
         if(juego.player_.x > juego.player2_.x){
-
             x1 = juego.player2_.x;
             x2 = juego.player_.x;
-            maximo_rebote_2 = Math.max(juego.player_.y + juego.player_.alto_ + this.corrección_bezier1_, alto_linea - this.max_up_);
-            maximo_rebote_1 = Math.max(juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier2_, alto_linea - this.max_up_);
         }
+
+        var player_mas_alto = juego.player_.y + juego.player_.alto_ + this.corrección_bezier_;
+        var player2_mas_alto = juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier_;
+        if(juego.player2_.estoy_muerto_){
+            player2_mas_alto = juego.player_.y + juego.player_.alto_ + this.corrección_bezier_/2;
+        }
+        if(juego.player_.estoy_muerto_){
+            player_mas_alto = juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier_/2;
+        }
+
+        var maximo_rebote_1 = Math.max(player_mas_alto, alto_linea - this.max_up_);
+        var maximo_rebote_2 = Math.max(player2_mas_alto, alto_linea - this.max_up_);
+        
 
 
         /*

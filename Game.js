@@ -304,8 +304,7 @@ var Game = function() {
     //Función que se debe ejecutar cada frame
     this.update_ = function(dt) {
 
-        
-        
+
         this.canvas_.width  = ancho_total_;
         this.canvas_.height = alto_total_;
 
@@ -340,6 +339,7 @@ var Game = function() {
     this.game_over_ = function(ctx) {
         //TODO: Hacer algo más guay si ganas
         var game_over;
+        
         if(this.ganador_ === "1_cpu"){
             game_over =  [
                             [ 1, 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
@@ -380,10 +380,9 @@ var Game = function() {
                         ];
         }
 
-
         this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
         
-        this.is_game_over_ = true;
+        //this.is_game_over_ = true;
 
     };
 
@@ -462,8 +461,8 @@ var Game = function() {
         if(this.tiempo_shacke_ > this.timestamp_()){
             this.ctx.save();
             if(!this.dx_shacke && !this.dy_shacke){
-                this.dx_shacke = (Math.random() - 0.5) * 20;
-                this.dy_shacke = (Math.random() - 0.5) * 20;
+                this.dx_shacke = (Math.random() - 0.5) * this.intensidad_shacke_;
+                this.dy_shacke = (Math.random() - 0.5) * this.intensidad_shacke_;
 
             }
             else{
@@ -1119,8 +1118,13 @@ var Game = function() {
    
     this.KEY      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
       
+    this.intensidad_shacke_ = 20;
+
     this.fps_            = 60,
     this.step_           = 1/this.fps_,
+    this.fpsInterval     = 1000 / this.fps_;
+
+
     this.canvas_         = document.getElementById('canvas'),
     this.ctx            = this.canvas_.getContext('2d'),
     this.canvas_.width  = ancho_total_,
