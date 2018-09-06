@@ -521,6 +521,7 @@ var Game = function() {
                         [ 1, 1,  ,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ],
                         [ 1, 1,  ,  ,  , 1, 1,  , 1, 1, 1, 1, 1,  , 1,  , 1, 1,  ,  , 1, 1,  ,  , 1, 1,  , 1, 1],
                 ];
+        
 
         numero_decimal = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
         numero = Math.floor(numero_decimal);
@@ -528,8 +529,21 @@ var Game = function() {
         var size_cuenta_atras = 8 * (2 + numero - numero_decimal);
         var x_logo = ancho_total_/2 - (size_cuenta_atras * numeros[numero][1].length)/2;
         var y_logo = alto_total_/4;
-
+        
         this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[numero], size_cuenta_atras);
+
+        if(this.modo_ == 1){
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW);
+        }
+        else{
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW);
+
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.PURPLE);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.PURPLE);
+
+        }
         
     };
   
@@ -1118,6 +1132,12 @@ var Game = function() {
         [ 1, 1, 1, 1,  ,  , 1, 1, 1],
         [ 1, 1,  ,  ,  ,  , 1,  ,  ],
         [ 1, 1,  ,  ,  ,  , 1, 1, 1]
+    ];
+
+    this.triangulin_ =  [
+        [ 1, 1, 1, 1, 1],
+        [  , 1, 1, 1,  ],
+        [  ,  , 1,  ,  ]
     ];
 
     this.ancho_selec_player_ = 370;

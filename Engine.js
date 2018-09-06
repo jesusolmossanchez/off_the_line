@@ -17,7 +17,7 @@ var Engine = function(juego, mobile) {
     this.frame_ = function(){
 
         //debug start
-        window.stats.begin();
+        //window.stats.begin();
 
 
         mobile.controla_if_mobile_();
@@ -66,7 +66,7 @@ var Engine = function(juego, mobile) {
 
         
         //debug start
-        window.stats.end();
+        //window.stats.end();
 
         requestAnimationFrame(this.frame_.bind(this), canvas);
     }   
