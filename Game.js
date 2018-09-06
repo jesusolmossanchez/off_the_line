@@ -315,14 +315,17 @@ var Game = function() {
         
         //TODO: parametrizar donde empiezan los jugadores
 
-        this.player_.x = 96;
-        this.player_.y = alto_total_ - this.player2_.alto_ - 50;
+        this.player_.x = 15;
+        this.player_.y = 100;
         
-        this.player2_.x = ancho_total_ - 96 - this.player2_.ancho_;
-        this.player2_.y = alto_total_ - this.player2_.alto_ - 50;
+        this.player2_.x = ancho_total_ - this.player2_.ancho_ - 5;
+        this.player2_.y = 100;
 
 
         this.hay_muerte_ = false;
+
+        this.tiempo_cuenta_atras_ = this.timestamp_() + 4000;
+
     };
 
 
@@ -391,6 +394,11 @@ var Game = function() {
 
         //Limpio lo que hay
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
+
+        
+        if(this.tiempo_cuenta_atras_ > this.timestamp_()){
+            this.pinta_cuenta_atras(ctx);
+        }
 
         //Renderizo los objetos
         this.render_player_(ctx, dt);
@@ -478,6 +486,52 @@ var Game = function() {
 
 
 
+  
+
+
+
+    this.pinta_cuenta_atras = function(ctx) {
+        var numeros = []
+        
+        numeros[3] =  [
+                        [ 1, 1, 1, 1],
+                        [  ,  , 1, 1],
+                        [ 1, 1, 1, 1],
+                        [  ,  , 1, 1],
+                        [ 1, 1, 1, 1],
+                ];
+        numeros[2] =  [
+                        [ 1, 1, 1, 1],
+                        [ 1, 1, 1, 1],
+                        [  ,  , 1, 1],
+                        [ 1, 1, 1,  ],
+                        [ 1, 1, 1, 1],
+                ];
+        numeros[1] =  [
+                        [  ,  , 1, 1],
+                        [  ,  , 1, 1],
+                        [  ,  , 1, 1],
+                        [  ,  , 1, 1],
+                        [  ,  , 1, 1],
+                ];
+        numeros[0] =  [
+                        [ 1, 1, 1, 1,  , 1, 1,  , 1, 1, 1, 1, 1,  , 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1, 1],
+                        [ 1, 1,  ,  ,  , 1, 1,  , 1, 1,  ,  ,  ,  , 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1, 1],
+                        [ 1, 1, 1, 1,  , 1, 1,  , 1, 1,  , 1, 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ,  , 1, 1,  , 1, 1],
+                        [ 1, 1,  ,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ],
+                        [ 1, 1,  ,  ,  , 1, 1,  , 1, 1, 1, 1, 1,  , 1,  , 1, 1,  ,  , 1, 1,  ,  , 1, 1,  , 1, 1],
+                ];
+
+        numero_decimal = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
+        numero = Math.floor(numero_decimal);
+
+        var size_cuenta_atras = 8 * (2 + numero - numero_decimal);
+        var x_logo = ancho_total_/2 - (size_cuenta_atras * numeros[numero][1].length)/2;
+        var y_logo = alto_total_/4;
+
+        this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[numero], size_cuenta_atras);
+        
+    };
   
 
 
@@ -1027,14 +1081,14 @@ var Game = function() {
 
     this.setup_ = function() {
 
-        this.player_ = new Player(this, 96, 1107, 800, 60000, 1, false, this.player1_tipo_);
+        this.player_ = new Player(this, ancho_total_ + 20, 20, 800, 60000, 1, false, this.player1_tipo_);
         var cpu = true;
         var tipo2 = false;
         if(this.modo_ == 2){
             cpu = false;
             tipo2 = this.player2_tipo_;
         }
-        this.player2_ = new Player(this, 1850, 1107, 800, 60000, 2, cpu, tipo2);
+        this.player2_ = new Player(this, ancho_total_ - 120, 20, 800, 60000, 2, cpu, tipo2);
 
         cuerda = new Cuerda(this);
 
@@ -1123,6 +1177,7 @@ var Game = function() {
     
 
     this.tiempo_shacke_ = this.timestamp_(),
+    this.tiempo_cuenta_atras_ = this.timestamp_(),
     
     this.cuerda_ = [];  //puntos que ocupa la cuerda
 

@@ -47,6 +47,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         this.tipo_ = 1;
     }
 
+
     this.maxdx_             = 250;
     this.maxdy_             = 800;
     this.pow_               = 8;
@@ -54,7 +55,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     switch (this.tipo_){
         case 2:
             this.maxdx_             = 250 * 1.5;
-            this.maxdy_             = 600 * 1.5;
+            this.maxdy_             = 800 * 1.5;
             this.pow_               = 3;
             this.color_             = juego.COLOR_.PINK;
             break;
@@ -65,8 +66,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             this.color_             = juego.COLOR_.PURPLE;
             break;
         case 4:
-            this.maxdx_             = 250 * 0.5;
-            this.maxdy_             = 800 * 0.5;
+            this.maxdx_             = 250 * 0.7;
+            this.maxdy_             = 800 * 0.7;
             this.pow_               = 15;
             this.color_             = juego.COLOR_.GOLD;
             break;
@@ -327,6 +328,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
 
     this.update = function(dt) {
+        
         //Control de si iba hacia la izquierda o a la derecha y friccion y aceleración... Ahora no lo uso, pero puede ser util
         this.wasleft    = this.dx  < 0;
         this.wasright   = this.dx  > 0;
@@ -336,8 +338,9 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         this.ddy = this.gravity_;
 
         //movimientos
+        
+        
         if(!this.estoy_muerto_){
-
 
             if (this.tiempo_ostiazo_ - 100 > juego.timestamp_()){
                 if(this.ostia_izquierda_){
@@ -347,27 +350,48 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                     this.ddx = this.ddx - this.accel_*5;
                 }
             }
-            if (this.left){
-                this.ddx = this.ddx - this.accel_;
-                this.izquierda_ = true;
-            }
-            else if (this.wasleft){
-                this.ddx = this.ddx + this.friction_;
-            }
-          
-            if (this.right){
-                this.ddx = this.ddx + this.accel_;
-                this.izquierda_ = false;
-            }
-            else if (this.wasright){
-                this.ddx = this.ddx - this.friction_;
-            }
+            if(juego.tiempo_cuenta_atras_ > juego.timestamp_()){
+                
+                if(juego.tiempo_cuenta_atras_ > juego.timestamp_() + 3000){
+                    if (this.player_num_ == 1){
+                        this.ddx = this.ddx + this.accel_ - this.friction_/15;
+                        this.izquierda_ = false;
+                        this.jumping = true;
+                    }
+                    else{
+                        this.ddx = this.ddx - this.accel_ + this.friction_/15;
+                        this.izquierda_ = true;
+                        this.jumping = true;
 
-            //Salto
-            if (this.jump && !this.jumping){
-                this.ddy = this.ddy - this.impulse_; // an instant big force impulse
-                this.jumping = true;
-               
+                    }
+                }
+                else{
+                    this.dx = 0;
+                }
+            }
+            else{
+                if (this.left){
+                    this.ddx = this.ddx - this.accel_;
+                    this.izquierda_ = true;
+                }
+                else if (this.wasleft){
+                    this.ddx = this.ddx + this.friction_;
+                }
+            
+                if (this.right){
+                    this.ddx = this.ddx + this.accel_;
+                    this.izquierda_ = false;
+                }
+                else if (this.wasright){
+                    this.ddx = this.ddx - this.friction_;
+                }
+
+                //Salto
+                if (this.jump && !this.jumping){
+                    this.ddy = this.ddy - this.impulse_; // an instant big force impulse
+                    this.jumping = true;
+                
+                }
             }
 
             
@@ -782,11 +806,14 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                 rotacion = -25 * Math.PI / 180;
             }
             else{
+                
+                ctx.translate(0, 10);
                 var rueda = 15 * counter * Math.PI / 180;
                 if(this.izquierda_){
                     rueda = 15 * Math.PI / 180 * counter;
                 }
                 ctx.rotate(rueda);
+                ctx.translate(0, -10);
             }
         }
         else if(this.tiempo_ostiazo_ > juego.timestamp_()){
@@ -991,7 +1018,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
         
         //para debug del centro de la escena
-        //juego.pinta_filas_columnas_(ctx, 0, 0, this.paloprueba, this.block_size_, "#ffffff");
+        juego.pinta_filas_columnas_(ctx, 0, 0, this.paloprueba, this.block_size_, "#ffffff");
 
 
         //console.log(this.tween_frames_(10,20));
