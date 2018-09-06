@@ -25,34 +25,50 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     this.vida_inicial_      = 100;
     this.vida_             = this.vida_inicial_;
 
+    this.color_ = juego.COLOR_.YELLOW;
+
+    /*
+
+    BLACK: '#000000', 
+                      YELLOW: '#ECD078', 
+                      BRICK: '#D95B43', 
+                      PINK: '#C02942', 
+                      PURPLE: '#542437', 
+                      GREY: '#333', 
+                      SLATE: '#53777A', 
+                      GOLD: 'gold'
+
+                      */
 
     if(tipo){
-        this.tipo = tipo;
+        this.tipo_ = tipo;
     }
     else{
-        this.tipo = 1;
+        this.tipo_ = 1;
     }
-
 
     this.maxdx_             = 250;
     this.maxdy_             = 800;
     this.pow_               = 8;
 
-    switch (this.tipo){
+    switch (this.tipo_){
         case 2:
-            this.maxdx_             = 150 * 1.3;
-            this.maxdy_             = 600 * 1.3;
+            this.maxdx_             = 250 * 1.5;
+            this.maxdy_             = 600 * 1.5;
             this.pow_               = 3;
+            this.color_             = juego.COLOR_.PINK;
             break;
         case 3:
-            this.maxdx_             = 150 * 2;
-            this.maxdy_             = 600 * 0.8;
+            this.maxdx_             = 250 * 2;
+            this.maxdy_             = 800 * 0.8;
             this.pow_               = 4;
+            this.color_             = juego.COLOR_.PURPLE;
             break;
         case 4:
-            this.maxdx_             = 150 * 0.7;
-            this.maxdy_             = 600 * 0.7;
+            this.maxdx_             = 250 * 0.5;
+            this.maxdy_             = 800 * 0.5;
             this.pow_               = 15;
+            this.color_             = juego.COLOR_.GOLD;
             break;
     }
 
@@ -69,6 +85,245 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     if(cpu){
         this.izquierda_ = true;
     }
+
+
+    this.cabeza_ = [];
+    this.cabeza_[0] = [
+        [ , 1, 1, 1, ],
+        [1, 1, 1, 1, ],
+        [1,  , 1,  , ],
+        [1, 1, 1,  , ],
+        [1, 1,  ,  , ],
+    ];
+
+    this.cabeza_[1] = [
+        [ , 1, 1, 1, ],
+        [1,  , 1, 1, ],
+        [1,  , 1,  , ],
+        [1, 1, 1,  , ],
+        [1, 1,  ,  , ],
+    ];
+
+    this.cuerpo_ = [];
+    this.cuerpo_["up"] = [];
+    this.cuerpo_["middle"] = [];
+    this.cuerpo_["down"] = [];
+    this.cuerpo_["golpe"] = [];
+    this.cuerpo_["saltando"] = [];
+    this.cuerpo_["up"][0] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["up"][1] = [
+        [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  , 1,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1,  , 1, 1,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["up"][2] = [
+        [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["up"][3] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+
+
+    this.cuerpo_["middle"][0] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["middle"][1] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  , 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
+        [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["middle"][2] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1,  , 1, 1, 1, 1, 1, 1,  ,  ],
+        [ ,  , 1,  ,  , 1, 1, 1, 1,  ,  , 1, 1],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+    ];
+    
+    this.cuerpo_["middle"][3] = [
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1],
+        [ ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ],
+        [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+    ];
+
+
+    this.cuerpo_["down"][0] = [
+        [1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1,  ,  ],
+    ];
+    this.cuerpo_["down"][1] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["down"][2] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  , 1,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    this.cuerpo_["down"][3] = [
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+    ];
+    
+    this.cuerpo_["golpe"][0] = [
+        [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ],
+        [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
+        [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+    ];
+    
+    this.cuerpo_["golpe"][1] = [
+        [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  , 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
+    ];
+    
+    this.cuerpo_["saltando"][0] =  [
+        [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+        [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
+    ];
+
+    this.pies_ = [];
+
+    this.pies_[0] = [
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
+    ];
+    this.pies_[1] = [
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  , 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+    ];
+    this.pies_[2] = [
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  , 1, 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
+        [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
+    ];
+    this.pies_[3] = [
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
+    ];
+
+    this.pies_[4] = [
+        [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1, 1, 1,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  , 1,  , 1, 1,  ,  ,  ,  ],
+        [ ,  ,  , 1, 1, 1,  ,  , 1,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
+    ];
+
+    //this.PIES_ DE OSTIAZO
+    this.pies_[5] = [
+        [,  ,  ,  ,  ,  , 1,  , 1,  ,  ,  ,  ],
+        [,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ],
+        [,  ,  ,  ,  ,  , 1, 1,  , 1,  ,  ,  ],
+        [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
+        [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
+    ];
+    this.pies_[6] = [
+        [,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ],
+        [,  ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ],
+        [,  ,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ],
+        [,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ],
+        [,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+    ];
+
+    //Saltando
+    this.pies_[7] = [
+        [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
+        [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ]
+    ];
+
+        
+
+    this.palo_ = [];
+    this.palo_[0] = [
+        [1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
+        [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1],
+    ];
+    this.palo_[1] = [
+        [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1],
+        [ ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ],
+        [1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+    ];
+
+
+    this.paloprueba = [
+        [1]]
 
 
     this.update = function(dt) {
@@ -249,8 +504,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
         /** COLISION CON EL OTRO JUGADOR CON OSTIAZO */
 
-        //TODO: hacer un "tiempo_ostiazo" y controlar que no se pueda volver a pegar en ese tiempo (¿mismo tiempo que enfado?)
-
         if(this.tiempo_enfadado_ > juego.timestamp_()
             //&& (this.tiempo_enfadado_ - juego.timestamp_()) < 150
             && (player_contrario.tiempo_ostiazo_ <= juego.timestamp_())
@@ -284,7 +537,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             bloqueo = true;
                         }
                         else{
-                            cuanto_quita = 0.5;
+                            cuanto_quita = 0.3;
                             player_contrario.ostia_izquierda_ = false;
                             console.log("le atizo por la derecha - SALTANDO");
                         }
@@ -338,7 +591,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                             bloqueo = true;
                         }
                         else{
-                            cuanto_quita = 0.5;
+                            cuanto_quita = 0.3;
                             player_contrario.ostia_izquierda_ = true;
                             console.log("le atizo por la izquierda - SALTANDO");
                         }
@@ -382,7 +635,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
                 if(bloqueo){
 
                     juego.tiempo_shacke_ = juego.timestamp_() + 100;
-                    juego.intensidad_shacke_ = 5;
+                    juego.intensidad_shacke_ = 10;
 
                     var ostia_nueva = new Ostiazo(this.block_size_ * - 15, 0 - this.alto_/2 + (this.block_size_ * -3), 1, bloqueo_size, "rgba(255,255,255, "+percent_bloqueo+")", player_contrario.x + player_contrario.ancho_/2, this.y + this.alto_/2, !this.izquierda_, ostia_rotacion);
                     juego.ostiazos_.push(ostia_nueva);
@@ -408,246 +661,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         var x_player = this.x + (this.dx * dt);
         var y_player = this.y + (this.dy * dt);
 
-
-
-        //cuerpo
-        var cabeza = [];
-        cabeza[0] = [
-            [ , 1, 1, 1, ],
-            [1, 1, 1, 1, ],
-            [1,  , 1,  , ],
-            [1, 1, 1,  , ],
-            [1, 1,  ,  , ],
-        ];
-
-        cabeza[1] = [
-            [ , 1, 1, 1, ],
-            [1,  , 1, 1, ],
-            [1,  , 1,  , ],
-            [1, 1, 1,  , ],
-            [1, 1,  ,  , ],
-        ];
-
-        var cuerpo = [];
-        cuerpo["up"] = [];
-        cuerpo["middle"] = [];
-        cuerpo["down"] = [];
-        cuerpo["golpe"] = [];
-        cuerpo["saltando"] = [];
-        cuerpo["up"][0] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1, 1,  , 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["up"][1] = [
-            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  , 1,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1,  , 1, 1,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["up"][2] = [
-            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["up"][3] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-
-
-        cuerpo["middle"][0] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["middle"][1] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  , 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["middle"][2] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1,  , 1, 1, 1, 1, 1, 1,  ,  ],
-            [ ,  , 1,  ,  , 1, 1, 1, 1,  ,  , 1, 1],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-        ];
         
-        cuerpo["middle"][3] = [
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1],
-            [ ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ],
-            [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-        ];
-
-
-        cuerpo["down"][0] = [
-            [1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1,  ,  ],
-        ];
-        cuerpo["down"][1] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["down"][2] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  , 1,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        cuerpo["down"][3] = [
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-        ];
-        
-        cuerpo["golpe"][0] = [
-            [ ,  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ],
-            [ ,  ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ],
-            [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-        ];
-        
-        cuerpo["golpe"][1] = [
-            [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  , 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  , 1,  , 1, 1, 1, 1,  ,  ,  ,  ],
-        ];
-        
-        cuerpo["saltando"][0] =  [
-            [ , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  , 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-            [ ,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  ,  ],
-        ];
-
-        var pies = [];
-
-        pies[0] = [
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
-        ];
-        pies[1] = [
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  , 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-        ];
-        pies[2] = [
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  , 1, 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  , 1,  ,  ,  ],
-        ];
-        pies[3] = [
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
-        ];
-
-        pies[4] = [
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1, 1, 1,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  , 1,  , 1, 1,  ,  ,  ,  ],
-            [ ,  ,  , 1, 1, 1,  ,  , 1,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  ,  ,  , 1,  ,  ,  ,  ],
-        ];
-
-        //PIES DE OSTIAZO
-        pies[5] = [
-            [,  ,  ,  ,  ,  , 1,  , 1,  ,  ,  ,  ],
-            [,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ],
-            [,  ,  ,  ,  ,  , 1, 1,  , 1,  ,  ,  ],
-            [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
-            [,  ,  ,  ,  ,  ,  , 1,  ,  , 1,  ,  ],
-        ];
-        pies[6] = [
-            [,  ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ],
-            [,  ,  ,  ,  , 1,  ,  ,  , 1,  ,  ,  ],
-            [,  ,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ],
-            [,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ],
-            [,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-        ];
-
-        //Saltando
-        pies[7] = [
-            [ ,  ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  , 1,  ,  , 1,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  , 1,  ,  ,  ,  ,  ,  ]
-        ];
-
-        
-
-        var palo = [];
-        palo[0] = [
-            [1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ],
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1],
-        ];
-        palo[1] = [
-            [ ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1],
-            [ ,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ],
-            [1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-        ];
-
-
-        var paloprueba = [
-            [1]]
 
         ctx.beginPath();
         
@@ -708,7 +722,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         x_player = 0;
         y_player = 0;
         if(this.izquierda_){
-            //x_player = -this.ancho_;
             ctx.scale(-1, 1);
         }
 
@@ -937,18 +950,23 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
         
 
-        
-        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 5) + mas_abajo + idle_movimiento2, cuerpo[pos_cuerpo][que_cuerpo], this.block_size_, "#0000ff");
+        //CUERPO
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, this.color_);
         
         
         if(this.tiempo_ostiazo_ > juego.timestamp_()){
             ctx.rotate(20 * Math.PI / 180);
         }
-        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, cabeza[que_cabeza], this.block_size_, "#00ff00");
+
+        //CABEZA
+        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  this.color_);
+        
         if(this.tiempo_ostiazo_ > juego.timestamp_()){
             ctx.rotate(-20 * Math.PI / 180);
         }
-        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), pies[que_pie], this.block_size_, "#ffff00");
+        
+        //PIES
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), this.pies_[que_pie], this.block_size_, this.color_);
         
         
         if(this.jumping){
@@ -968,11 +986,12 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         }
         
         
-        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * corrige_y_palo) + mas_abajo + idle_movimiento2, palo[que_palo], this.block_size_, "#ff0000");
+        //palo
+        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, "#ff0000");
         
         
         //para debug del centro de la escena
-        //juego.pinta_filas_columnas_(ctx, 0, 0, paloprueba, this.block_size_, "#ffffff");
+        //juego.pinta_filas_columnas_(ctx, 0, 0, this.paloprueba, this.block_size_, "#ffffff");
 
 
         //console.log(this.tween_frames_(10,20));
@@ -1007,6 +1026,9 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
 
             this.estoy_muerto_ = true;
             
+            
+            juego.tiempo_shacke_ = juego.timestamp_() + 500;
+            juego.intensidad_shacke_ = 20;
             juego.fpsInterval     = 1000 / 20;
             juego.game_over_(ctx);
         }

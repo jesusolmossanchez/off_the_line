@@ -20,8 +20,8 @@ var Game = function() {
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
-                        if(this.numero_jugadores_ && !this.player1_selected_){
-                            this.mueve_selec_player_(true, "left");
+                        if(this.numero_jugadores_ && !this.player2_selected_){
+                            this.mueve_selec_player_(false, "left");
                         }
                     }
                 }
@@ -38,8 +38,8 @@ var Game = function() {
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
-                        if(this.numero_jugadores_ && !this.player1_selected_){
-                            this.mueve_selec_player_(true, "right");
+                        if(this.numero_jugadores_ && !this.player2_selected_){
+                            this.mueve_selec_player_(false, "right");
                         }
                     }
                 }
@@ -59,8 +59,8 @@ var Game = function() {
                         if(!this.numero_jugadores_){
                             this.mueve_menu_(false);
                         }
-                        else if(!this.player1_selected_){
-                            this.mueve_selec_player_(true, "up");
+                        else if(!this.player2_selected_){
+                            this.mueve_selec_player_(false, "up");
                         }
                     }
                 }
@@ -80,8 +80,8 @@ var Game = function() {
                         if(!this.numero_jugadores_){
                             this.mueve_menu_(true);
                         }
-                        else if(!this.player1_selected_){
-                            this.mueve_selec_player_(true, "down");
+                        else if(!this.player2_selected_){
+                            this.mueve_selec_player_(false, "down");
                         }
                     }
                 }
@@ -102,7 +102,7 @@ var Game = function() {
                             this.selecciona_menu_();
                         }
                         else{
-                            this.selec_player_(true);
+                            this.selec_player_(false);
                         }
                     }
                 }
@@ -117,17 +117,7 @@ var Game = function() {
                 return false;
             case this.KEY.SHIFT: 
                 ev.preventDefault(); 
-                if(!this.empezado_){
-                    if(down){
-                        if(!this.numero_jugadores_){
-                            this.selecciona_menu_();
-                        }
-                        else{
-                            this.selec_player_(true);
-                        }
-                    }
-                }
-                else{
+                if(this.empezado_){
                     if(this.modo_ === 1){
                         this.player_.jump  = down; 
                     }
@@ -144,7 +134,7 @@ var Game = function() {
                             this.selecciona_menu_();
                         }
                         else{
-                            this.selec_player_(false);
+                            this.selec_player_(true);
                         }
                     }
                 }
@@ -165,8 +155,8 @@ var Game = function() {
                         if(!this.numero_jugadores_){
                             this.mueve_menu_(false);
                         }
-                        else if(!this.player2_selected_){
-                            this.mueve_selec_player_(false, "up");
+                        else if(!this.player1_selected_){
+                            this.mueve_selec_player_(true, "up");
                         }
                     }
                 }
@@ -180,8 +170,8 @@ var Game = function() {
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
-                        if(this.numero_jugadores_ && !this.player2_selected_){
-                            this.mueve_selec_player_(false, "left");
+                        if(this.numero_jugadores_ && !this.player1_selected_){
+                            this.mueve_selec_player_(true, "left");
                         }
                     }
                 }
@@ -198,8 +188,8 @@ var Game = function() {
                         if(!this.numero_jugadores_){
                             this.mueve_menu_(true);
                         }
-                        else if(!this.player2_selected_){
-                            this.mueve_selec_player_(false, "down");
+                        else if(!this.player1_selected_){
+                            this.mueve_selec_player_(true, "down");
                         }
                     }
                 }
@@ -213,8 +203,8 @@ var Game = function() {
                 ev.preventDefault();  
                 if(!this.empezado_){
                     if(down){
-                        if(this.numero_jugadores_ && !this.player2_selected_){
-                            this.mueve_selec_player_(false, "right");
+                        if(this.numero_jugadores_ && !this.player1_selected_){
+                            this.mueve_selec_player_(true, "right");
                         }
                     }
                 }
@@ -943,8 +933,7 @@ var Game = function() {
     this.mueve_selec_player_ = function (player1, dir) {
 
         window.croqueta_audio.play();
-
-        if(player1){
+        if(player1 || this.modo_ == 1){
             switch(dir) {
                 case "up":  
                     if(this.player1_tipo_ > 2){
@@ -1007,11 +996,10 @@ var Game = function() {
 
     this.selec_player_ = function (player1) {
         
-
-        if(player1 && this.player1_selected_){
+        if(!player1 && this.player2_selected_){
             return;
         }
-        else if(!player1 && this.player2_selected_){
+        else if(player1 && this.player1_selected_){
             return;
         }
         

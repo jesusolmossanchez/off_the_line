@@ -5,7 +5,7 @@
 **************************************************/
 var Cuerda = function(juego) {
 
-    this.corrección_bezier_ = 20;
+    this.corrección_bezier_ = 30;
     
     this.max_up_ = 10;
 
