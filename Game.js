@@ -480,46 +480,46 @@ var Game = function() {
         var color_cerca = "#0a2830";
 
         ctx.fillStyle=color_lejos;
-        ctx.fillRect(5, alto_total_/2 - 200, 100, 300);
-        ctx.fillRect(165, alto_total_/2 - 150, 70, 320);
-        ctx.fillRect(350, alto_total_/2 - 130, 120, 220);
-        ctx.fillRect(650, alto_total_/2 - 180, 160, 320);
-        ctx.fillRect(850, alto_total_/2 - 50, 110, 220);
+        ctx.fillRect(5, alto_total_/2 - 200, 100, 1300);
+        ctx.fillRect(165, alto_total_/2 - 150, 70, 1320);
+        ctx.fillRect(350, alto_total_/2 - 130, 120, 1220);
+        ctx.fillRect(650, alto_total_/2 - 180, 160, 1320);
+        ctx.fillRect(850, alto_total_/2 - 50, 110, 1220);
 
         
-        ctx.fillRect(1005, alto_total_/2 - 200, 100, 300);
-        ctx.fillRect(1165, alto_total_/2 - 150, 70, 320);
-        ctx.fillRect(1350, alto_total_/2 - 130, 120, 220);
-        ctx.fillRect(1650, alto_total_/2 - 180, 160, 320);
-        ctx.fillRect(1850, alto_total_/2 - 50, 110, 220);
+        ctx.fillRect(1005, alto_total_/2 - 200, 100, 1300);
+        ctx.fillRect(1165, alto_total_/2 - 150, 70, 1320);
+        ctx.fillRect(1350, alto_total_/2 - 130, 120, 1220);
+        ctx.fillRect(1650, alto_total_/2 - 180, 160, 1320);
+        ctx.fillRect(1850, alto_total_/2 - 50, 110, 1220);
 
 
         ctx.fillStyle=color_medio;
-        ctx.fillRect(45, alto_total_/1.5 - 200, 150, 300);
-        ctx.fillRect(235, alto_total_/1.5 - 150, 130, 370);
-        ctx.fillRect(390, alto_total_/1.5 - 130, 180, 290);
-        ctx.fillRect(590, alto_total_/1.5 - 180, 200, 370);
-        ctx.fillRect(850, alto_total_/1.5 - 50, 180, 250);
+        ctx.fillRect(45, alto_total_/1.5 - 200, 150, 1300);
+        ctx.fillRect(235, alto_total_/1.5 - 150, 130, 1370);
+        ctx.fillRect(390, alto_total_/1.5 - 130, 180, 1290);
+        ctx.fillRect(590, alto_total_/1.5 - 180, 200, 1370);
+        ctx.fillRect(850, alto_total_/1.5 - 50, 180, 1250);
 
-        ctx.fillRect(1045, alto_total_/1.5 - 200, 200, 350);
-        ctx.fillRect(1125, alto_total_/1.5 - 150, 170, 370);
-        ctx.fillRect(1320, alto_total_/1.5 - 130, 160, 310);
-        ctx.fillRect(1690, alto_total_/1.5 - 180, 260, 370);
-        ctx.fillRect(1790, alto_total_/1.5 - 50, 170, 250);
+        ctx.fillRect(1045, alto_total_/1.5 - 200, 200, 1350);
+        ctx.fillRect(1125, alto_total_/1.5 - 150, 170, 1370);
+        ctx.fillRect(1320, alto_total_/1.5 - 130, 160, 1310);
+        ctx.fillRect(1690, alto_total_/1.5 - 180, 260, 1370);
+        ctx.fillRect(1790, alto_total_/1.5 - 50, 170, 1250);
 
         
         ctx.fillStyle=color_cerca;
-        ctx.fillRect(-15, alto_total_ - 200, 250, 300);
-        ctx.fillRect(335, alto_total_ - 350, 230, 370);
-        ctx.fillRect(640, alto_total_ - 180, 280, 290);
-        ctx.fillRect(990, alto_total_ - 270, 300, 370);
-        ctx.fillRect(1350, alto_total_ - 250, 380, 250);
+        ctx.fillRect(-25, alto_total_ - 200, 280, 1300);
+        ctx.fillRect(335, alto_total_ - 350, 260, 1370);
+        ctx.fillRect(640, alto_total_ - 180, 280, 1290);
+        ctx.fillRect(990, alto_total_ - 270, 300, 1370);
+        ctx.fillRect(1350, alto_total_ - 250, 380, 1250);
         
-        ctx.fillRect(1105, alto_total_ - 200, 350, 300);
-        ctx.fillRect(1335, alto_total_ - 350, 230, 370);
-        ctx.fillRect(1640, alto_total_ - 180, 280, 290);
-        ctx.fillRect(1990, alto_total_ - 270, 300, 370);
-        ctx.fillRect(2350, alto_total_ - 250, 380, 250);
+        ctx.fillRect(1105, alto_total_ - 200, 350, 1300);
+        ctx.fillRect(1335, alto_total_ - 350, 230, 1370);
+        ctx.fillRect(1640, alto_total_ - 180, 280, 1290);
+        ctx.fillRect(1990, alto_total_ - 270, 300, 1370);
+        ctx.fillRect(2350, alto_total_ - 250, 380, 1250);
            
     };
 
