@@ -391,16 +391,21 @@ var Game = function() {
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
+
+        //Renderizo los objetos
+        this.render_paisaje_(ctx, dt);
+
+        
         if(this.tiempo_cuenta_atras_ > this.timestamp_()){
             this.pinta_cuenta_atras(ctx);
         }
 
-        //Renderizo los objetos
         this.render_player_(ctx, dt);
         this.render_player2_(ctx, dt);
         this.render_cuerda_(ctx, dt);
 
         this.render_ostiazo_(ctx, dt);
+        
         
     };
 
@@ -442,6 +447,80 @@ var Game = function() {
             ctx.restore();
         }
 
+    };
+
+    this.render_paisaje_ = function(ctx, dt) {
+
+        var grd=ctx.createLinearGradient(0,0,ancho_total_,alto_total_);
+        grd.addColorStop(0,"#aa92c9");
+        grd.addColorStop(1,"#ffbda2");
+        ctx.fillStyle=grd;
+        ctx.fillRect(0,0,ancho_total_,alto_total_);
+        
+        var x_sol = -350;
+        var y_sol = -150;
+        var w_sol = 60;
+        var h_sol_line = 15;
+        //SOL
+        var anchos = [8,14,16,18,20,22,23,24,25,26,27,27,28,29,29,29,30,30,30,30,29,29,29,28,27,27,26,25,24,23,22,20,18,16,14,8]
+
+        for (var i = 0; i < anchos.length; i++) {
+            y_sol = y_sol+6;
+            w_sol_now = anchos[i]*7.5;
+            x_sol_now  = ancho_total_/2 + x_sol - w_sol_now/2
+            
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(x_sol_now, alto_total_/3 + y_sol, w_sol_now, h_sol_line);
+            
+        }
+
+        //edificios
+        var color_lejos = "#ec8e9e";
+        var color_medio = "#904b6b";
+        var color_cerca = "#0a2830";
+
+        ctx.fillStyle=color_lejos;
+        ctx.fillRect(5, alto_total_/2 - 200, 100, 300);
+        ctx.fillRect(165, alto_total_/2 - 150, 70, 320);
+        ctx.fillRect(350, alto_total_/2 - 130, 120, 220);
+        ctx.fillRect(650, alto_total_/2 - 180, 160, 320);
+        ctx.fillRect(850, alto_total_/2 - 50, 110, 220);
+
+        
+        ctx.fillRect(1005, alto_total_/2 - 200, 100, 300);
+        ctx.fillRect(1165, alto_total_/2 - 150, 70, 320);
+        ctx.fillRect(1350, alto_total_/2 - 130, 120, 220);
+        ctx.fillRect(1650, alto_total_/2 - 180, 160, 320);
+        ctx.fillRect(1850, alto_total_/2 - 50, 110, 220);
+
+
+        ctx.fillStyle=color_medio;
+        ctx.fillRect(45, alto_total_/1.5 - 200, 150, 300);
+        ctx.fillRect(235, alto_total_/1.5 - 150, 130, 370);
+        ctx.fillRect(390, alto_total_/1.5 - 130, 180, 290);
+        ctx.fillRect(590, alto_total_/1.5 - 180, 200, 370);
+        ctx.fillRect(850, alto_total_/1.5 - 50, 180, 250);
+
+        ctx.fillRect(1045, alto_total_/1.5 - 200, 200, 350);
+        ctx.fillRect(1125, alto_total_/1.5 - 150, 170, 370);
+        ctx.fillRect(1320, alto_total_/1.5 - 130, 160, 310);
+        ctx.fillRect(1690, alto_total_/1.5 - 180, 260, 370);
+        ctx.fillRect(1790, alto_total_/1.5 - 50, 170, 250);
+
+        
+        ctx.fillStyle=color_cerca;
+        ctx.fillRect(-15, alto_total_ - 200, 250, 300);
+        ctx.fillRect(335, alto_total_ - 350, 230, 370);
+        ctx.fillRect(640, alto_total_ - 180, 280, 290);
+        ctx.fillRect(990, alto_total_ - 270, 300, 370);
+        ctx.fillRect(1350, alto_total_ - 250, 380, 250);
+        
+        ctx.fillRect(1105, alto_total_ - 200, 350, 300);
+        ctx.fillRect(1335, alto_total_ - 350, 230, 370);
+        ctx.fillRect(1640, alto_total_ - 180, 280, 290);
+        ctx.fillRect(1990, alto_total_ - 270, 300, 370);
+        ctx.fillRect(2350, alto_total_ - 250, 380, 250);
+           
     };
 
 
@@ -546,6 +625,7 @@ var Game = function() {
 
 
     this.muestra_logo_ = function(ctx) {
+        
         var logo =  [
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1],
                         [ 1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  , 1, 1, 1,  , 1,  , 1, 1,  ,  ],
@@ -574,7 +654,8 @@ var Game = function() {
         this.canvas_.width  = ancho_total_;
         this.canvas_.height = alto_total_;
 
-
+        
+        this.render_paisaje_(ctx);
         
         ctx.fillStyle = "#ffffff";
         var ancho_cargador = 200;
@@ -591,6 +672,7 @@ var Game = function() {
 
 
     this.muestra_menu_ = function(ctx, select_player) {
+        
         //Si es movil... lanzo el juego directamente (con modo = 1... 1player)
         /*
         if(this.is_touch_device_()){
@@ -609,6 +691,7 @@ var Game = function() {
         
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
+        this.render_paisaje_(ctx);
         
         //Mestro el menu de 1 this.player_ / 2 this.player_
 
@@ -947,17 +1030,13 @@ var Game = function() {
                     
                     this.ctx.globalAlpha = 0.4;
                     this.ctx.fillStyle = "#000000";
-                    this.ctx.strokeStyle = "#000000";
 
-                    ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     
                     if(this.level_>2){
-                        ctx.strokeRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                         this.ctx.fillRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     }
                     if(this.level_>3){
-                        ctx.strokeRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
                         this.ctx.fillRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
                     }
 
