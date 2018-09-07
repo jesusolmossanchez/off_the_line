@@ -204,8 +204,8 @@ var Cuerda = function(juego) {
     
     this.setPixel = function(ctx, x, y){
         var zoom = 4;
-        ctx.fillStyle = '#ff0000';
-        //ctx.fillStyle = '#000000';
+        //ctx.fillStyle = '#ff0000';
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(x*zoom,y*zoom,zoom,zoom);
         
         juego.cuerda_.push(y*zoom);

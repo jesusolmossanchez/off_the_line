@@ -451,7 +451,7 @@ var Game = function() {
 
     this.render_paisaje_ = function(ctx, dt) {
 
-        var grd=ctx.createLinearGradient(0,0,ancho_total_,alto_total_);
+        var grd=ctx.createLinearGradient(ancho_total_,alto_total_,0,0);
         grd.addColorStop(0,"#aa92c9");
         grd.addColorStop(1,"#ffbda2");
         ctx.fillStyle=grd;
