@@ -326,7 +326,7 @@ var Game = function() {
         this.player2_.y = 100;
 
         this.fpsInterval     = 1000 / 60;
-        console.log(this.player2_);
+        //console.log(this.player2_);
 
         this.hay_muerte_ = false;
 
@@ -929,7 +929,7 @@ var Game = function() {
                     if(diff_select_cpu < 0){
                         this.player2_tipo_ = this.level_;
                         if(diff_select_cpu < -2000){
-                            console.log("empieza aqui otra vez?")
+                            //console.log("empieza aqui otra vez?")
                             this.setup_();
                             this.empieza_();
                             this.empezado_ = true;
@@ -1021,6 +1021,8 @@ var Game = function() {
             this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.YELLOW);
             ctx.strokeStyle = this.COLOR_.YELLOW;
             ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+
+
             if(this.player1_selected_){
                 this.ctx.globalAlpha = 0.5;
                 this.ctx.fillStyle = this.COLOR_.YELLOW;
@@ -1134,6 +1136,7 @@ var Game = function() {
         if(this.modo_ === 1){
 
             this.select_cpu_ = true;
+            this.player1_selected_ = true;
             this.tiempo_select_cpu_ = this.timestamp_() + 3000;
 
         }else if (this.player1_selected_ && this.player2_selected_){
