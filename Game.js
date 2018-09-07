@@ -318,9 +318,15 @@ var Game = function() {
         this.player_.x = 15;
         this.player_.y = 100;
         
+        if(this.modo_ == 1){
+            this.player2_.tipo_ = this.level_;
+            this.player2_.cambia_tipo_(this.level_);
+        }
         this.player2_.x = ancho_total_ - this.player2_.ancho_ - 5;
         this.player2_.y = 100;
 
+        this.fpsInterval     = 1000 / 60;
+        console.log(this.player2_);
 
         this.hay_muerte_ = false;
 
@@ -334,43 +340,16 @@ var Game = function() {
         var game_over;
         
         if(this.ganador_ === "1_cpu"){
-            game_over =  [
-                            [ 1, 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
-                            [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
-                            [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  ,  , 1,  , 1,  , 1,  ],
-                            [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ],
-                            [  , 1, 1, 1,  ,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ]
-                        ];
+            game_over = this.you_win_; 
         }
         else if(this.ganador_ === "cpu"){
-
-            game_over =  [
-                            [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1],
-                            [ 1, 1,  ,  ,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  ,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  , 1],
-                            [ 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1],
-                            [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  ,  ,  ,  ,  , 1, 1,  , 1,  ,  , 1,  , 1,  , 1, 1,  ,  ,  , 1, 1, 1,  ],
-                            [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1]
-                        ];
+            game_over = this.you_lost_; 
         }
         else if(this.ganador_ === "1"){
-
-            game_over =  [
-                            [ 1, 1, 1, 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
-                            [ 1, 1,  , 1,  ,  ,  ,  , 1, 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  , 1, 1,  ,  ,  ,  , 1,  , 1,  ],
-                            [ 1, 1,  , 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
-                            [ 1, 1, 1, 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ],
-                            [ 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ]
-                        ];
+            game_over = this.p1_win_;
         }
         else if(this.ganador_ === "2"){
-
-            game_over =  [
-                            [ 1, 1, 1, 1,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
-                            [ 1, 1,  , 1,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  , 1, 1,  ,  ,  ,  , 1,  , 1,  ],
-                            [ 1, 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
-                            [ 1, 1, 1, 1,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ],
-                            [ 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ]
-                        ];
+            game_over = this.p2_win_;
         }
 
         this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
@@ -379,7 +358,23 @@ var Game = function() {
 
     };
 
+    this.siguiente_oponente_ = function(ctx){
+        this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, this.you_win_, this.marcador_size_ * 4);
 
+        if(this.hay_siguiente_oponente_ && this.tiempo_siguiente_oponente_ < this.timestamp_()){
+            ++this.level_;
+            
+            this.select_cpu_ = true;
+            this.tiempo_select_cpu_ = this.timestamp_() + 6000;
+            this.empezado_ = false;
+            this.hay_siguiente_oponente_ = false;
+            this.muestra_menu_(ctx, true);
+        }
+        else if(!this.hay_siguiente_oponente_){
+            this.hay_siguiente_oponente_ = true;
+            this.tiempo_siguiente_oponente_ = this.timestamp_() + 3000;
+        }
+    }
 
     //-------------------------------------------------------------------------
     // RENDERING
@@ -597,13 +592,14 @@ var Game = function() {
 
     this.muestra_menu_ = function(ctx, select_player) {
         //Si es movil... lanzo el juego directamente (con modo = 1... 1player)
+        /*
         if(this.is_touch_device_()){
             this.setup_();
             this.empieza_();
             this.empezado_ = true;
             return
         }
-
+        */
         
         ancho_total_ = window.innerWidth,
         alto_total_  = window.innerHeight;
@@ -663,7 +659,12 @@ var Game = function() {
             this.x_selector_player_2_ = ancho_total_ / 2.3 + 6*35;
             this.y_selector_player_2_ = alto_total_ / 2;
 
-            fake_player = new Player(this, this.x_selector_player_1_ - 80, this.y_selector_player_1_, 0, 60000, 1, false, 1);
+            fake_player = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 1, 4);
+
+            if(this.level_ > 1){
+                fake_player.estoy_muerto_ = true;
+            }
+
             fake_player.pinta_player_(0, ctx, this.counter);
 
             caracteristicas1 =  [
@@ -688,7 +689,10 @@ var Game = function() {
                 ];
             this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_1_, caracteristicas1, size_caract);
             
-            fake_player2 = new Player(this, this.x_selector_player_1_ - 80, this.y_selector_player_2_, 0, 60000, 1, false, 3);
+            fake_player2 = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 3, 4);
+            if(this.level_ > 3){
+                fake_player2.estoy_muerto_ = true;
+            }
             fake_player2.pinta_player_(0, ctx, this.counter);
 
             caracteristicas2 =  [
@@ -714,7 +718,10 @@ var Game = function() {
                 
             this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_2_, caracteristicas2, size_caract);
             
-            fake_player3 = new Player(this, this.x_selector_player_2_ - 80, this.y_selector_player_1_, 0, 60000, 1, false, 2);
+            fake_player3 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 2, 4);
+            if(this.level_ > 2){
+                fake_player3.estoy_muerto_ = true;
+            }
             fake_player3.pinta_player_(0, ctx, this.counter);
 
             caracteristicas3 =  [
@@ -740,7 +747,7 @@ var Game = function() {
             this.pinta_filas_columnas_(ctx, this.x_selector_player_2_, this.y_selector_player_1_, caracteristicas3, size_caract);
 
 
-            fake_player4 = new Player(this, this.x_selector_player_2_ - 80, this.y_selector_player_2_, 0, 60000, 1, false, 4);
+            fake_player4 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 4, 4);
             fake_player4.pinta_player_(0, ctx, this.counter);
 
             caracteristicas4 =  [
@@ -909,12 +916,53 @@ var Game = function() {
         }
         else{
 
+            if(this.modo_ === 2 || this.select_cpu_){
+                
+                var que_pinta2 = this.p2;
+                if(this.select_cpu_){
+                    var que_pinta2 = this.cpu_;
+                    var diff_select_cpu = this.tiempo_select_cpu_ - this.timestamp_();
+                    if(this.ultimo_select_cpu_ < this.timestamp_()){
+                        this.player2_tipo_ = Math.floor(Math.random()*(5 - this.level_)) + this.level_;
+                        this.ultimo_select_cpu_ = this.timestamp_() + 150;
+                    }
+                    if(diff_select_cpu < 0){
+                        this.player2_tipo_ = this.level_;
+                        if(diff_select_cpu < -2000){
+                            console.log("empieza aqui otra vez?")
+                            this.setup_();
+                            this.empieza_();
+                            this.empezado_ = true;
+                        }
+                    }
 
-            if(this.modo_ === 2){
+
+                }
                 
 
                 var x_selec_player = this.x_selector_player_1_ - 120;
                 var y_selec_player = this.y_selector_player_1_  - 20;
+                
+                if(this.level_>1){
+                    
+                    this.ctx.globalAlpha = 0.4;
+                    this.ctx.fillStyle = "#000000";
+                    this.ctx.strokeStyle = "#000000";
+
+                    ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                    this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                    
+                    if(this.level_>2){
+                        ctx.strokeRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                        this.ctx.fillRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                    }
+                    if(this.level_>3){
+                        ctx.strokeRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
+                        this.ctx.fillRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
+                    }
+
+                    this.ctx.globalAlpha = 1.0;
+                }
 
                 switch(this.player2_tipo_) {
                     case 2: 
@@ -930,10 +978,12 @@ var Game = function() {
                         y_selec_player = this.y_selector_player_2_  - 20;
                         break;
                 }
+
                 
+
                 var x_p2 = x_selec_player + 320;
                 var y_p2 = y_selec_player - 30;
-                this.pinta_filas_columnas_(ctx, x_p2, y_p2, this.p2, 4, this.COLOR_.PURPLE);
+                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.PURPLE);
                 ctx.strokeStyle = this.COLOR_.PURPLE;
                 ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 if(this.player2_selected_){
@@ -1081,7 +1131,12 @@ var Game = function() {
         }
 
         //TODO: Hacer algún tipo de delay para no entrar a lo loco a la partida
-        if(this.modo_ === 1 || this.player1_selected_ && this.player2_selected_){
+        if(this.modo_ === 1){
+
+            this.select_cpu_ = true;
+            this.tiempo_select_cpu_ = this.timestamp_() + 3000;
+
+        }else if (this.player1_selected_ && this.player2_selected_){
             this.setup_();
             this.empieza_();
             this.empezado_ = true;
@@ -1115,7 +1170,7 @@ var Game = function() {
     /***** LANZAAAAA ****/
 
     this.modo_ = 1; // modo=1 -> 1player + modo=2 -> 2 players
-    this.level_ = 1; // modo=1 -> 1player + modo=2 -> 2 players
+    this.level_ = 1; 
 
     
     this.p1 =  [
@@ -1133,12 +1188,55 @@ var Game = function() {
         [ 1, 1,  ,  ,  ,  , 1,  ,  ],
         [ 1, 1,  ,  ,  ,  , 1, 1, 1]
     ];
+    this.cpu_ =  [
+        [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1,  , 1, 1],
+        [ 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1],
+        [ 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1,  , 1, 1],
+        [ 1, 1,  ,  ,  , 1, 1,  ,  ,  , 1,  , 1, 1],
+        [ 1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1]
+    ];
 
     this.triangulin_ =  [
         [ 1, 1, 1, 1, 1],
         [  , 1, 1, 1,  ],
         [  ,  , 1,  ,  ]
     ];
+
+
+    this.you_win_ =  [
+                    [ 1, 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
+                    [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
+                    [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  ,  , 1,  , 1,  , 1,  ],
+                    [  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ],
+                    [  , 1, 1, 1,  ,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ]
+                ];
+
+
+    this.you_lost_ =  [
+            [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1],
+            [ 1, 1,  ,  ,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  ,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  , 1],
+            [ 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1],
+            [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  ,  ,  ,  ,  , 1, 1,  , 1,  ,  , 1,  , 1,  , 1, 1,  ,  ,  , 1, 1, 1,  ],
+            [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1, 1, 1,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1]
+        ];
+
+    this.p1_win_ =  [
+            [ 1, 1, 1, 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
+            [ 1, 1,  , 1,  ,  ,  ,  , 1, 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  , 1, 1,  ,  ,  ,  , 1,  , 1,  ],
+            [ 1, 1,  , 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
+            [ 1, 1, 1, 1,  ,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ],
+            [ 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ]
+        ];
+
+
+    this.p2_win_  =  [
+            [ 1, 1, 1, 1,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
+            [ 1, 1,  , 1,  ,  ,  ,  ,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  , 1,  , 1, 1,  ,  ,  ,  , 1,  , 1,  ],
+            [ 1, 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1, 1,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ],
+            [ 1, 1, 1, 1,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  , 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ],
+            [ 1, 1,  ,  ,  , 1,  ,  , 1, 1, 1, 1,  ,  ,  ,  ,  , 1,  , 1,  ,  , 1, 1,  , 1, 1,  ,  , 1,  , 1, 1, 1, 1,  ,  , 1,  , 1,  ]
+        ];
+
 
     this.ancho_selec_player_ = 370;
     this.alto_selec_player_ = 140;
@@ -1198,6 +1296,10 @@ var Game = function() {
 
     this.tiempo_shacke_ = this.timestamp_(),
     this.tiempo_cuenta_atras_ = this.timestamp_(),
+    this.tiempo_select_cpu_ = this.timestamp_(),
+    this.ultimo_select_cpu_ = this.timestamp_(),
+    this.tiempo_siguiente_oponente_ = this.timestamp_(),
+    this.select_cpu_ = false,
     
     this.cuerda_ = [];  //puntos que ocupa la cuerda
 

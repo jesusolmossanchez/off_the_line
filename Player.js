@@ -3,11 +3,16 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
+var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, bloque) {
 
     this.x                 = x;
     this.y                 = y;
-    this.block_size_       = 3;
+    if(bloque){
+        this.block_size_       = bloque;
+    }
+    else{
+        this.block_size_       = 3;
+    }
     this.alto_             = this.block_size_ * 17;
     this.ancho_            = this.block_size_ * 13;
     this.dx                = 0;
@@ -52,26 +57,30 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
     this.maxdy_             = 800;
     this.pow_               = 8;
 
-    switch (this.tipo_){
-        case 2:
-            this.maxdx_             = 250 * 1.5;
-            this.maxdy_             = 800 * 1.5;
-            this.pow_               = 3;
-            this.color_             = juego.COLOR_.PINK;
-            break;
-        case 3:
-            this.maxdx_             = 250 * 2;
-            this.maxdy_             = 800 * 0.8;
-            this.pow_               = 4;
-            this.color_             = juego.COLOR_.PURPLE;
-            break;
-        case 4:
-            this.maxdx_             = 250 * 0.7;
-            this.maxdy_             = 800 * 0.7;
-            this.pow_               = 15;
-            this.color_             = juego.COLOR_.GOLD;
-            break;
+    this.cambia_tipo_ = function(tipo) {
+        switch (tipo){
+            case 2:
+                this.maxdx_             = 250 * 1.5;
+                this.maxdy_             = 800 * 1.5;
+                this.pow_               = 3;
+                this.color_             = juego.COLOR_.PINK;
+                break;
+            case 3:
+                this.maxdx_             = 250 * 2;
+                this.maxdy_             = 800 * 0.8;
+                this.pow_               = 4;
+                this.color_             = juego.COLOR_.PURPLE;
+                break;
+            case 4:
+                this.maxdx_             = 250 * 0.7;
+                this.maxdy_             = 800 * 0.7;
+                this.pow_               = 15;
+                this.color_             = juego.COLOR_.GOLD;
+                break;
+        }
     }
+
+    this.cambia_tipo_(this.tipo_);
 
     this.impulse_           = impulso;
     this.accel_             = this.maxdx_ / (juego.ACCEL_);
@@ -1018,7 +1027,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
         
         
         //para debug del centro de la escena
-        juego.pinta_filas_columnas_(ctx, 0, 0, this.paloprueba, this.block_size_, "#ffffff");
+        //juego.pinta_filas_columnas_(ctx, 0, 0, this.paloprueba, this.block_size_, "#ffffff");
 
 
         //console.log(this.tween_frames_(10,20));
@@ -1057,7 +1066,12 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo) {
             juego.tiempo_shacke_ = juego.timestamp_() + 500;
             juego.intensidad_shacke_ = 20;
             juego.fpsInterval     = 1000 / 20;
-            juego.game_over_(ctx);
+            if(juego.modo_ == 1 && juego.level_ < 4){
+                juego.siguiente_oponente_(ctx);
+            }
+            else{
+                juego.game_over_(ctx);
+            }
         }
 
         var opacidad = 1;
