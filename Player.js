@@ -489,19 +489,41 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
         /** LIMITES DE LA PANTALLA */
         //Comprobación que no pasa de limite a la derecha
-        if(this.dx > 0 && (this.x + this.ancho_ >= ancho_total_)
-            || this.x >= ancho_total_){ //Comprobación de si está fuera de la pantalla
-            this.x = ancho_total_ - this.ancho_;
+        if(this.dx > 0 && 
+            (this.x + this.ancho_ >= (ancho_total_ - 80) && (this.y + this.alto_ > alto_total_ /3))){ //Comprobación de si está fuera de la pantalla
+            this.x = ancho_total_ - this.ancho_ - 80;
             this.dx = 0;
         }
         //Comprobación que no pasa de limite a la izquierda
-        if(this.dx < 0 && (this.x <= 0)){
-            this.x = 0;
+        if(this.dx < 0 && (this.x <= 80 && (this.y + this.alto_ > alto_total_ /3))){
+            this.x = 80;
             this.dx = 0;
+        }
+        if(this.x >= ancho_total_ - this.ancho_){
+            var ed_cerca = 0;
+            if(this.y + this.alto_ > alto_total_ /3){
+                ed_cerca = 80;
+            }
+            this.x = ancho_total_ - this.ancho_ - ed_cerca;
+        }
+        if(this.x < 0){
+            this.x = 0;
         }
 
 
-
+        if(this.y + this.alto_ < alto_total_ /3 && this.y > 0){
+            if(this.x <= 70 || (this.x + this.ancho_ >= (ancho_total_ - 70))){
+                if(this.dy > 0){
+                    this.dy = - this.dy/3;
+                    this.tiempo_enfadado_ = juego.timestamp_();
+                    var seft = this;
+                    setTimeout(function(){
+                        seft.jumping = false;
+                        },200);
+                    this.y = alto_total_ /3 - this.alto_ - 1;
+                }
+            }
+        }
 
         
         /** COLISION CON EL OTRO JUGADOR SIN OSTIAZO */

@@ -397,9 +397,10 @@ var Game = function() {
             this.pinta_cuenta_atras(ctx);
         }
 
+        this.render_cuerda_(ctx, dt);
+        this.render_edificios_cerca_(ctx, dt);
         this.render_player_(ctx, dt);
         this.render_player2_(ctx, dt);
-        this.render_cuerda_(ctx, dt);
 
         this.render_ostiazo_(ctx, dt);
         
@@ -424,6 +425,14 @@ var Game = function() {
 
     this.render_cuerda_ = function(ctx, dt) {
         cuerda.render_(dt, ctx, this.counter);
+    };
+        
+
+    this.render_edificios_cerca_ = function(ctx, dt) {
+        
+        ctx.fillStyle= "#0a2830";
+        ctx.fillRect(0, alto_total_ /3 , 80, 1500);
+        ctx.fillRect(ancho_total_ - 80, alto_total_ / 3, 80, 1500);
     };
     
     this.render_ostiazo_ = function(ctx, dt) {
@@ -473,8 +482,8 @@ var Game = function() {
 
         //edificios
         var color_lejos = "#ec8e9e";
-        var color_medio = "#904b6b";
-        var color_cerca = "#0a2830";
+        var color_medio = "#cb6b8d";
+        var color_medio2 = "#904b6b";
 
         ctx.fillStyle=color_lejos;
         ctx.fillRect(5, alto_total_/2 - 200, 100, 1300);
@@ -505,7 +514,7 @@ var Game = function() {
         ctx.fillRect(1790, alto_total_/1.5 - 50, 170, 1250);
 
         
-        ctx.fillStyle=color_cerca;
+        ctx.fillStyle=color_medio2;
         ctx.fillRect(-25, alto_total_ - 200, 280, 1300);
         ctx.fillRect(335, alto_total_ - 350, 260, 1370);
         ctx.fillRect(640, alto_total_ - 180, 280, 1290);
@@ -517,6 +526,9 @@ var Game = function() {
         ctx.fillRect(1640, alto_total_ - 180, 280, 1290);
         ctx.fillRect(1990, alto_total_ - 270, 300, 1370);
         ctx.fillRect(2350, alto_total_ - 250, 380, 1250);
+
+        
+        
            
     };
 
@@ -743,6 +755,7 @@ var Game = function() {
         
         ctx.fillRect(0,0,ancho_total_,alto_total_);
         ctx.globalAlpha = 1;
+        
 
         // Si es menu de seleccionar jugador...
         // pinto el seleccionar jugador
