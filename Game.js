@@ -295,9 +295,6 @@ var Game = function() {
     this.update_ = function(dt) {
 
 
-        this.canvas_.width  = ancho_total_;
-        this.canvas_.height = alto_total_;
-
 
         if(this.is_game_over_){
             return;
@@ -647,9 +644,15 @@ var Game = function() {
     //TODO: hacerlo bonito
     this.pinta_cargador_ = function(percent, ctx) {
 
-        
-        ancho_total_ = window.innerWidth,
-        alto_total_  = window.innerHeight;
+        if(window.innerWidth < 700){
+            ancho_total_ = window.innerWidth * 1.8,
+            alto_total_  = window.innerHeight * 1.5;
+
+        }
+        else{
+            ancho_total_ = window.innerWidth,
+            alto_total_  = window.innerHeight;
+        }
         
         this.canvas_.width  = ancho_total_;
         this.canvas_.height = alto_total_;
@@ -674,23 +677,30 @@ var Game = function() {
     this.muestra_menu_ = function(ctx, select_player) {
         
         //Si es movil... lanzo el juego directamente (con modo = 1... 1player)
-        /*
-        if(this.is_touch_device_()){
-            this.setup_();
-            this.empieza_();
-            this.empezado_ = true;
-            return
-        }
-        */
         
-        ancho_total_ = window.innerWidth,
-        alto_total_  = window.innerHeight;
+        if(this.is_touch_device_() && !select_player){   
+            this.modo_ = 1;
+            this.modo_seleccionado_ = true;
+        }
+        
+        if(window.innerWidth < 700){
+            ancho_total_ = window.innerWidth * 1.8,
+            alto_total_  = window.innerHeight * 1.5;
+
+        }
+        else{
+            ancho_total_ = window.innerWidth,
+            alto_total_  = window.innerHeight;
+        }
         
         this.canvas_.width  = ancho_total_;
         this.canvas_.height = alto_total_;
         
         ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
+        
+        
+        
         this.render_paisaje_(ctx);
         
         //Mestro el menu de 1 this.player_ / 2 this.player_
@@ -727,10 +737,17 @@ var Game = function() {
         var y_menu = alto_total_/4;
 
 
+        
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = "#000000";
+        
+        ctx.fillRect(0,0,ancho_total_,alto_total_);
+        ctx.globalAlpha = 1;
 
         // Si es menu de seleccionar jugador...
         // pinto el seleccionar jugador
         if(select_player){
+            
             //Me creo una instacia de jugador falso para pintar el jugador en el menu
 
             //TODO: Cambiar esto... pintar la cara de cada jugador...
@@ -860,135 +877,137 @@ var Game = function() {
         
 
 
-        //Pinto la ayuda de teclas...
-        var usa_keys  =  [
-                    [  1, 1,  , 1,  ,  1, 1, 1,  , 1,  , 1,  , 1, 1, 1,  ,  ],
-                    [  1, 1, 1,  ,  ,  1, 1,  ,  ,  , 1,  ,  , 1,  ,  ,  , 1],
-                    [  1, 1,  ,  ,  ,  1, 1, 1,  ,  , 1,  ,  , 1, 1, 1,  ,  ],
-                    [  1, 1, 1,  ,  ,  1, 1,  ,  ,  , 1,  ,  ,  ,  , 1,  , 1],
-                    [  1, 1,  , 1,  ,  1, 1, 1,  ,  , 1,  ,  , 1, 1, 1,  ,  ], 
-            ];
+        if(!this.is_touch_device_()){
+            //Pinto la ayuda de teclas...
+            var usa_keys  =  [
+                        [  1, 1,  , 1,  ,  1, 1, 1,  , 1,  , 1,  , 1, 1, 1,  ,  ],
+                        [  1, 1, 1,  ,  ,  1, 1,  ,  ,  , 1,  ,  , 1,  ,  ,  , 1],
+                        [  1, 1,  ,  ,  ,  1, 1, 1,  ,  , 1,  ,  , 1, 1, 1,  ,  ],
+                        [  1, 1, 1,  ,  ,  1, 1,  ,  ,  , 1,  ,  ,  ,  , 1,  , 1],
+                        [  1, 1,  , 1,  ,  1, 1, 1,  ,  , 1,  ,  , 1, 1, 1,  ,  ], 
+                ];
 
-        var flecha_der =  [
-                    [  , 1,  ,  ],
-                    [  , 1, 1,  ],
-                    [ 1, 1, 1, 1],
-                    [  , 1, 1,  ],
-                    [  , 1,  ,  ]
-            ];
-        var flecha_izq =  [
-                    [  ,  , 1,  ],
-                    [  , 1, 1,  ],
-                    [ 1, 1, 1, 1],
-                    [  , 1, 1,  ],
-                    [  ,  , 1,  ]
-            ];
-        var flecha_arr=  [
-                    [  ,  , 1,  ,  ],
-                    [  , 1, 1, 1,  ],
-                    [ 1, 1, 1, 1, 1],
-                    [  ,  , 1,  ,  ]
-            ];
-        var flecha_abj=  [
-                    [  ,  , 1,  ,  ],
-                    [ 1, 1, 1, 1, 1],
-                    [  , 1, 1, 1,  ],
-                    [  ,  , 1,  ,  ]
-            ];
-        var zeta=  [
-                    [ 1, 1, 1, 1, ],
-                    [  ,  ,  , 1, ],
-                    [  ,  , 1,  , ],
-                    [  , 1,  ,  , ],
-                    [ 1, 1, 1, 1, ]
-            ];
-        var equis=  [
-                    [ 1,  ,  ,  ,1],
-                    [  , 1,  , 1, ],
-                    [  ,  , 1,  , ],
-                    [  , 1,  , 1, ],
-                    [ 1,  ,  ,  ,1]
-            ];
-        var erre=  [
-                    [ 1, 1, 1, 1, ],
-                    [ 1,  ,  , 1, ],
-                    [ 1,  , 1,  , ],
-                    [ 1, 1, 1,  , ],
-                    [ 1,  ,  , 1, ]
-            ];
-        var de=  [
-                    [ 1, 1, 1, 1, ],
-                    [ 1,  ,  , 1, ],
-                    [ 1,  ,  , 1, ],
-                    [ 1,  ,  , 1, ],
-                    [ 1, 1, 1,  , ]
-            ];
-        var efe=  [
-                    [ 1, 1, 1, 1, ],
-                    [ 1,  ,  ,  , ],
-                    [ 1, 1, 1,  , ],
-                    [ 1,  ,  ,  , ],
-                    [ 1,  ,  ,  , ]
-            ];
-        var ge=  [
-                    [ 1, 1, 1, 1, ],
-                    [ 1,  ,  ,  , ],
-                    [ 1,  , 1, 1, ],
-                    [ 1,  ,  , 1, ],
-                    [ 1, 1, 1, 1, ]
-            ];
-        var enter_key=  [
-                    [  ,  ,  , 1, ],
-                    [  ,  ,  , 1, ],
-                    [  , 1,  , 1, ],
-                    [ 1, 1, 1, 1, ],
-                    [  , 1,  ,  , ]
-            ];
-        var shift_key=  [
-                    [  ,  ,  , 1,  ,  ,  ],
-                    [  ,  , 1,  , 1,  ,  ],
-                    [  , 1,  ,  ,  , 1,  ],
-                    [ 1, 1, 1,  , 1, 1, 1],
-                    [  ,  , 1, 1, 1,  ,  ]
-            ];
-
-
-        var size_flecha_px = 3;
+            var flecha_der =  [
+                        [  , 1,  ,  ],
+                        [  , 1, 1,  ],
+                        [ 1, 1, 1, 1],
+                        [  , 1, 1,  ],
+                        [  , 1,  ,  ]
+                ];
+            var flecha_izq =  [
+                        [  ,  , 1,  ],
+                        [  , 1, 1,  ],
+                        [ 1, 1, 1, 1],
+                        [  , 1, 1,  ],
+                        [  ,  , 1,  ]
+                ];
+            var flecha_arr=  [
+                        [  ,  , 1,  ,  ],
+                        [  , 1, 1, 1,  ],
+                        [ 1, 1, 1, 1, 1],
+                        [  ,  , 1,  ,  ]
+                ];
+            var flecha_abj=  [
+                        [  ,  , 1,  ,  ],
+                        [ 1, 1, 1, 1, 1],
+                        [  , 1, 1, 1,  ],
+                        [  ,  , 1,  ,  ]
+                ];
+            var zeta=  [
+                        [ 1, 1, 1, 1, ],
+                        [  ,  ,  , 1, ],
+                        [  ,  , 1,  , ],
+                        [  , 1,  ,  , ],
+                        [ 1, 1, 1, 1, ]
+                ];
+            var equis=  [
+                        [ 1,  ,  ,  ,1],
+                        [  , 1,  , 1, ],
+                        [  ,  , 1,  , ],
+                        [  , 1,  , 1, ],
+                        [ 1,  ,  ,  ,1]
+                ];
+            var erre=  [
+                        [ 1, 1, 1, 1, ],
+                        [ 1,  ,  , 1, ],
+                        [ 1,  , 1,  , ],
+                        [ 1, 1, 1,  , ],
+                        [ 1,  ,  , 1, ]
+                ];
+            var de=  [
+                        [ 1, 1, 1, 1, ],
+                        [ 1,  ,  , 1, ],
+                        [ 1,  ,  , 1, ],
+                        [ 1,  ,  , 1, ],
+                        [ 1, 1, 1,  , ]
+                ];
+            var efe=  [
+                        [ 1, 1, 1, 1, ],
+                        [ 1,  ,  ,  , ],
+                        [ 1, 1, 1,  , ],
+                        [ 1,  ,  ,  , ],
+                        [ 1,  ,  ,  , ]
+                ];
+            var ge=  [
+                        [ 1, 1, 1, 1, ],
+                        [ 1,  ,  ,  , ],
+                        [ 1,  , 1, 1, ],
+                        [ 1,  ,  , 1, ],
+                        [ 1, 1, 1, 1, ]
+                ];
+            var enter_key=  [
+                        [  ,  ,  , 1, ],
+                        [  ,  ,  , 1, ],
+                        [  , 1,  , 1, ],
+                        [ 1, 1, 1, 1, ],
+                        [  , 1,  ,  , ]
+                ];
+            var shift_key=  [
+                        [  ,  ,  , 1,  ,  ,  ],
+                        [  ,  , 1,  , 1,  ,  ],
+                        [  , 1,  ,  ,  , 1,  ],
+                        [ 1, 1, 1,  , 1, 1, 1],
+                        [  ,  , 1, 1, 1,  ,  ]
+                ];
 
 
-        this.pinta_filas_columnas_(ctx, 50, alto_total_ - 130, usa_keys, 3);
-        var y_select = y_menu - (size_menu_px * 4);
-        if(this.modo_ == 2){
-            y_select = y_select + size_menu_px * 14;
+            var size_flecha_px = 3;
 
 
-            //size_flecha_px = size_flecha_px/2;
-            this.pinta_filas_columnas_(ctx, 50, alto_total_ - 50, de, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 105, alto_total_ - 50, ge, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 80, alto_total_ - 75, erre, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 80, alto_total_ - 50, efe, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 160, alto_total_ - 50, zeta, size_flecha_px);
-            this.pinta_filas_columnas_(ctx, 200, alto_total_ - 50, equis, size_flecha_px);
+            this.pinta_filas_columnas_(ctx, 50, alto_total_ - 130, usa_keys, 3);
+            var y_select = y_menu - (size_menu_px * 4);
+            if(this.modo_ == 2){
+                y_select = y_select + size_menu_px * 14;
 
 
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, flecha_der, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
-            this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
+                //size_flecha_px = size_flecha_px/2;
+                this.pinta_filas_columnas_(ctx, 50, alto_total_ - 50, de, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 105, alto_total_ - 50, ge, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 80, alto_total_ - 75, erre, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 80, alto_total_ - 50, efe, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 160, alto_total_ - 50, zeta, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 200, alto_total_ - 50, equis, size_flecha_px);
+
+
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, flecha_der, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
+            }
+            else{
+
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, flecha_der, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
+
+            }
+
         }
-        else{
-
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, flecha_der, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
-            this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
-
-        }
-
 
         ctx.lineWidth=10;
         if(!select_player){
@@ -1072,9 +1091,6 @@ var Game = function() {
                     this.ctx.globalAlpha = 1.0;
                 }
             }
-
-
-
 
             var x_selec_player = this.x_selector_player_1_ - 120;
             var y_selec_player = this.y_selector_player_1_  - 20;
@@ -1185,7 +1201,7 @@ var Game = function() {
 
     this.selecciona_menu_ = function () {
         window.golpe_audio2.play();
-        this.modo_seleccionado = true;
+        this.modo_seleccionado_ = true;
         this.numero_jugadores_ = this.modo_;
 
         //this.setup_();
@@ -1323,7 +1339,7 @@ var Game = function() {
     this.ancho_selec_player_ = 370;
     this.alto_selec_player_ = 140;
 
-    this.modo_seleccionado = false;
+    this.modo_seleccionado_ = false;
 
     this.empezado_ = false; // controla cuando la partida ha empezado
 
@@ -1341,8 +1357,17 @@ var Game = function() {
     ancho_total_ = 840,
     alto_total_  = 600,
     */
-    ancho_total_ = window.innerWidth,
-    alto_total_  = window.innerHeight,
+    if(window.innerWidth < 700){
+        ancho_total_ = window.innerWidth * 1.8,
+        alto_total_  = window.innerHeight * 1.5;
+
+    }
+    else{
+        ancho_total_ = window.innerWidth,
+        alto_total_  = window.innerHeight;
+    }
+
+    
   
     
     this.ACCEL_    = 0.01,     // default take 1/2 second to reach maxdx (horizontal acceleration)

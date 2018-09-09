@@ -11,7 +11,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         this.block_size_       = bloque;
     }
     else{
-        this.block_size_       = 3;
+        this.block_size_       = 4;
     }
     this.alto_             = this.block_size_ * 17;
     this.ancho_            = this.block_size_ * 13;

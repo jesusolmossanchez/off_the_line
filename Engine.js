@@ -21,11 +21,24 @@ var Engine = function(juego, mobile) {
 
 
         mobile.controla_if_mobile_();
-        ancho_total_ = window.innerWidth,
-        alto_total_  = window.innerHeight;
+
+        if(window.innerWidth < 700){
+            ancho_total_ = window.innerWidth * 1.8,
+            alto_total_  = window.innerHeight * 1.8;
+
+        }
+        else{
+            ancho_total_ = window.innerWidth,
+            alto_total_  = window.innerHeight;
+        }
+
+        
+        juego.canvas_.width  = ancho_total_;
+        juego.canvas_.height = alto_total_;
+       // console.log(ancho_total_);
 
         if(!juego.empezado_){
-            juego.muestra_menu_(juego.ctx, juego.modo_seleccionado);
+            juego.muestra_menu_(juego.ctx, juego.modo_seleccionado_);
             requestAnimationFrame(this.frame_.bind(this));
             return;
         }

@@ -12,7 +12,7 @@ var Cuerda = function(juego) {
     this.render_ = function(dt, ctx, counter){
         
         //ctx.beginPath();
-        alto_linea = alto_total_/ 1.5;
+        alto_linea = alto_total_/ 1.8;
         //ctx.moveTo(-10, alto_linea);
 
         
