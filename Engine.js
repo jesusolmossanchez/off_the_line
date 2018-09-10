@@ -35,7 +35,6 @@ var Engine = function(juego, mobile) {
         
         juego.canvas_.width  = ancho_total_;
         juego.canvas_.height = alto_total_;
-       // console.log(ancho_total_);
 
         if(!juego.empezado_){
             juego.muestra_menu_(juego.ctx, juego.modo_seleccionado_);
@@ -51,32 +50,25 @@ var Engine = function(juego, mobile) {
         
         this.dt = this.dt + Math.min(1, (this.now - this.last) / 1000);
 
-        /*
         while(this.dt > juego.step_) {
             this.dt = this.dt - juego.step_;
-            if(!juego.hay_muerte_){
+
+            var elapsed = this.now - this.then_;
+    
+            if (elapsed > juego.fpsInterval) {
                 juego.update_(juego.step_);
             }
-        }
-        */
-
-        var elapsed = this.now - this.then_;
-        
-        if (elapsed > juego.fpsInterval) {
+            
             this.then_ = this.now - (elapsed % juego.fpsInterval);
-
-            juego.update_(juego.step_);
-            while(this.dt > juego.step_) {
-                this.dt = this.dt - juego.step_;
-            }
-            juego.pre_shake_();
-            juego.render(juego.ctx, juego.counter, this.dt);
-            juego.post_shake_();
+            this.last = this.now;
         }
 
-        this.last = this.now;
-        juego.counter++;
 
+        juego.pre_shake_();
+        juego.render(juego.ctx, juego.counter, this.dt);
+        juego.post_shake_();
+        
+        juego.counter++;
         
         //debug start
         //window.stats.end();

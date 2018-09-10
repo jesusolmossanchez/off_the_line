@@ -7,8 +7,9 @@ body {
     /*
     width: 140vh;
     height: auto;
-    */
     background-color: #565656;
+    background-color: #ff0000;
+    */
     margin: auto;
     display: block;
     max-width: 100vw;

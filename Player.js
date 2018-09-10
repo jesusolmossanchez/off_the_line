@@ -1082,8 +1082,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
                 }
             }
 
-            this.estoy_muerto_ = true;
-            
+            this.estoy_muerto_ = true;  
             
             juego.tiempo_shacke_ = juego.timestamp_() + 500;
             juego.intensidad_shacke_ = 20;

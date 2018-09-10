@@ -256,29 +256,7 @@ var Game = function() {
             var row = que_pintar[i_y];
             for (var i_x = 0; i_x < row.length; i_x++) {
                 if (row[i_x]) {
-                    if(controla_distancia){
-                        var distancia_centro = 0;
-                        var a = 0;
-                        var b = 0;
-                        a = Math.abs(currX + i_x * size - this.player_.centro_x_);
-                        b = Math.abs(currY - this.player_.centro_y_);
-                        distancia_centro = Math.sqrt( a*a + b*b );
-
-
-
-                        var opacidad = (1 - distancia_centro/(this.radio_vision_ * 2.5));
-
-                        if(distancia_centro > this.radio_vision_ * 2.5){
-                            continue;
-                        }
-
-                        ctx.fillStyle = "rgba("+new_color.r+","+new_color.g+","+new_color.b+","+opacidad+")";
-                        ctx.fillRect(currX + i_x * size, currY, size, size);
-                    }
-                    else{
-                        ctx.fillRect(currX + i_x * size, currY, size*1.1, size*1.1);
-
-                    }
+                    ctx.fillRect(currX + i_x * size, currY, size*1.1, size*1.1);
                 }
             }
             addX = Math.max(addX, row.length * size);
@@ -385,7 +363,7 @@ var Game = function() {
         }
 
         //Limpio lo que hay
-        ctx.clearRect(0, 0, ancho_total_, alto_total_);
+        //ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
 
@@ -429,7 +407,6 @@ var Game = function() {
         
 
     this.render_edificios_cerca_ = function(ctx, dt) {
-        
         ctx.fillStyle= "#0a2830";
         ctx.fillRect(0, alto_total_ /3 , 80, 1500);
         ctx.fillRect(ancho_total_ - 80, alto_total_ / 3, 80, 1500);
@@ -457,14 +434,17 @@ var Game = function() {
 
     this.render_paisaje_ = function(ctx, dt) {
 
-        var grd=ctx.createLinearGradient(ancho_total_,alto_total_,0,0);
+        var alto_luz = alto_total_/4 + this.counter/140;
+    
+
+        var grd=ctx.createLinearGradient(0, 0, 0 , alto_luz);
         grd.addColorStop(0,"#aa92c9");
         grd.addColorStop(1,"#ffbda2");
         ctx.fillStyle=grd;
         ctx.fillRect(0,0,ancho_total_,alto_total_);
         
-        var x_sol = -350;
-        var y_sol = -150;
+        var x_sol = -350 + this.counter/140;
+        var y_sol = -150 + this.counter/140;
         var w_sol = 60;
         var h_sol_line = 15;
         //SOL
@@ -487,7 +467,7 @@ var Game = function() {
 
         ctx.fillStyle=color_lejos;
         ctx.fillRect(5, alto_total_/2 - 200, 100, 1300);
-        ctx.fillRect(165, alto_total_/2 - 150, 70, 1320);
+        ctx.fillRect(165, alto_total_/2 - 150, 80, 1320);
         ctx.fillRect(350, alto_total_/2 - 130, 120, 1220);
         ctx.fillRect(650, alto_total_/2 - 180, 160, 1320);
         ctx.fillRect(850, alto_total_/2 - 50, 110, 1220);
@@ -500,8 +480,25 @@ var Game = function() {
         ctx.fillRect(1850, alto_total_/2 - 50, 110, 1220);
 
         
-        ctx.fillStyle="#ffffff";
-        ctx.fillRect(35, alto_total_/2 - 180, 10, 10);
+        ctx.fillStyle="rgba(255,255,255,0.5)";
+        for (j = 0; j < 20; j++) {
+            for (i = 0; i < 4; i++) {
+                if(this.random_array_[(i+1)*(j+1)]>0){
+                    ctx.fillRect(20 + i*20, alto_total_/2 - 180 + j*20, 10, 10);
+                    ctx.fillRect(370 + i*20, alto_total_/2 - 110 + j*20, 10, 10);
+                    ctx.fillRect(870 + i*20, alto_total_/2 - 30 + j*20, 10, 10);
+                    ctx.fillRect(1170 + i*20, alto_total_/2 - 140 + j*20, 10, 10);
+                    ctx.fillRect(1680 + i*20, alto_total_/2 - 160 + j*20, 10, 10);
+                }
+                if(this.random_array_[(i+1)*(j+1)*2]>0){
+                    ctx.fillRect(170 + i*20, alto_total_/2 - 140 + j*20, 10, 10);
+                    ctx.fillRect(680 + i*20, alto_total_/2 - 160 + j*20, 10, 10);
+                    ctx.fillRect(1020 + i*20, alto_total_/2 - 180 + j*20, 10, 10);
+                    ctx.fillRect(1370 + i*20, alto_total_/2 - 110 + j*20, 10, 10);
+                    ctx.fillRect(1870 + i*20, alto_total_/2 - 30 + j*20, 10, 10);  
+                }
+            }
+        }
 
 
         ctx.fillStyle=color_medio;
@@ -512,10 +509,32 @@ var Game = function() {
         ctx.fillRect(850, alto_total_/1.5 - 50, 180, 1250);
 
         ctx.fillRect(1045, alto_total_/1.5 - 200, 200, 1350);
-        ctx.fillRect(1125, alto_total_/1.5 - 150, 170, 1370);
-        ctx.fillRect(1320, alto_total_/1.5 - 130, 160, 1310);
-        ctx.fillRect(1690, alto_total_/1.5 - 180, 260, 1370);
-        ctx.fillRect(1790, alto_total_/1.5 - 50, 170, 1250);
+        ctx.fillRect(1235, alto_total_/1.5 - 150, 130, 1370);
+        ctx.fillRect(1390, alto_total_/1.5 - 130, 180, 1310);
+        ctx.fillRect(1590, alto_total_/1.5 - 180, 200, 1370);
+        ctx.fillRect(1850, alto_total_/1.5 - 50, 180, 1250);
+
+        ctx.fillStyle="rgba(255,255,255,0.5)";
+        for (j = 0; j < 20; j++) {
+            for (i = 0; i < 5; i++) {
+                if(this.random_array_[(i+1)*(j+1)*3]>0){
+                    ctx.fillRect(65 + i*26, alto_total_/1.5 - 180 + j*26, 13, 13);
+                    ctx.fillRect(410 + i*26, alto_total_/1.5 - 110 + j*26, 13, 13);
+                    ctx.fillRect(870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
+                    ctx.fillRect(1255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
+                    ctx.fillRect(1610 + i*26, alto_total_/1.5 - 160 + j*26, 13, 13);
+                    ctx.fillRect(1870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
+                }
+                if(this.random_array_[(i+1)*(j+1)*4]>0){
+                    ctx.fillRect(255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
+                    ctx.fillRect(610 + i*26, alto_total_/1.5 - 160 + j*26, 13, 13);
+                    ctx.fillRect(1065 + i*26, alto_total_/1.5 - 180 + j*26, 13, 13);
+                    ctx.fillRect(1410 + i*26, alto_total_/1.5 - 110 + j*26, 13, 13);
+                    ctx.fillRect(1870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
+                    ctx.fillRect(2255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
+                }
+            }
+        }
 
         
         ctx.fillStyle=color_medio2;
@@ -532,6 +551,22 @@ var Game = function() {
         ctx.fillRect(2350, alto_total_ - 250, 380, 1250);
 
         
+        ctx.fillStyle="rgba(255,255,255,0.5)";
+        for (j = 0; j < 20; j++) {
+            for (i = 0; i < 6; i++) {
+                if(this.random_array_[(i+1)*(j+1)*5]>0){
+                    ctx.fillRect(-5 + i*44, alto_total_ - 180 + j*44, 22, 22);
+                    ctx.fillRect(1010 + i*44, alto_total_ - 250 + j*44, 22, 22);
+                }
+                if(this.random_array_[(i+1)*(j+1)*6]>0){
+                    ctx.fillRect(345 + i*44, alto_total_ - 330 + j*44, 22, 22);
+                    ctx.fillRect(1370 + i*44, alto_total_ - 230 + j*44, 22, 22);
+                }
+                if(this.random_array_[(i+1)*(j+1)*7]>0){
+                    ctx.fillRect(660 + i*44, alto_total_ - 160 + j*44, 22, 22);
+                }
+            }
+        }
         
            
     };
@@ -712,7 +747,7 @@ var Game = function() {
         this.canvas_.width  = ancho_total_;
         this.canvas_.height = alto_total_;
         
-        ctx.clearRect(0, 0, ancho_total_, alto_total_);
+        //ctx.clearRect(0, 0, ancho_total_, alto_total_);
 
         
         
@@ -1431,7 +1466,12 @@ var Game = function() {
 
 
     this.ostiazos_ = [];
+    this.random_array_ = [];
 
+    for (i = 0; i < 1000; i++) {
+        var a = Math.floor(Math.random() * 2);
+        this.random_array_.push(a);
+    }
 
     //Se muestra logo nada más empezar
     this.muestra_logo_(this.ctx);
