@@ -126,7 +126,7 @@ var Mobile = function(juego) {
                     juego.mueve_selec_player_(false, "down");
                 }
                 else{
-                    juego.player_.dow = false;
+                    juego.player_.down = false;
                 }
                 this.className = "tecla_mobile";
                 e.preventDefault();
