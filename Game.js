@@ -499,6 +499,10 @@ var Game = function() {
         ctx.fillRect(1650, alto_total_/2 - 180, 160, 1320);
         ctx.fillRect(1850, alto_total_/2 - 50, 110, 1220);
 
+        
+        ctx.fillStyle="#ffffff";
+        ctx.fillRect(35, alto_total_/2 - 180, 10, 10);
+
 
         ctx.fillStyle=color_medio;
         ctx.fillRect(45, alto_total_/1.5 - 200, 150, 1300);

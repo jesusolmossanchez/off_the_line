@@ -152,7 +152,7 @@ var CPlayer = function() {
         mSong = song;
 
         // Init iteration state variables
-        mLastRow = song.endPattern - 2;
+        mLastRow = song.endPattern;
         mCurrentCol = 0;
 
         // Prepare song info
@@ -198,7 +198,7 @@ var CPlayer = function() {
                     instr.i[cmdNo - 1] = instr.c[cp - 1].f[row + patternLen] || 0;
 
                     // Clear the note cache since the instrument has changed.
-                    if (cmdNo < 15) {
+                    if (cmdNo < 16) {
                         noteCache = [];
                     }
                 }
@@ -216,7 +216,7 @@ var CPlayer = function() {
                     panAmt = instr.i[24] / 512,
                     panFreq = 6.283184 * Math.pow(2, instr.i[25] - 9) / rowLen,
                     dlyAmt = instr.i[26] / 255,
-                    dly = instr.i[27] * rowLen;
+                    dly = instr.i[27] * rowLen & ~1;  // Must be an even number
 
                 // Calculate start sample number for this row in the pattern
                 rowStartSample = (p * patternLen + row) * rowLen;
@@ -299,15 +299,15 @@ var CPlayer = function() {
 
         // Next iteration. Return progress (1.0 == done!).
         mCurrentCol++;
-        return mCurrentCol / 8;
+        return mCurrentCol / mSong.numChannels;
     };
 
     // Create a WAVE formatted Uint8Array from the generated audio data
     this.createWave = function() {
         // Create WAVE header
-        var l1 = mNumWords * 2 - 8;
-        var l2 = l1 - 36;
         var headerLen = 44;
+        var l1 = headerLen + mNumWords * 2 - 8;
+        var l2 = l1 - 36;
         var wave = new Uint8Array(headerLen + mNumWords * 2);
         wave.set(
             [82,73,70,70,
@@ -341,4 +341,3 @@ var CPlayer = function() {
         return d;
     };
 };
-
