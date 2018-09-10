@@ -22,9 +22,9 @@ var Engine = function(juego, mobile) {
 
         mobile.controla_if_mobile_();
 
-        if(window.innerWidth < 700){
-            ancho_total_ = window.innerWidth * 1.8,
-            alto_total_  = window.innerHeight * 1.8;
+        if(window.innerWidth < 820){
+            ancho_total_ = window.innerWidth * 2,
+            alto_total_  = window.innerHeight * 2;
 
         }
         else{
@@ -32,6 +32,7 @@ var Engine = function(juego, mobile) {
             alto_total_  = window.innerHeight;
         }
 
+        console.log(ancho_total_)
         
         juego.canvas_.width  = ancho_total_;
         juego.canvas_.height = alto_total_;

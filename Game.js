@@ -695,8 +695,8 @@ var Game = function() {
     //TODO: hacerlo bonito
     this.pinta_cargador_ = function(percent, ctx) {
 
-        if(window.innerWidth < 700){
-            ancho_total_ = window.innerWidth * 1.8,
+        if(window.innerWidth < 820){
+            ancho_total_ = window.innerWidth * 2,
             alto_total_  = window.innerHeight * 1.5;
 
         }
@@ -734,8 +734,8 @@ var Game = function() {
             this.modo_seleccionado_ = true;
         }
         
-        if(window.innerWidth < 700){
-            ancho_total_ = window.innerWidth * 1.8,
+        if(window.innerWidth < 820){
+            ancho_total_ = window.innerWidth * 2,
             alto_total_  = window.innerHeight * 1.5;
 
         }
@@ -939,32 +939,7 @@ var Game = function() {
                         [  1, 1,  , 1,  ,  1, 1, 1,  ,  , 1,  ,  , 1, 1, 1,  ,  ], 
                 ];
 
-            var flecha_der =  [
-                        [  , 1,  ,  ],
-                        [  , 1, 1,  ],
-                        [ 1, 1, 1, 1],
-                        [  , 1, 1,  ],
-                        [  , 1,  ,  ]
-                ];
-            var flecha_izq =  [
-                        [  ,  , 1,  ],
-                        [  , 1, 1,  ],
-                        [ 1, 1, 1, 1],
-                        [  , 1, 1,  ],
-                        [  ,  , 1,  ]
-                ];
-            var flecha_arr=  [
-                        [  ,  , 1,  ,  ],
-                        [  , 1, 1, 1,  ],
-                        [ 1, 1, 1, 1, 1],
-                        [  ,  , 1,  ,  ]
-                ];
-            var flecha_abj=  [
-                        [  ,  , 1,  ,  ],
-                        [ 1, 1, 1, 1, 1],
-                        [  , 1, 1, 1,  ],
-                        [  ,  , 1,  ,  ]
-                ];
+            
             var zeta=  [
                         [ 1, 1, 1, 1, ],
                         [  ,  ,  , 1, ],
@@ -1041,19 +1016,19 @@ var Game = function() {
                 this.pinta_filas_columnas_(ctx, 200, alto_total_ - 50, equis, size_flecha_px);
 
 
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, flecha_izq, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, flecha_der, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, flecha_arr, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, flecha_abj, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, this.flecha_der, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, this.flecha_arr, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - this.flecha_abj, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
             }
             else{
 
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, flecha_izq, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, flecha_der, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, flecha_arr, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, flecha_abj, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, this.flecha_der, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, this.flecha_arr, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - this.flecha_abj, size_flecha_px*1.8);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
 
@@ -1352,6 +1327,33 @@ var Game = function() {
         [  ,  , 1,  ,  ]
     ];
 
+    this.flecha_der =  [
+            [  , 1,  ,  ],
+            [  , 1, 1,  ],
+            [ 1, 1, 1, 1],
+            [  , 1, 1,  ],
+            [  , 1,  ,  ]
+    ];
+    this.flecha_izq =  [
+            [  ,  , 1,  ],
+            [  , 1, 1,  ],
+            [ 1, 1, 1, 1],
+            [  , 1, 1,  ],
+            [  ,  , 1,  ]
+    ];
+    this.flecha_arr =  [
+            [  ,  , 1,  ,  ],
+            [  , 1, 1, 1,  ],
+            [ 1, 1, 1, 1, 1],
+            [  ,  , 1,  ,  ]
+    ];
+    this.flecha_abj =  [
+            [  ,  , 1,  ,  ],
+            [ 1, 1, 1, 1, 1],
+            [  , 1, 1, 1,  ],
+            [  ,  , 1,  ,  ]
+    ];
+
 
     this.you_win_ =  [
                     [ 1, 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  ,  , 1, 1,  , 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1,  ,  , 1,  , 1,  , 1,  ],
@@ -1409,8 +1411,8 @@ var Game = function() {
     ancho_total_ = 840,
     alto_total_  = 600,
     */
-    if(window.innerWidth < 700){
-        ancho_total_ = window.innerWidth * 1.8,
+    if(window.innerWidth < 820){
+        ancho_total_ = window.innerWidth * 2,
         alto_total_  = window.innerHeight * 1.5;
 
     }
