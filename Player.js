@@ -564,7 +564,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             && (player_contrario.tiempo_ostiazo_ <= juego.timestamp_())
             ){
             
-                var amplitud_ostiazo = 60; 
+                var amplitud_ostiazo = 80; 
 
                 var cuanto_quita = 0;
                 

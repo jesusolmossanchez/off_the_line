@@ -10,7 +10,6 @@ var Mobile = function(juego) {
 
   
     this.pinta_cosas_mobile_ = function() {
-        document.getElementById('canvas_mobile_gira').style.display = "none";
 
         this.canvas_mobile   = document.getElementById('canvas_mobile');
         this.ctx_mobile      = this.canvas_mobile.getContext('2d');
