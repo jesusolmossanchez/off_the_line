@@ -47,8 +47,8 @@ var Mobile = function(juego) {
         juego.pinta_filas_columnas_(this.ctx_mobile, 95, 105, juego.flecha_der, size_flecha_px);
         juego.pinta_filas_columnas_(this.ctx_mobile, 52, 60, juego.flecha_arr, size_flecha_px);
         juego.pinta_filas_columnas_(this.ctx_mobile, 52, 160, juego.flecha_abj, size_flecha_px);
-        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 135, 145, flecha_arr, size_flecha_px);
-        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 55, 145, accion_boton, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 65 - size_flecha_px*10, 145, flecha_arr, size_flecha_px);
+        juego.pinta_filas_columnas_(this.ctx_mobile, ancho_window - 20 -size_flecha_px*5, 145, accion_boton, size_flecha_px);
 
         
 

@@ -697,7 +697,7 @@ var Game = function() {
 
         if(window.innerWidth < 820){
             ancho_total_ = window.innerWidth * 2,
-            alto_total_  = window.innerHeight * 1.5;
+            alto_total_  = window.innerHeight * 2;
 
         }
         else{
@@ -736,7 +736,7 @@ var Game = function() {
         
         if(window.innerWidth < 820){
             ancho_total_ = window.innerWidth * 2,
-            alto_total_  = window.innerHeight * 1.5;
+            alto_total_  = window.innerHeight * 2;
 
         }
         else{
@@ -1413,7 +1413,7 @@ var Game = function() {
     */
     if(window.innerWidth < 820){
         ancho_total_ = window.innerWidth * 2,
-        alto_total_  = window.innerHeight * 1.5;
+        alto_total_  = window.innerHeight * 2;
 
     }
     else{
