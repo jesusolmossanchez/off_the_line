@@ -1019,7 +1019,7 @@ var Game = function() {
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, this.flecha_der, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, this.flecha_arr, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - this.flecha_abj, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, this.flecha_abj, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
                 this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
             }
@@ -1028,7 +1028,7 @@ var Game = function() {
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.8);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, this.flecha_der, size_flecha_px*1.8);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, this.flecha_arr, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - this.flecha_abj, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, this.flecha_abj, size_flecha_px*1.8);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
                 this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
 
