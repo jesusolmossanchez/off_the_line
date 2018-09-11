@@ -31,8 +31,6 @@ var Engine = function(juego, mobile) {
             ancho_total_ = window.innerWidth,
             alto_total_  = window.innerHeight;
         }
-
-        console.log(ancho_total_)
         
         juego.canvas_.width  = ancho_total_;
         juego.canvas_.height = alto_total_;

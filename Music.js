@@ -13,30 +13,38 @@ var Music = function(juego, mobile, engine) {
         var flag_song = false;
         music_player.init(song);
 
-        var croqueta_player = new CPlayer();
-        croqueta_player.init(croqueta);
-        var flag_croqueta = false;
-        window.croqueta_audio;
 
-        var golpe_player = new CPlayer();
-        golpe_player.init(golpe);
-        var flag_golpe = false;
-        window.golpe_audio;
+        var ataque_player = new CPlayer();
+        ataque_player.init(ataque);
+        var flag_ataque = false;
+        window.ataque_audio;
 
-        var golpe_player2 = new CPlayer();
-        golpe_player2.init(golpe2);
-        var flag_golpe2 = false;
-        window.golpe_audio2;
+        
+        var bloqueo_player = new CPlayer();
+        bloqueo_player.init(bloqueo);
+        var flag_bloqueo = false;
+        window.bloqueo_audio;
 
-        var punto_player = new CPlayer();
-        punto_player.init(punto);
-        var flag_punto = false;
-        window.punto_audio;
-
-        var levelup_player = new CPlayer();
-        levelup_player.init(levelup);
-        var flag_levelup = false;
-        window.levelup_audio2;
+        
+        var ostia_player = new CPlayer();
+        ostia_player.init(ostia);
+        var flag_ostia = false;
+        window.ostia_audio;
+        
+        var ostia_final_player = new CPlayer();
+        ostia_final_player.init(ostia_final);
+        var flag_ostia_final = false;
+        window.ostia_final_audio;
+        
+        var sirena_player = new CPlayer();
+        sirena_player.init(sirena);
+        var flag_sirena = false;
+        window.sirena_audio;
+        
+        var viento_player = new CPlayer();
+        viento_player.init(viento);
+        var flag_viento = false;
+        window.viento_audio;
 
 
         var done = false;
@@ -66,72 +74,84 @@ var Music = function(juego, mobile, engine) {
                 }
             }
 
-            if(!flag_croqueta){
-                if(croqueta_player.generate() >= 1){
-                    flag_croqueta = true;
+            if(!flag_bloqueo){
+                if(bloqueo_player.generate() >= 1){
+                    flag_bloqueo = true;
                 }
             }
             
-            if(!flag_golpe){
-                if(golpe_player.generate() >= 1){
-                    flag_golpe = true;
+            if(!flag_ataque){
+                if(ataque_player.generate() >= 1){
+                    flag_ataque = true;
                 }
             }
             
-            if(!flag_golpe2){
-                if(golpe_player2.generate() >= 1){
-                    flag_golpe2 = true;
+            if(!flag_ostia){
+                if(ostia_player.generate() >= 1){
+                    flag_ostia = true;
                 }
             }
             
-            if(!flag_levelup){
-                if(levelup_player.generate() >= 1){
-                    flag_levelup = true;
+            if(!flag_ostia_final){
+                if(ostia_final_player.generate() >= 1){
+                    flag_ostia_final = true;
                 }
             }
             
-            if(!flag_punto){
-                if(punto_player.generate() >= 1){
-                    flag_punto = true;
+            if(!flag_sirena){
+                if(sirena_player.generate() >= 1){
+                    flag_sirena = true;
                 }
             }
+            
+            if(!flag_viento){
+                if(viento_player.generate() >= 1){
+                    flag_viento = true;
+                }
+            }
+            
+            
             
 
-            done = (flag_song && flag_croqueta && flag_golpe && flag_golpe2);
+            done = (flag_song && flag_bloqueo && flag_ataque && flag_ostia && flag_ostia_final && flag_sirena && flag_viento);
 
             if (done) {
 
-            //Cuando todo está OK y antes de limpiar este intervalo, genero un elemento de audio para cada sonido
+                //Cuando todo está OK y antes de limpiar este intervalo, genero un elemento de audio para cada sonido
 
-            var wave = music_player.createWave();
-            var audio = document.createElement("audio");
-            audio.src = URL.createObjectURL(new Blob([wave], {type: "audio/wav"}));
-            audio.loop=true;
-            audio.play();
-            audio.volume = 0.3;
+                var wave = music_player.createWave();
+                var audio = document.createElement("audio");
+                audio.src = URL.createObjectURL(new Blob([wave], {type: "audio/wav"}));
+                audio.loop=true;
+                audio.play();
+                audio.volume = 0.1;
 
+                var wave2 = bloqueo_player.createWave();
+                window.bloqueo_audio = document.createElement("audio");
+                window.bloqueo_audio.src = URL.createObjectURL(new Blob([wave2], {type: "audio/wav"}));
+                window.bloqueo_audio.volume = 1;
+                
+                var wave3 = ataque_player.createWave();
+                window.ataque_audio = document.createElement("audio");
+                window.ataque_audio.src = URL.createObjectURL(new Blob([wave3], {type: "audio/wav"}));
+                
+                var wave4 = ostia_player.createWave();
+                window.ostia_audio = document.createElement("audio");
+                window.ostia_audio.src = URL.createObjectURL(new Blob([wave4], {type: "audio/wav"}));
+                
+                var wave5 = ostia_final_player.createWave();
+                window.ostia_final_audio = document.createElement("audio");
+                window.ostia_final_audio.src = URL.createObjectURL(new Blob([wave5], {type: "audio/wav"}));
+                
+                var wave6 = sirena_player.createWave();
+                window.sirena_audio = document.createElement("audio");
+                window.sirena_audio.src = URL.createObjectURL(new Blob([wave6], {type: "audio/wav"}));
 
-            var wave2 = croqueta_player.createWave();
-            window.croqueta_audio = document.createElement("audio");
-            window.croqueta_audio.src = URL.createObjectURL(new Blob([wave2], {type: "audio/wav"}));
-            window.croqueta_audio.volume = 0.7;
-            
-            var wave3 = golpe_player.createWave();
-            window.golpe_audio = document.createElement("audio");
-            window.golpe_audio.src = URL.createObjectURL(new Blob([wave3], {type: "audio/wav"}));
-            
-            var wave4 = golpe_player2.createWave();
-            window.golpe_audio2 = document.createElement("audio");
-            window.golpe_audio2.src = URL.createObjectURL(new Blob([wave4], {type: "audio/wav"}));
-            
-            var wave5 = levelup_player.createWave();
-            window.levelup_audio2 = document.createElement("audio");
-            window.levelup_audio2.src = URL.createObjectURL(new Blob([wave5], {type: "audio/wav"}));
-            
-            var wave6 = punto_player.createWave();
-            window.punto_audio = document.createElement("audio");
-            window.punto_audio.src = URL.createObjectURL(new Blob([wave6], {type: "audio/wav"}));
-            
+                
+                var wave7 = viento_player.createWave();
+                window.viento_audio = document.createElement("audio");
+                window.viento_audio.src = URL.createObjectURL(new Blob([wave7], {type: "audio/wav"}));
+                
             }
         }, 40);
     }

@@ -419,6 +419,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
                         if(this.jumping){
                             mas_enfado = 300;
                         }
+                        
+                    window.ataque_audio.play();
                     this.tiempo_enfadado_ = juego.timestamp_()+200+mas_enfado;
                 }
             }
@@ -697,9 +699,14 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
                     
                     player_contrario.tiempo_bloqueo_ = juego.timestamp_()+150;
+
+
+                    window.bloqueo_audio.play();
                 }
                 
                 if(cuanto_quita){
+                    
+                    window.ostia_audio.play();
                     player_contrario.tiempo_ostiazo_ = juego.timestamp_()+200;
                     player_contrario.vida_ = player_contrario.vida_ - (this.pow_ * cuanto_quita);
                 }
@@ -1083,6 +1090,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             }
 
             this.estoy_muerto_ = true;  
+            
+            window.ostia_final_audio.play();
             
             juego.tiempo_shacke_ = juego.timestamp_() + 500;
             juego.intensidad_shacke_ = 20;

@@ -307,6 +307,10 @@ var Game = function() {
 
         this.tiempo_cuenta_atras_ = this.timestamp_() + 4000;
 
+        
+        this.suena_sirena_();
+        this.suena_viento_();
+
     };
 
 
@@ -364,8 +368,6 @@ var Game = function() {
 
         //Limpio lo que hay
         //ctx.clearRect(0, 0, ancho_total_, alto_total_);
-
-        
 
         //Renderizo los objetos
         this.render_paisaje_(ctx, dt);
@@ -431,6 +433,20 @@ var Game = function() {
         }
 
     };
+
+    this.suena_sirena_ = function(){
+        var random = Math.random()*20000;
+        window.sirena_audio.play();
+        var self = this;
+        setTimeout(function(){self.suena_sirena_()},random);
+    }
+
+    this.suena_viento_ = function(){
+        var random = Math.random()*25000;
+        window.viento_audio.play();
+        var self = this;
+        setTimeout(function(){self.suena_viento_()},random);
+    }
 
     this.render_paisaje_ = function(ctx, dt) {
 
@@ -1161,7 +1177,7 @@ var Game = function() {
     this.mueve_menu_ = function (abajo) {
 
         //aal moverme por el menu, hago sonar un sonidico
-        window.croqueta_audio.play();
+        window.bloqueo_audio.play();
 
         //cambio el modo
         if(abajo){
@@ -1174,7 +1190,7 @@ var Game = function() {
 
     this.mueve_selec_player_ = function (player1, dir) {
 
-        window.croqueta_audio.play();
+        window.bloqueo_audio.play();
         if(player1 || this.modo_ == 1){
             switch(dir) {
                 case "up":  
@@ -1227,7 +1243,7 @@ var Game = function() {
     }
 
     this.selecciona_menu_ = function () {
-        window.golpe_audio2.play();
+        window.ataque_audio.play();
         this.modo_seleccionado_ = true;
         this.numero_jugadores_ = this.modo_;
 
@@ -1269,6 +1285,7 @@ var Game = function() {
         }
         
         
+        window.ataque_audio.play();
     }
     
 
@@ -1477,6 +1494,7 @@ var Game = function() {
 
     //Se muestra logo nada más empezar
     this.muestra_logo_(this.ctx);
+
 
 };
 
