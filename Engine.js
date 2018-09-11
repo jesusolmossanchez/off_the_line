@@ -36,7 +36,7 @@ var Engine = function(juego, mobile) {
         juego.canvas_.height = juego.alto_total_;
 
         if(!juego.empezado_){
-            juego.muestra_menu_(juego.ctx, juego.modo_seleccionado_);
+            juego.muestra_menu_(juego.ctx_, juego.modo_seleccionado_);
             requestAnimationFrame(this.frame_.bind(this));
             return;
         }
@@ -64,7 +64,7 @@ var Engine = function(juego, mobile) {
 
 
         juego.pre_shake_();
-        juego.render(juego.ctx, juego.counter_, this.dt);
+        juego.render(juego.ctx_, juego.counter_, this.dt);
         juego.post_shake_();
         
         juego.counter_++;

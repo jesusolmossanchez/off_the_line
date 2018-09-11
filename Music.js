@@ -61,7 +61,7 @@ var Music = function(juego, mobile, engine) {
                 //Cuando todo está cargado inicio el asunto...
 
                 //Pinto el meni
-                juego.muestra_menu_(juego.ctx, false);
+                juego.muestra_menu_(juego.ctx_, false);
 
                 //Y empieza el ciclo del juego
                 engine.frame_();
@@ -73,7 +73,7 @@ var Music = function(juego, mobile, engine) {
 
             if(!flag_song){
                 var music_percent = music_player.generate();
-                juego.pinta_cargador_(music_percent, juego.ctx);
+                juego.pinta_cargador_(music_percent, juego.ctx_);
                 if(music_percent >= 1){
                     flag_song = true;
                 }

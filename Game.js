@@ -16,7 +16,7 @@ var Game = function() {
 
     this.onkey_ = function(ev, key, down) {
         switch(key) {
-            case this.KEY.LEFT:  
+            case this.KEY_.LEFT:  
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -34,7 +34,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.RIGHT: 
+            case this.KEY_.RIGHT: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -52,7 +52,7 @@ var Game = function() {
                     } 
                 } 
                 return false;
-            case this.KEY.UP: 
+            case this.KEY_.UP: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -73,7 +73,7 @@ var Game = function() {
                     } 
                 }
                 return false;
-            case this.KEY.DOWN: 
+            case this.KEY_.DOWN: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -94,7 +94,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.ENTER: 
+            case this.KEY_.ENTER: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -115,7 +115,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.SHIFT: 
+            case this.KEY_.SHIFT: 
                 ev.preventDefault(); 
                 if(this.empezado_){
                     if(this.modo_ === 1){
@@ -126,7 +126,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.Z: 
+            case this.KEY_.Z: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -142,13 +142,13 @@ var Game = function() {
                     this.player_.accion  = down;  
                 }
                 return false;
-            case this.KEY.X: 
+            case this.KEY_.X: 
                 ev.preventDefault(); 
                 if(this.empezado_){
                     this.player_.jump_  = down; 
                 }
                 return false;
-            case this.KEY.R: 
+            case this.KEY_.R: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -166,7 +166,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.D: 
+            case this.KEY_.D: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -181,7 +181,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.F: 
+            case this.KEY_.F: 
                 ev.preventDefault(); 
                 if(!this.empezado_){
                     if(down){
@@ -199,7 +199,7 @@ var Game = function() {
                     }
                 }
                 return false;
-            case this.KEY.G: 
+            case this.KEY_.G: 
                 ev.preventDefault();  
                 if(!this.empezado_){
                     if(down){
@@ -461,7 +461,7 @@ var Game = function() {
 
     this.render_paisaje_ = function(ctx, dt) {
 
-        var alto_luz = this.alto_total_/4 + this.counter_/140;
+        var alto_luz = this.alto_total_/4 + this.counter_/100;
     
 
         var grd=ctx.createLinearGradient(0, 0, 0 , alto_luz);
@@ -470,8 +470,8 @@ var Game = function() {
         ctx.fillStyle=grd;
         ctx.fillRect(0,0,this.ancho_total_,this.alto_total_);
         
-        var x_sol = -350 + this.counter_/140;
-        var y_sol = -150 + this.counter_/140;
+        var x_sol = -350 + this.counter_/100;
+        var y_sol = -150 + this.counter_/100;
         var w_sol = 60;
         var h_sol_line = 15;
         //SOL
@@ -606,7 +606,7 @@ var Game = function() {
 
     this.pre_shake_ = function() {
         if(this.tiempo_shacke_ > this.timestamp_()){
-            this.ctx.save();
+            this.ctx_.save();
             if(!this.dx_shacke_ && !this.dy_shacke_){
                 this.dx_shacke_ = (Math.random() - 0.5) * this.intensidad_shacke_;
                 this.dy_shacke_ = (Math.random() - 0.5) * this.intensidad_shacke_;
@@ -617,7 +617,7 @@ var Game = function() {
                 this.dx_shacke_ = this.dx_shacke_ * (-0.9);
             }
             
-            this.ctx.translate(this.dx_shacke_, this.dy_shacke_); 
+            this.ctx_.translate(this.dx_shacke_, this.dy_shacke_); 
         }
         else{
                 this.dx_shacke_ = 0;
@@ -628,7 +628,7 @@ var Game = function() {
 
     
     this.post_shake_ = function() {
-        this.ctx.restore();
+        this.ctx_.restore();
     };
     
     //FIN SCREEN SHACKE
@@ -672,25 +672,25 @@ var Game = function() {
                 ];
         
 
-        numero_decimal_ = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
-        numero_ = Math.floor(numero_decimal_);
+        this.numero_decimal_ = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
+        this.numero_ = Math.floor(this.numero_decimal_);
 
-        var size_cuenta_atras = 8 * (2 + numero_ - numero_decimal_);
-        var x_logo = this.ancho_total_/2 - (size_cuenta_atras * numeros[numero_][1].length)/2;
+        var size_cuenta_atras = 8 * (2 + this.numero_ - this.numero_decimal_);
+        var x_logo = this.ancho_total_/2 - (size_cuenta_atras * numeros[this.numero_][1].length)/2;
         var y_logo = this.alto_total_/4;
         
-        this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[numero_], size_cuenta_atras);
+        this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[this.numero_], size_cuenta_atras);
 
         if(this.modo_ == 1){
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW_);
         }
         else{
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW_);
 
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.PURPLE);
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.PURPLE);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.PURPLE_);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.PURPLE_);
 
         }
         
@@ -748,7 +748,7 @@ var Game = function() {
         ctx.strokeRect((this.ancho_total_ - ancho_cargador)/2, this.alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
 
         
-        this.muestra_logo_(this.ctx);
+        this.muestra_logo_(this.ctx_);
     };
 
 
@@ -1103,19 +1103,19 @@ var Game = function() {
                 
                 if(this.level_>1){
                     
-                    this.ctx.globalAlpha = 0.4;
-                    this.ctx.fillStyle = "#000000";
+                    this.ctx_.globalAlpha = 0.4;
+                    this.ctx_.fillStyle = "#000000";
 
-                    this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                    this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     
                     if(this.level_>2){
-                        this.ctx.fillRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                        this.ctx_.fillRect(this.x_selector_player_2_ - 120, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     }
                     if(this.level_>3){
-                        this.ctx.fillRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
+                        this.ctx_.fillRect(x_selec_player, this.y_selector_player_2_  - 20, this.ancho_selec_player_, this.alto_selec_player_);
                     }
 
-                    this.ctx.globalAlpha = 1.0;
+                    this.ctx_.globalAlpha = 1.0;
                 }
 
                 switch(this.player2_tipo_) {
@@ -1137,14 +1137,14 @@ var Game = function() {
 
                 var x_p2 = x_selec_player + 320;
                 var y_p2 = y_selec_player - 30;
-                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.PURPLE);
-                ctx.strokeStyle = this.COLOR_.PURPLE;
+                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.PURPLE_);
+                ctx.strokeStyle = this.COLOR_.PURPLE_;
                 ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 if(this.player2_selected_){
-                    this.ctx.globalAlpha = 0.5;
-                    this.ctx.fillStyle = this.COLOR_.PURPLE;
-                    this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
-                    this.ctx.globalAlpha = 1.0;
+                    this.ctx_.globalAlpha = 0.5;
+                    this.ctx_.fillStyle = this.COLOR_.PURPLE_;
+                    this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                    this.ctx_.globalAlpha = 1.0;
                 }
             }
 
@@ -1169,16 +1169,16 @@ var Game = function() {
             var x_p1 = x_selec_player + 15;
             var y_p1 = y_selec_player - 30;
 
-            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.YELLOW);
-            ctx.strokeStyle = this.COLOR_.YELLOW;
+            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.YELLOW_);
+            ctx.strokeStyle = this.COLOR_.YELLOW_;
             ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
 
 
             if(this.player1_selected_){
-                this.ctx.globalAlpha = 0.5;
-                this.ctx.fillStyle = this.COLOR_.YELLOW;
-                this.ctx.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
-                this.ctx.globalAlpha = 1.0;
+                this.ctx_.globalAlpha = 0.5;
+                this.ctx_.fillStyle = this.COLOR_.YELLOW_;
+                this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
+                this.ctx_.globalAlpha = 1.0;
             }
 
 
@@ -1277,7 +1277,7 @@ var Game = function() {
         if(!player1){
             this.player2_selected_ = true;
             player_pinta_ = this.player2_tipo_;
-            color = this.COLOR_.PURPLE;
+            color = this.COLOR_.PURPLE_;
         }
         else{
             this.player1_selected_ = true;
@@ -1457,17 +1457,17 @@ var Game = function() {
     this.ACCEL_    = 0.01,     // default take 1/2 second to reach maxdx (horizontal acceleration)
     this.FRICTION_ = 0.001,     // default take 1/6 second to stop from maxdx (horizontal friction)
     
-    this.COLOR_    = { BLACK: '#000000', 
-                      YELLOW: '#ECD078', 
-                      BRICK: '#D95B43', 
-                      PINK: '#C02942', 
-                      PURPLE: '#542437', 
-                      GREY: '#333', 
-                      SLATE: '#53777A', 
-                      GOLD: 'gold'
+    this.COLOR_    = { BLACK_: '#000000', 
+                      YELLOW_: '#ECD078', 
+                      BRICK_: '#D95B43', 
+                      PINK_: '#C02942', 
+                      PURPLE_: '#542437', 
+                      GREY_: '#333', 
+                      SLATE_: '#53777A', 
+                      GOLD_: 'gold'
                   },
    
-    this.KEY      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
+    this.KEY_      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
       
     this.intensidad_shacke_ = 20;
 
@@ -1477,7 +1477,7 @@ var Game = function() {
 
 
     this.canvas_         = document.getElementById('canvas'),
-    this.ctx            = this.canvas_.getContext('2d'),
+    this.ctx_            = this.canvas_.getContext('2d'),
     this.canvas_.width  = this.ancho_total_,
     this.canvas_.height = this.alto_total_,
     
@@ -1506,7 +1506,7 @@ var Game = function() {
     }
 
     //Se muestra logo nada más empezar
-    this.muestra_logo_(this.ctx);
+    this.muestra_logo_(this.ctx_);
 
 
 };
