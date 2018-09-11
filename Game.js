@@ -119,10 +119,10 @@ var Game = function() {
                 ev.preventDefault(); 
                 if(this.empezado_){
                     if(this.modo_ === 1){
-                        this.player_.jump  = down; 
+                        this.player_.jump_  = down; 
                     }
                     else{
-                        this.player2_.jump  = down; 
+                        this.player2_.jump_  = down; 
                     }
                 }
                 return false;
@@ -145,7 +145,7 @@ var Game = function() {
             case this.KEY.X: 
                 ev.preventDefault(); 
                 if(this.empezado_){
-                    this.player_.jump  = down; 
+                    this.player_.jump_  = down; 
                 }
                 return false;
             case this.KEY.R: 
@@ -297,10 +297,10 @@ var Game = function() {
             this.player2_.tipo_ = this.level_;
             this.player2_.cambia_tipo_(this.level_);
         }
-        this.player2_.x = ancho_total_ - this.player2_.ancho_ - 5;
+        this.player2_.x = this.ancho_total_ - this.player2_.ancho_ - 5;
         this.player2_.y = 100;
 
-        this.fpsInterval     = 1000 / 60;
+        this.fpsInterval_     = 1000 / 60;
         //console.log(this.player2_);
 
         this.hay_muerte_ = false;
@@ -331,14 +331,14 @@ var Game = function() {
             game_over = this.p2_win_;
         }
 
-        this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
+        this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 330, 250, game_over, this.marcador_size_ * 4);
         
         //this.is_game_over_ = true;
 
     };
 
     this.siguiente_oponente_ = function(ctx){
-        this.pinta_filas_columnas_(ctx, ancho_total_/2 - 330, 250, this.you_win_, this.marcador_size_ * 4);
+        this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 330, 250, this.you_win_, this.marcador_size_ * 4);
 
         if(this.hay_siguiente_oponente_ && this.tiempo_siguiente_oponente_ < this.timestamp_()){
             ++this.level_;
@@ -367,14 +367,14 @@ var Game = function() {
         }
 
         //Limpio lo que hay
-        //ctx.clearRect(0, 0, ancho_total_, alto_total_);
+        //ctx.clearRect(0, 0, this.ancho_total_, this.alto_total_);
 
         //Renderizo los objetos
         this.render_paisaje_(ctx, dt);
 
         
         if(this.tiempo_cuenta_atras_ > this.timestamp_()){
-            this.pinta_cuenta_atras(ctx);
+            this.pinta_cuenta_atras_(ctx);
         }
 
         this.render_cuerda_(ctx, dt);
@@ -391,54 +391,54 @@ var Game = function() {
 
     this.render_player_ = function(ctx, dt) {
         this.player_.pinta_vida_(ctx);
-        this.player_.pinta_player_(dt, ctx, this.counter);
+        this.player_.pinta_player_(dt, ctx, this.counter_);
     };
 
   
     this.render_player2_ = function(ctx, dt) {  
         this.player2_.pinta_vida_(ctx);
-        this.player2_.pinta_player_(dt, ctx, this.counter);    
+        this.player2_.pinta_player_(dt, ctx, this.counter_);    
     };
 
 
         
 
     this.render_cuerda_ = function(ctx, dt) {
-        cuerda.render_(dt, ctx, this.counter);
+        cuerda.render_(dt, ctx, this.counter_);
     };
         
 
     this.render_edificios_cerca_ = function(ctx, dt) {
         ctx.fillStyle= "#0a2830";
-        ctx.fillRect(0, alto_total_ /3 , 80, 1500);
-        ctx.fillRect(ancho_total_ - 80, alto_total_ / 3, 80, 1500);
+        ctx.fillRect(0, this.alto_total_ /3 , 80, 1500);
+        ctx.fillRect(this.ancho_total_ - 80, this.alto_total_ / 3, 80, 1500);
 
         ctx.fillStyle="#ffffff";
-        ctx.fillRect(0, alto_total_/2 - 50, 40, 100);
-        ctx.fillRect(0, alto_total_/2 + 100, 40, 100);
-        ctx.fillRect(0, alto_total_/2 + 250, 40, 100);
+        ctx.fillRect(0, this.alto_total_/2 - 50, 40, 100);
+        ctx.fillRect(0, this.alto_total_/2 + 100, 40, 100);
+        ctx.fillRect(0, this.alto_total_/2 + 250, 40, 100);
 
-        ctx.fillRect(ancho_total_ - 40, alto_total_/2 - 50, 40, 50);
-        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 30, 40, 50);
-        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 110, 40, 50);
-        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 190, 40, 50);
-        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 270, 40, 50);
+        ctx.fillRect(this.ancho_total_ - 40, this.alto_total_/2 - 50, 40, 50);
+        ctx.fillRect(this.ancho_total_ - 40, this.alto_total_/2 + 30, 40, 50);
+        ctx.fillRect(this.ancho_total_ - 40, this.alto_total_/2 + 110, 40, 50);
+        ctx.fillRect(this.ancho_total_ - 40, this.alto_total_/2 + 190, 40, 50);
+        ctx.fillRect(this.ancho_total_ - 40, this.alto_total_/2 + 270, 40, 50);
     };
     
     this.render_ostiazo_ = function(ctx, dt) {
 
-        while((ostia_actual=this.ostiazos_.pop()) != null){ 
+        while((this.ostia_actual_=this.ostiazos_.pop()) != null){ 
             
             ctx.save();
-            ctx.translate(ostia_actual.x_translate_, ostia_actual.y_translate_);
+            ctx.translate(this.ostia_actual_.x_translate_, this.ostia_actual_.y_translate_);
 
-            if(ostia_actual.izquierda_){  
+            if(this.ostia_actual_.izquierda_){  
                 ctx.scale(-1, 1);
             }
 
-            ctx.rotate(ostia_actual.rotacion_);
+            ctx.rotate(this.ostia_actual_.rotacion_);
 
-            this.pinta_filas_columnas_(ctx, ostia_actual.x, ostia_actual.y, ostia_actual.que_ostia_, ostia_actual.block_size_, ostia_actual.color_);
+            this.pinta_filas_columnas_(ctx, this.ostia_actual_.x, this.ostia_actual_.y, this.ostia_actual_.que_ostia_, this.ostia_actual_.block_size_, this.ostia_actual_.color_);
         
             ctx.restore();
         }
@@ -447,31 +447,31 @@ var Game = function() {
 
     this.suena_sirena_ = function(){
         var random = Math.random()*20000;
-        window.sirena_audio.play();
+        w.sirena_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_sirena_()},random);
     }
 
     this.suena_viento_ = function(){
         var random = Math.random()*25000;
-        window.viento_audio.play();
+        w.viento_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_viento_()},random);
     }
 
     this.render_paisaje_ = function(ctx, dt) {
 
-        var alto_luz = alto_total_/4 + this.counter/140;
+        var alto_luz = this.alto_total_/4 + this.counter_/140;
     
 
         var grd=ctx.createLinearGradient(0, 0, 0 , alto_luz);
         grd.addColorStop(0,"#aa92c9");
         grd.addColorStop(1,"#ffbda2");
         ctx.fillStyle=grd;
-        ctx.fillRect(0,0,ancho_total_,alto_total_);
+        ctx.fillRect(0,0,this.ancho_total_,this.alto_total_);
         
-        var x_sol = -350 + this.counter/140;
-        var y_sol = -150 + this.counter/140;
+        var x_sol = -350 + this.counter_/140;
+        var y_sol = -150 + this.counter_/140;
         var w_sol = 60;
         var h_sol_line = 15;
         //SOL
@@ -480,10 +480,10 @@ var Game = function() {
         for (var i = 0; i < anchos.length; i++) {
             y_sol = y_sol+6;
             w_sol_now = anchos[i]*7.5;
-            x_sol_now  = ancho_total_/2 + x_sol - w_sol_now/2
+            x_sol_now  = this.ancho_total_/2 + x_sol - w_sol_now/2
             
             ctx.fillStyle = "#ffffff";
-            ctx.fillRect(x_sol_now, alto_total_/3 + y_sol, w_sol_now, h_sol_line);
+            ctx.fillRect(x_sol_now, this.alto_total_/3 + y_sol, w_sol_now, h_sol_line);
             
         }
 
@@ -493,104 +493,104 @@ var Game = function() {
         var color_medio2 = "#904b6b";
 
         ctx.fillStyle=color_lejos;
-        ctx.fillRect(5, alto_total_/2 - 200, 100, 1300);
-        ctx.fillRect(165, alto_total_/2 - 150, 80, 1320);
-        ctx.fillRect(350, alto_total_/2 - 130, 120, 1220);
-        ctx.fillRect(650, alto_total_/2 - 180, 160, 1320);
-        ctx.fillRect(850, alto_total_/2 - 50, 110, 1220);
+        ctx.fillRect(5, this.alto_total_/2 - 200, 100, 1300);
+        ctx.fillRect(165, this.alto_total_/2 - 150, 80, 1320);
+        ctx.fillRect(350, this.alto_total_/2 - 130, 120, 1220);
+        ctx.fillRect(650, this.alto_total_/2 - 180, 160, 1320);
+        ctx.fillRect(850, this.alto_total_/2 - 50, 110, 1220);
 
         
-        ctx.fillRect(1005, alto_total_/2 - 200, 100, 1300);
-        ctx.fillRect(1165, alto_total_/2 - 150, 70, 1320);
-        ctx.fillRect(1350, alto_total_/2 - 130, 120, 1220);
-        ctx.fillRect(1650, alto_total_/2 - 180, 160, 1320);
-        ctx.fillRect(1850, alto_total_/2 - 50, 110, 1220);
+        ctx.fillRect(1005, this.alto_total_/2 - 200, 100, 1300);
+        ctx.fillRect(1165, this.alto_total_/2 - 150, 70, 1320);
+        ctx.fillRect(1350, this.alto_total_/2 - 130, 120, 1220);
+        ctx.fillRect(1650, this.alto_total_/2 - 180, 160, 1320);
+        ctx.fillRect(1850, this.alto_total_/2 - 50, 110, 1220);
 
         
         ctx.fillStyle="rgba(255,255,255,0.5)";
         for (j = 0; j < 20; j++) {
             for (i = 0; i < 4; i++) {
                 if(this.random_array_[(i+1)*(j+1)]>0){
-                    ctx.fillRect(20 + i*20, alto_total_/2 - 180 + j*20, 10, 10);
-                    ctx.fillRect(370 + i*20, alto_total_/2 - 110 + j*20, 10, 10);
-                    ctx.fillRect(870 + i*20, alto_total_/2 - 30 + j*20, 10, 10);
-                    ctx.fillRect(1170 + i*20, alto_total_/2 - 140 + j*20, 10, 10);
-                    ctx.fillRect(1680 + i*20, alto_total_/2 - 160 + j*20, 10, 10);
+                    ctx.fillRect(20 + i*20, this.alto_total_/2 - 180 + j*20, 10, 10);
+                    ctx.fillRect(370 + i*20, this.alto_total_/2 - 110 + j*20, 10, 10);
+                    ctx.fillRect(870 + i*20, this.alto_total_/2 - 30 + j*20, 10, 10);
+                    ctx.fillRect(1170 + i*20, this.alto_total_/2 - 140 + j*20, 10, 10);
+                    ctx.fillRect(1680 + i*20, this.alto_total_/2 - 160 + j*20, 10, 10);
                 }
                 if(this.random_array_[(i+1)*(j+1)*2]>0){
-                    ctx.fillRect(170 + i*20, alto_total_/2 - 140 + j*20, 10, 10);
-                    ctx.fillRect(680 + i*20, alto_total_/2 - 160 + j*20, 10, 10);
-                    ctx.fillRect(1020 + i*20, alto_total_/2 - 180 + j*20, 10, 10);
-                    ctx.fillRect(1370 + i*20, alto_total_/2 - 110 + j*20, 10, 10);
-                    ctx.fillRect(1870 + i*20, alto_total_/2 - 30 + j*20, 10, 10);  
+                    ctx.fillRect(170 + i*20, this.alto_total_/2 - 140 + j*20, 10, 10);
+                    ctx.fillRect(680 + i*20, this.alto_total_/2 - 160 + j*20, 10, 10);
+                    ctx.fillRect(1020 + i*20, this.alto_total_/2 - 180 + j*20, 10, 10);
+                    ctx.fillRect(1370 + i*20, this.alto_total_/2 - 110 + j*20, 10, 10);
+                    ctx.fillRect(1870 + i*20, this.alto_total_/2 - 30 + j*20, 10, 10);  
                 }
             }
         }
 
 
         ctx.fillStyle=color_medio;
-        ctx.fillRect(45, alto_total_/1.5 - 200, 150, 1300);
-        ctx.fillRect(235, alto_total_/1.5 - 150, 130, 1370);
-        ctx.fillRect(390, alto_total_/1.5 - 130, 180, 1290);
-        ctx.fillRect(590, alto_total_/1.5 - 180, 200, 1370);
-        ctx.fillRect(850, alto_total_/1.5 - 50, 180, 1250);
+        ctx.fillRect(45, this.alto_total_/1.5 - 200, 150, 1300);
+        ctx.fillRect(235, this.alto_total_/1.5 - 150, 130, 1370);
+        ctx.fillRect(390, this.alto_total_/1.5 - 130, 180, 1290);
+        ctx.fillRect(590, this.alto_total_/1.5 - 180, 200, 1370);
+        ctx.fillRect(850, this.alto_total_/1.5 - 50, 180, 1250);
 
-        ctx.fillRect(1045, alto_total_/1.5 - 200, 200, 1350);
-        ctx.fillRect(1235, alto_total_/1.5 - 150, 130, 1370);
-        ctx.fillRect(1390, alto_total_/1.5 - 130, 180, 1310);
-        ctx.fillRect(1590, alto_total_/1.5 - 180, 200, 1370);
-        ctx.fillRect(1850, alto_total_/1.5 - 50, 180, 1250);
+        ctx.fillRect(1045, this.alto_total_/1.5 - 200, 200, 1350);
+        ctx.fillRect(1235, this.alto_total_/1.5 - 150, 130, 1370);
+        ctx.fillRect(1390, this.alto_total_/1.5 - 130, 180, 1310);
+        ctx.fillRect(1590, this.alto_total_/1.5 - 180, 200, 1370);
+        ctx.fillRect(1850, this.alto_total_/1.5 - 50, 180, 1250);
 
         ctx.fillStyle="rgba(255,255,255,0.5)";
         for (j = 0; j < 20; j++) {
             for (i = 0; i < 5; i++) {
                 if(this.random_array_[(i+1)*(j+1)*3]>0){
-                    ctx.fillRect(65 + i*26, alto_total_/1.5 - 180 + j*26, 13, 13);
-                    ctx.fillRect(410 + i*26, alto_total_/1.5 - 110 + j*26, 13, 13);
-                    ctx.fillRect(870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
-                    ctx.fillRect(1255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
-                    ctx.fillRect(1610 + i*26, alto_total_/1.5 - 160 + j*26, 13, 13);
-                    ctx.fillRect(1870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
+                    ctx.fillRect(65 + i*26, this.alto_total_/1.5 - 180 + j*26, 13, 13);
+                    ctx.fillRect(410 + i*26, this.alto_total_/1.5 - 110 + j*26, 13, 13);
+                    ctx.fillRect(870 + i*26, this.alto_total_/1.5 - 30 + j*26, 13, 13);
+                    ctx.fillRect(1255 + i*26, this.alto_total_/1.5 - 130 + j*26, 13, 13);
+                    ctx.fillRect(1610 + i*26, this.alto_total_/1.5 - 160 + j*26, 13, 13);
+                    ctx.fillRect(1870 + i*26, this.alto_total_/1.5 - 30 + j*26, 13, 13);
                 }
                 if(this.random_array_[(i+1)*(j+1)*4]>0){
-                    ctx.fillRect(255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
-                    ctx.fillRect(610 + i*26, alto_total_/1.5 - 160 + j*26, 13, 13);
-                    ctx.fillRect(1065 + i*26, alto_total_/1.5 - 180 + j*26, 13, 13);
-                    ctx.fillRect(1410 + i*26, alto_total_/1.5 - 110 + j*26, 13, 13);
-                    ctx.fillRect(1870 + i*26, alto_total_/1.5 - 30 + j*26, 13, 13);
-                    ctx.fillRect(2255 + i*26, alto_total_/1.5 - 130 + j*26, 13, 13);
+                    ctx.fillRect(255 + i*26, this.alto_total_/1.5 - 130 + j*26, 13, 13);
+                    ctx.fillRect(610 + i*26, this.alto_total_/1.5 - 160 + j*26, 13, 13);
+                    ctx.fillRect(1065 + i*26, this.alto_total_/1.5 - 180 + j*26, 13, 13);
+                    ctx.fillRect(1410 + i*26, this.alto_total_/1.5 - 110 + j*26, 13, 13);
+                    ctx.fillRect(1870 + i*26, this.alto_total_/1.5 - 30 + j*26, 13, 13);
+                    ctx.fillRect(2255 + i*26, this.alto_total_/1.5 - 130 + j*26, 13, 13);
                 }
             }
         }
 
         
         ctx.fillStyle=color_medio2;
-        ctx.fillRect(-25, alto_total_ - 200, 280, 1300);
-        ctx.fillRect(335, alto_total_ - 350, 260, 1370);
-        ctx.fillRect(640, alto_total_ - 180, 280, 1290);
-        ctx.fillRect(990, alto_total_ - 270, 300, 1370);
-        ctx.fillRect(1350, alto_total_ - 250, 380, 1250);
+        ctx.fillRect(-25, this.alto_total_ - 200, 280, 1300);
+        ctx.fillRect(335, this.alto_total_ - 350, 260, 1370);
+        ctx.fillRect(640, this.alto_total_ - 180, 280, 1290);
+        ctx.fillRect(990, this.alto_total_ - 270, 300, 1370);
+        ctx.fillRect(1350, this.alto_total_ - 250, 380, 1250);
         
-        ctx.fillRect(1105, alto_total_ - 200, 350, 1300);
-        ctx.fillRect(1335, alto_total_ - 350, 230, 1370);
-        ctx.fillRect(1640, alto_total_ - 180, 280, 1290);
-        ctx.fillRect(1990, alto_total_ - 270, 300, 1370);
-        ctx.fillRect(2350, alto_total_ - 250, 380, 1250);
+        ctx.fillRect(1105, this.alto_total_ - 200, 350, 1300);
+        ctx.fillRect(1335, this.alto_total_ - 350, 230, 1370);
+        ctx.fillRect(1640, this.alto_total_ - 180, 280, 1290);
+        ctx.fillRect(1990, this.alto_total_ - 270, 300, 1370);
+        ctx.fillRect(2350, this.alto_total_ - 250, 380, 1250);
 
         
         ctx.fillStyle="rgba(255,255,255,0.5)";
         for (j = 0; j < 20; j++) {
             for (i = 0; i < 6; i++) {
                 if(this.random_array_[(i+1)*(j+1)*5]>0){
-                    ctx.fillRect(-5 + i*44, alto_total_ - 180 + j*44, 22, 22);
-                    ctx.fillRect(1010 + i*44, alto_total_ - 250 + j*44, 22, 22);
+                    ctx.fillRect(-5 + i*44, this.alto_total_ - 180 + j*44, 22, 22);
+                    ctx.fillRect(1010 + i*44, this.alto_total_ - 250 + j*44, 22, 22);
                 }
                 if(this.random_array_[(i+1)*(j+1)*6]>0){
-                    ctx.fillRect(345 + i*44, alto_total_ - 330 + j*44, 22, 22);
-                    ctx.fillRect(1370 + i*44, alto_total_ - 230 + j*44, 22, 22);
+                    ctx.fillRect(345 + i*44, this.alto_total_ - 330 + j*44, 22, 22);
+                    ctx.fillRect(1370 + i*44, this.alto_total_ - 230 + j*44, 22, 22);
                 }
                 if(this.random_array_[(i+1)*(j+1)*7]>0){
-                    ctx.fillRect(660 + i*44, alto_total_ - 160 + j*44, 22, 22);
+                    ctx.fillRect(660 + i*44, this.alto_total_ - 160 + j*44, 22, 22);
                 }
             }
         }
@@ -601,27 +601,27 @@ var Game = function() {
 
     // SCREEN SHACKE!
 
-    this.dx_shacke = 0;
-    this.dy_shacke = 0;
+    this.dx_shacke_ = 0;
+    this.dy_shacke_ = 0;
 
     this.pre_shake_ = function() {
         if(this.tiempo_shacke_ > this.timestamp_()){
             this.ctx.save();
-            if(!this.dx_shacke && !this.dy_shacke){
-                this.dx_shacke = (Math.random() - 0.5) * this.intensidad_shacke_;
-                this.dy_shacke = (Math.random() - 0.5) * this.intensidad_shacke_;
+            if(!this.dx_shacke_ && !this.dy_shacke_){
+                this.dx_shacke_ = (Math.random() - 0.5) * this.intensidad_shacke_;
+                this.dy_shacke_ = (Math.random() - 0.5) * this.intensidad_shacke_;
 
             }
             else{
-                this.dy_shacke = this.dy_shacke * (-0.9);
-                this.dx_shacke = this.dx_shacke * (-0.9);
+                this.dy_shacke_ = this.dy_shacke_ * (-0.9);
+                this.dx_shacke_ = this.dx_shacke_ * (-0.9);
             }
             
-            this.ctx.translate(this.dx_shacke, this.dy_shacke); 
+            this.ctx.translate(this.dx_shacke_, this.dy_shacke_); 
         }
         else{
-                this.dx_shacke = 0;
-                this.dy_shacke = 0;
+                this.dx_shacke_ = 0;
+                this.dy_shacke_ = 0;
 
         }
     };
@@ -639,7 +639,7 @@ var Game = function() {
 
 
 
-    this.pinta_cuenta_atras = function(ctx) {
+    this.pinta_cuenta_atras_ = function(ctx) {
         var numeros = []
         
         numeros[3] =  [
@@ -672,14 +672,14 @@ var Game = function() {
                 ];
         
 
-        numero_decimal = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
-        numero = Math.floor(numero_decimal);
+        numero_decimal_ = (this.tiempo_cuenta_atras_- this.timestamp_())/1000;
+        numero_ = Math.floor(numero_decimal_);
 
-        var size_cuenta_atras = 8 * (2 + numero - numero_decimal);
-        var x_logo = ancho_total_/2 - (size_cuenta_atras * numeros[numero][1].length)/2;
-        var y_logo = alto_total_/4;
+        var size_cuenta_atras = 8 * (2 + numero_ - numero_decimal_);
+        var x_logo = this.ancho_total_/2 - (size_cuenta_atras * numeros[numero_][1].length)/2;
+        var y_logo = this.alto_total_/4;
         
-        this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[numero], size_cuenta_atras);
+        this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[numero_], size_cuenta_atras);
 
         if(this.modo_ == 1){
             this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW);
@@ -710,8 +710,8 @@ var Game = function() {
                 ];
 
         var size_logo_px = 8;
-        var x_logo = ancho_total_/2 - (size_logo_px * logo[0].length)/2;
-        var y_logo = alto_total_/4;
+        var x_logo = this.ancho_total_/2 - (size_logo_px * logo[0].length)/2;
+        var y_logo = this.alto_total_/4;
 
         this.pinta_filas_columnas_(ctx, x_logo, y_logo, logo, size_logo_px);
         
@@ -722,18 +722,18 @@ var Game = function() {
     //TODO: hacerlo bonito
     this.pinta_cargador_ = function(percent, ctx) {
 
-        if(window.innerWidth < 820){
-            ancho_total_ = window.innerWidth * 2,
-            alto_total_  = window.innerHeight * 2;
+        if(w.innerWidth < 820){
+            this.ancho_total_ = w.innerWidth * 2,
+            this.alto_total_  = w.innerHeight * 2;
 
         }
         else{
-            ancho_total_ = window.innerWidth,
-            alto_total_  = window.innerHeight;
+            this.ancho_total_ = w.innerWidth,
+            this.alto_total_  = w.innerHeight;
         }
         
-        this.canvas_.width  = ancho_total_;
-        this.canvas_.height = alto_total_;
+        this.canvas_.width  = this.ancho_total_;
+        this.canvas_.height = this.alto_total_;
 
         
         this.render_paisaje_(ctx);
@@ -741,11 +741,11 @@ var Game = function() {
         ctx.fillStyle = "#ffffff";
         var ancho_cargador = 200;
         var alto_cargador = 80;
-        ctx.fillRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, percent * ancho_cargador, alto_cargador);
+        ctx.fillRect((this.ancho_total_ - ancho_cargador)/2, this.alto_total_/2 + 50, percent * ancho_cargador, alto_cargador);
 
         ctx.strokeStyle="#ffffff";
         ctx.lineWidth=10;
-        ctx.strokeRect((ancho_total_ - ancho_cargador)/2, alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
+        ctx.strokeRect((this.ancho_total_ - ancho_cargador)/2, this.alto_total_/2 + 50, ancho_cargador - 5, alto_cargador);
 
         
         this.muestra_logo_(this.ctx);
@@ -761,20 +761,20 @@ var Game = function() {
             this.modo_seleccionado_ = true;
         }
         
-        if(window.innerWidth < 820){
-            ancho_total_ = window.innerWidth * 2,
-            alto_total_  = window.innerHeight * 2;
+        if(w.innerWidth < 820){
+            this.ancho_total_ = w.innerWidth * 2,
+            this.alto_total_  = w.innerHeight * 2;
 
         }
         else{
-            ancho_total_ = window.innerWidth,
-            alto_total_  = window.innerHeight;
+            this.ancho_total_ = w.innerWidth,
+            this.alto_total_  = w.innerHeight;
         }
         
-        this.canvas_.width  = ancho_total_;
-        this.canvas_.height = alto_total_;
+        this.canvas_.width  = this.ancho_total_;
+        this.canvas_.height = this.alto_total_;
         
-        //ctx.clearRect(0, 0, ancho_total_, alto_total_);
+        //ctx.clearRect(0, 0, this.ancho_total_, this.alto_total_);
 
         
         
@@ -784,20 +784,14 @@ var Game = function() {
         //Mestro el menu de 1 this.player_ / 2 this.player_
 
         //TODO: optimizar estos arrays gordisimos
-        menu =  [
+        menu1 =  [
                     [  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  ,  ,  ,  ,  ],
                     [ 1, 1, 1,  ,  ,  , 1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  ,  ,  ,  ],
                     [  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ,  , 1, 1, 1,  ,  , 1, 1,  , 1,  ,  ,  ,  ,  ],
                     [  , 1, 1,  ,  ,  , 1, 1,  ,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  , 1, 1, 1,  ,  ,  ,  ,  ,  ],
                     [ 1, 1, 1, 1,  ,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  , 1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
-                    [  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ],
+                ];
+        menu2 =  [           
                     [ 1, 1, 1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  , 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1],
                     [  ,  , 1, 1,  ,  , 1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  , 1, 1,  ,  ],
                     [ 1, 1, 1, 1,  ,  , 1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ,  , 1, 1, 1,  ,  , 1, 1,  , 1,  , 1, 1, 1, 1],
@@ -809,17 +803,17 @@ var Game = function() {
 
         // Cuando está todo seleccionado, cambio el empieza y debería rular
         var size_menu_px = 8;
-        var largo_menu = size_menu_px * menu[0].length;
-        var largo_menu = size_menu_px * menu[0].length;
-        var x_menu = ancho_total_/2 - largo_menu/2;
-        var y_menu = alto_total_/4;
+        var largo_menu = size_menu_px * menu1[0].length;
+        var largo_menu = size_menu_px * menu1[0].length;
+        var x_menu = this.ancho_total_/2 - largo_menu/2;
+        var y_menu = this.alto_total_/4;
 
 
         
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = "#000000";
         
-        ctx.fillRect(0,0,ancho_total_,alto_total_);
+        ctx.fillRect(0,0,this.ancho_total_,this.alto_total_);
         ctx.globalAlpha = 1;
         
 
@@ -832,21 +826,21 @@ var Game = function() {
             //TODO: Cambiar esto... pintar la cara de cada jugador...
             var size_caract = 6;
 
-            this.x_selector_player_1_ = ancho_total_ / 2.3 - 6*35;
-            this.y_selector_player_1_ = alto_total_ / 4;
+            this.x_selector_player_1_ = this.ancho_total_ / 2.3 - 6*35;
+            this.y_selector_player_1_ = this.alto_total_ / 4;
             
-            this.x_selector_player_2_ = ancho_total_ / 2.3 + 6*35;
-            this.y_selector_player_2_ = alto_total_ / 2;
+            this.x_selector_player_2_ = this.ancho_total_ / 2.3 + 6*35;
+            this.y_selector_player_2_ = this.alto_total_ / 2;
 
-            fake_player = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 1, 4);
+            var fake_player = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 1, 4);
 
             if(this.level_ > 1){
                 fake_player.estoy_muerto_ = true;
             }
 
-            fake_player.pinta_player_(0, ctx, this.counter);
+            fake_player.pinta_player_(0, ctx, this.counter_);
 
-            caracteristicas1 =  [
+            var caracteristicas1 =  [
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  , 1,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  , 1],
                         [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  , 1],
@@ -868,13 +862,13 @@ var Game = function() {
                 ];
             this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_1_, caracteristicas1, size_caract);
             
-            fake_player2 = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 3, 4);
+            var fake_player2 = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 3, 4);
             if(this.level_ > 3){
                 fake_player2.estoy_muerto_ = true;
             }
-            fake_player2.pinta_player_(0, ctx, this.counter);
+            fake_player2.pinta_player_(0, ctx, this.counter_);
 
-            caracteristicas2 =  [
+            var caracteristicas2 =  [
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  , 1,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
                         [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
@@ -897,13 +891,13 @@ var Game = function() {
                 
             this.pinta_filas_columnas_(ctx, this.x_selector_player_1_, this.y_selector_player_2_, caracteristicas2, size_caract);
             
-            fake_player3 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 2, 4);
+            var fake_player3 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 2, 4);
             if(this.level_ > 2){
                 fake_player3.estoy_muerto_ = true;
             }
-            fake_player3.pinta_player_(0, ctx, this.counter);
+            fake_player3.pinta_player_(0, ctx, this.counter_);
 
-            caracteristicas3 =  [
+            var caracteristicas3 =  [
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  , 1,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
                         [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1],
@@ -926,10 +920,10 @@ var Game = function() {
             this.pinta_filas_columnas_(ctx, this.x_selector_player_2_, this.y_selector_player_1_, caracteristicas3, size_caract);
 
 
-            fake_player4 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 4, 4);
-            fake_player4.pinta_player_(0, ctx, this.counter);
+            var fake_player4 = new Player(this, this.x_selector_player_2_ - 85, this.y_selector_player_2_ + 10, 0, 60000, 1, false, 4, 4);
+            fake_player4.pinta_player_(0, ctx, this.counter_);
 
-            caracteristicas4 =  [
+            var caracteristicas4 =  [
                         [ 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [ 1, 1,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  , 1,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                         [ 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -1028,36 +1022,36 @@ var Game = function() {
             var size_flecha_px = 3;
 
 
-            this.pinta_filas_columnas_(ctx, 50, alto_total_ - 130, usa_keys, 3);
+            this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 130, usa_keys, 3);
             var y_select = y_menu - (size_menu_px * 4);
             if(this.modo_ == 2){
                 y_select = y_select + size_menu_px * 14;
 
 
                 //size_flecha_px = size_flecha_px/2;
-                this.pinta_filas_columnas_(ctx, 50, alto_total_ - 50, de, size_flecha_px);
-                this.pinta_filas_columnas_(ctx, 105, alto_total_ - 50, ge, size_flecha_px);
-                this.pinta_filas_columnas_(ctx, 80, alto_total_ - 75, erre, size_flecha_px);
-                this.pinta_filas_columnas_(ctx, 80, alto_total_ - 50, efe, size_flecha_px);
-                this.pinta_filas_columnas_(ctx, 160, alto_total_ - 50, zeta, size_flecha_px);
-                this.pinta_filas_columnas_(ctx, 200, alto_total_ - 50, equis, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 50, this.alto_total_ - 50, de, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 105, this.alto_total_ - 50, ge, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 75, erre, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 80, this.alto_total_ - 50, efe, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 160, this.alto_total_ - 50, zeta, size_flecha_px);
+                this.pinta_filas_columnas_(ctx, 200, this.alto_total_ - 50, equis, size_flecha_px);
 
 
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 220, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 155, alto_total_ - 50, this.flecha_der, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 70, this.flecha_arr, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 190, alto_total_ - 45, this.flecha_abj, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 100, alto_total_ - 55, enter_key, size_flecha_px*2);
-                this.pinta_filas_columnas_(ctx, ancho_total_ - 60, alto_total_ - 50, shift_key, size_flecha_px*1.3);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 220, this.alto_total_ - 50, this.flecha_izq, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 155, this.alto_total_ - 50, this.flecha_der, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 70, this.flecha_arr, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 190, this.alto_total_ - 45, this.flecha_abj_, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 100, this.alto_total_ - 55, enter_key, size_flecha_px*2);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_ - 60, this.alto_total_ - 50, shift_key, size_flecha_px*1.3);
             }
             else{
 
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 90, alto_total_ - 50, this.flecha_izq, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 5, alto_total_ - 50, this.flecha_der, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 80, this.flecha_arr, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 - 45, alto_total_ - 45, this.flecha_abj, size_flecha_px*1.8);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 75, alto_total_ - 50, zeta, size_flecha_px*1.5);
-                this.pinta_filas_columnas_(ctx, ancho_total_/2 + 125, alto_total_ - 50, equis, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 90, this.alto_total_ - 50, this.flecha_izq, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 5, this.alto_total_ - 50, this.flecha_der, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 80, this.flecha_arr, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 45, this.alto_total_ - 45, this.flecha_abj_, size_flecha_px*1.8);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 75, this.alto_total_ - 50, zeta, size_flecha_px*1.5);
+                this.pinta_filas_columnas_(ctx, this.ancho_total_/2 + 125, this.alto_total_ - 50, equis, size_flecha_px*1.5);
 
             }
 
@@ -1068,7 +1062,8 @@ var Game = function() {
             
             ctx.strokeStyle="#ffffff";
             ctx.strokeRect(x_menu - (size_menu_px * 4), y_select, largo_menu + (size_menu_px * 8), 12 * size_menu_px);
-            this.pinta_filas_columnas_(ctx, x_menu, y_menu, menu, size_menu_px);
+            this.pinta_filas_columnas_(ctx, x_menu, y_menu, menu1, size_menu_px);
+            this.pinta_filas_columnas_(ctx, x_menu, y_menu + 110, menu2, size_menu_px);
         }
         else{
 
@@ -1096,7 +1091,7 @@ var Game = function() {
                         }
                     }
                     if(suena){
-                        window.menu_audio.play();
+                        w.menu_audio_.play();
                     }
 
 
@@ -1195,7 +1190,7 @@ var Game = function() {
     this.mueve_menu_ = function (abajo) {
 
         //aal moverme por el menu, hago sonar un sonidico
-        window.menu_audio.play();
+        w.menu_audio_.play();
 
         //cambio el modo
         if(abajo){
@@ -1208,7 +1203,7 @@ var Game = function() {
 
     this.mueve_selec_player_ = function (player1, dir) {
 
-        window.menu_audio.play();
+        w.menu_audio_.play();
         if(player1 || this.modo_ == 1){
             switch(dir) {
                 case "up":  
@@ -1261,7 +1256,7 @@ var Game = function() {
     }
 
     this.selecciona_menu_ = function () {
-        window.menu_audio.play();
+        w.menu_audio_.play();
         this.modo_seleccionado_ = true;
         this.numero_jugadores_ = this.modo_;
 
@@ -1281,7 +1276,7 @@ var Game = function() {
         
         if(!player1){
             this.player2_selected_ = true;
-            player_pinta = this.player2_tipo_;
+            player_pinta_ = this.player2_tipo_;
             color = this.COLOR_.PURPLE;
         }
         else{
@@ -1303,21 +1298,21 @@ var Game = function() {
         }
         
         
-        window.ataque_audio.play();
+        w.ataque_audio_.play();
     }
     
 
 
     this.setup_ = function() {
 
-        this.player_ = new Player(this, ancho_total_ + 20, 20, 800, 60000, 1, false, this.player1_tipo_);
+        this.player_ = new Player(this, this.ancho_total_ + 20, 20, 800, 60000, 1, false, this.player1_tipo_);
         var cpu = true;
         var tipo2 = false;
         if(this.modo_ == 2){
             cpu = false;
             tipo2 = this.player2_tipo_;
         }
-        this.player2_ = new Player(this, ancho_total_ - 120, 20, 800, 60000, 2, cpu, tipo2);
+        this.player2_ = new Player(this, this.ancho_total_ - 120, 20, 800, 60000, 2, cpu, tipo2);
 
         cuerda = new Cuerda(this);
 
@@ -1382,7 +1377,7 @@ var Game = function() {
             [ 1, 1, 1, 1, 1],
             [  ,  , 1,  ,  ]
     ];
-    this.flecha_abj =  [
+    this.flecha_abj_ =  [
             [  ,  , 1,  ,  ],
             [ 1, 1, 1, 1, 1],
             [  , 1, 1, 1,  ],
@@ -1443,17 +1438,17 @@ var Game = function() {
     this.player2_selected_ = false;
 
     /*
-    ancho_total_ = 840,
-    alto_total_  = 600,
+    this.ancho_total_ = 840,
+    this.alto_total_  = 600,
     */
-    if(window.innerWidth < 820){
-        ancho_total_ = window.innerWidth * 2,
-        alto_total_  = window.innerHeight * 2;
+    if(w.innerWidth < 820){
+        this.ancho_total_ = w.innerWidth * 2,
+        this.alto_total_  = w.innerHeight * 2;
 
     }
     else{
-        ancho_total_ = window.innerWidth,
-        alto_total_  = window.innerHeight;
+        this.ancho_total_ = w.innerWidth,
+        this.alto_total_  = w.innerHeight;
     }
 
     
@@ -1478,13 +1473,13 @@ var Game = function() {
 
     this.fps_            = 60,
     this.step_           = 1/this.fps_,
-    this.fpsInterval     = 1000 / this.fps_;
+    this.fpsInterval_     = 1000 / this.fps_;
 
 
     this.canvas_         = document.getElementById('canvas'),
     this.ctx            = this.canvas_.getContext('2d'),
-    this.canvas_.width  = ancho_total_,
-    this.canvas_.height = alto_total_,
+    this.canvas_.width  = this.ancho_total_,
+    this.canvas_.height = this.alto_total_,
     
     
     this.hay_muerte_      = false, //Aqui voy a controlar cuando se mate a alguien

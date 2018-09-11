@@ -181,7 +181,7 @@ var CPlayer = function() {
 
         // Clear effect state
         var low = 0, band = 0, high;
-        var lsample, filterActive = false;
+        var lsample, filterequestAnimationFramective = false;
 
         // Clear note cache.
         var noteCache = [];
@@ -244,7 +244,7 @@ var CPlayer = function() {
                     rsample = chnBuf[k];
 
                     // We only do effects if we have some sound input
-                    if (rsample || filterActive) {
+                    if (rsample || filterequestAnimationFramective) {
                         // State variable filter
                         f = fxFreq;
                         if (fxLFO) {
@@ -267,7 +267,7 @@ var CPlayer = function() {
                         rsample *= drive;
 
                         // Is the filter active (i.e. still audiable)?
-                        filterActive = rsample * rsample > 1e-5;
+                        filterequestAnimationFramective = rsample * rsample > 1e-5;
 
                         // Panning
                         t = Math.sin(panFreq * k) * panAmt + 0.5;

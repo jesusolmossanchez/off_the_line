@@ -17,39 +17,39 @@ var Music = function(juego, mobile, engine) {
         var ataque_player = new CPlayer();
         ataque_player.init(ataque);
         var flag_ataque = false;
-        window.ataque_audio;
+        w.ataque_audio_;
 
         
         var bloqueo_player = new CPlayer();
         bloqueo_player.init(bloqueo);
         var flag_bloqueo = false;
-        window.bloqueo_audio;
+        w.bloqueo_audio_;
 
         
         var ostia_player = new CPlayer();
         ostia_player.init(ostia);
         var flag_ostia = false;
-        window.ostia_audio;
+        w.ostia_audio_;
         
         var ostia_final_player = new CPlayer();
         ostia_final_player.init(ostia_final);
         var flag_ostia_final = false;
-        window.ostia_final_audio;
+        w.ostia_final_audio_;
         
         var sirena_player = new CPlayer();
         sirena_player.init(sirena);
         var flag_sirena = false;
-        window.sirena_audio;
+        w.sirena_audio_;
         
         var viento_player = new CPlayer();
         viento_player.init(viento);
         var flag_viento = false;
-        window.viento_audio;
+        w.viento_audio_;
         
         var menu_player = new CPlayer();
         menu_player.init(menu);
         var flag_menu = false;
-        window.menu_audio;
+        w.menu_audio_;
 
 
         var done = false;
@@ -138,35 +138,35 @@ var Music = function(juego, mobile, engine) {
                 audio.volume = 0.1;
 
                 var wave2 = bloqueo_player.createWave();
-                window.bloqueo_audio = document.createElement("audio");
-                window.bloqueo_audio.src = URL.createObjectURL(new Blob([wave2], {type: "audio/wav"}));
-                window.bloqueo_audio.volume = 1;
+                w.bloqueo_audio_ = document.createElement("audio");
+                w.bloqueo_audio_.src = URL.createObjectURL(new Blob([wave2], {type: "audio/wav"}));
+                w.bloqueo_audio_.volume = 1;
                 
                 var wave3 = ataque_player.createWave();
-                window.ataque_audio = document.createElement("audio");
-                window.ataque_audio.src = URL.createObjectURL(new Blob([wave3], {type: "audio/wav"}));
+                w.ataque_audio_ = document.createElement("audio");
+                w.ataque_audio_.src = URL.createObjectURL(new Blob([wave3], {type: "audio/wav"}));
                 
                 var wave4 = ostia_player.createWave();
-                window.ostia_audio = document.createElement("audio");
-                window.ostia_audio.src = URL.createObjectURL(new Blob([wave4], {type: "audio/wav"}));
+                w.ostia_audio_ = document.createElement("audio");
+                w.ostia_audio_.src = URL.createObjectURL(new Blob([wave4], {type: "audio/wav"}));
                 
                 var wave5 = ostia_final_player.createWave();
-                window.ostia_final_audio = document.createElement("audio");
-                window.ostia_final_audio.src = URL.createObjectURL(new Blob([wave5], {type: "audio/wav"}));
+                w.ostia_final_audio_ = document.createElement("audio");
+                w.ostia_final_audio_.src = URL.createObjectURL(new Blob([wave5], {type: "audio/wav"}));
                 
                 var wave6 = sirena_player.createWave();
-                window.sirena_audio = document.createElement("audio");
-                window.sirena_audio.src = URL.createObjectURL(new Blob([wave6], {type: "audio/wav"}));
+                w.sirena_audio_ = document.createElement("audio");
+                w.sirena_audio_.src = URL.createObjectURL(new Blob([wave6], {type: "audio/wav"}));
 
                 
                 var wave7 = viento_player.createWave();
-                window.viento_audio = document.createElement("audio");
-                window.viento_audio.src = URL.createObjectURL(new Blob([wave7], {type: "audio/wav"}));
+                w.viento_audio_ = document.createElement("audio");
+                w.viento_audio_.src = URL.createObjectURL(new Blob([wave7], {type: "audio/wav"}));
                 
                 
                 var wave8 = menu_player.createWave();
-                window.menu_audio = document.createElement("audio");
-                window.menu_audio.src = URL.createObjectURL(new Blob([wave8], {type: "audio/wav"}));
+                w.menu_audio_ = document.createElement("audio");
+                w.menu_audio_.src = URL.createObjectURL(new Blob([wave8], {type: "audio/wav"}));
                 
             }
         }, 40);

@@ -12,8 +12,8 @@ var Cuerda = function(juego) {
     this.render_ = function(dt, ctx, counter){
         
         //ctx.beginPath();
-        alto_linea = alto_total_/ 1.8;
-        //ctx.moveTo(-10, alto_linea);
+        this.alto_linea_ = juego.alto_total_/ 1.8;
+        //ctx.moveTo(-10, this.alto_linea_);
 
         
         var x1 = juego.player_.x;
@@ -33,25 +33,25 @@ var Cuerda = function(juego) {
             player_mas_alto = juego.player2_.y + juego.player2_.alto_ + this.corrección_bezier_/2;
         }
 
-        var maximo_rebote_1 = Math.max(player_mas_alto, alto_linea - this.max_up_);
-        var maximo_rebote_2 = Math.max(player2_mas_alto, alto_linea - this.max_up_);
+        var maximo_rebote_1 = Math.max(player_mas_alto, this.alto_linea_ - this.max_up_);
+        var maximo_rebote_2 = Math.max(player2_mas_alto, this.alto_linea_ - this.max_up_);
         
 
 
         /*
-        ctx.bezierCurveTo(x1, maximo_rebote_1, x2, maximo_rebote_2, ancho_total_ + 10, alto_linea);
+        ctx.bezierCurveTo(x1, maximo_rebote_1, x2, maximo_rebote_2, juego.ancho_total_ + 10, this.alto_linea_);
         ctx.strokeStyle="#ffffff";
         ctx.lineWidth=4;
         ctx.stroke();
         */
 
         juego.cuerda_ = [];      
-        this.curva_guay(ctx, Math.ceil(-10/4), Math.ceil(alto_linea/4), Math.ceil(x1/4), Math.ceil(maximo_rebote_1/4), Math.ceil(x2/4), Math.ceil(maximo_rebote_2/4), Math.ceil((ancho_total_ + 10)/4), Math.ceil(alto_linea/4));
+        this.curva_guay_(ctx, Math.ceil(-10/4), Math.ceil(this.alto_linea_/4), Math.ceil(x1/4), Math.ceil(maximo_rebote_1/4), Math.ceil(x2/4), Math.ceil(maximo_rebote_2/4), Math.ceil((juego.ancho_total_ + 10)/4), Math.ceil(this.alto_linea_/4));
         
     }
 
     /* CURVA DE BEZIER GUAY */
-    this.curva_guay = function(ctx, x0, y0, x1, y1, x2, y2, x3, y3){
+    this.curva_guay_ = function(ctx, x0, y0, x1, y1, x2, y2, x3, y3){
         var n = 0, i = 0;
         var xc = x0+x1-x2-x3, xa = xc-4*(x1-x2);
         var xb = x0-x1-x2+x3, xd = xb+4*(x1+x2);
@@ -91,12 +91,12 @@ var Cuerda = function(juego) {
            if (fx0 != 0.0) { fx1 *= fx0 = (x0-x3)/fx0; fx2 *= fx0; }
            if (fy0 != 0.0) { fy1 *= fy0 = (y0-y3)/fy0; fy2 *= fy0; }
            if (x0 != x3 || y0 != y3)                            /* segment t1 - t2 */
-              this.plotCubicBezierSeg(ctx, x0,y0, x0+fx1,y0+fy1, x0+fx2,y0+fy2, x3,y3);
+              this.plotCubicBezierSeg_(ctx, x0,y0, x0+fx1,y0+fy1, x0+fx2,y0+fy2, x3,y3);
            x0 = x3; y0 = y3; fx0 = fx3; fy0 = fy3; t1 = t2;
         }
     }
 
-    this.plotCubicBezierSeg = function(ctx, x0, y0, x1, y1, x2, y2, x3, y3){     
+    this.plotCubicBezierSeg_ = function(ctx, x0, y0, x1, y1, x2, y2, x3, y3){     
         var f, fx, fy, leg = 1;
         var sx = x0 < x3 ? 1 : -1, sy = y0 < y3 ? 1 : -1;        /* step direction */
         var xc = -Math.abs(x0+x1-x2-x3), xa = xc-4*sx*(x1-x2), xb = sx*(x0-x1-x2+x3);
@@ -104,11 +104,9 @@ var Cuerda = function(juego) {
         var ab, ac, bc, cb, xx, xy, yy, dx, dy, ex, pxy, EP = 0.01;
                                                       /* check for curve restrains */
         /* slope P0-P1 == P2-P3    and  (P0-P3 == P1-P2      or  no slope change)  */
-        this.assert((x1-x0)*(x2-x3) < EP && ((x3-x0)*(x1-x2) < EP || xb*xb < xa*xc+EP));
-        this.assert((y1-y0)*(y2-y3) < EP && ((y3-y0)*(y1-y2) < EP || yb*yb < ya*yc+EP));
      
         if (xa == 0 && ya == 0)                                /* quadratic Bezier */
-           return this.plotQuadBezierSeg(ctx, x0,y0, (3*x1-x0)>>1,(3*y1-y0)>>1, x3,y3);
+           return this.plotQuadBezierSeg_(ctx, x0,y0, (3*x1-x0)>>1,(3*y1-y0)>>1, x3,y3);
         x1 = (x1-x0)*(x1-x0)+(y1-y0)*(y1-y0)+1;                    /* line lengths */
         x2 = (x2-x3)*(x2-x3)+(y2-y3)*(y2-y3)+1;
      
@@ -133,7 +131,7 @@ var Cuerda = function(juego) {
            dx += xy; ex = dx+dy; dy += xy;                    /* error of 1st step */
      exit: 
            for (pxy = 0, fx = fy = f; x0 != x3 && y0 != y3; ) {
-              this.setPixel(ctx, x0, y0);                                       /* plot curve */
+              this.setPixel_(ctx, x0, y0);                                       /* plot curve */
               do {                                  /* move sub-steps of one pixel */
                  if (pxy == 0) if (dx > xy || dy < xy) break exit;    /* confusing */
                  if (pxy == 1) if (dx > 0 || dy < 0) break exit;         /* values */
@@ -152,16 +150,15 @@ var Cuerda = function(juego) {
            xx = x0; x0 = x3; x3 = xx; sx = -sx; xb = -xb;             /* swap legs */
            yy = y0; y0 = y3; y3 = yy; sy = -sy; yb = -yb; x1 = x2;
         } while (leg--);                                          /* try other end */
-        this.plotLine(ctx, x0,y0, x3,y3);       /* remaining part in case of cusp or crunode */
+        this.plotLine_(ctx, x0,y0, x3,y3);       /* remaining part in case of cusp or crunode */
     }
 
 
-    this.plotQuadBezierSeg = function(ctx, x0, y0, x1, y1, x2, y2){
+    this.plotQuadBezierSeg_ = function(ctx, x0, y0, x1, y1, x2, y2){
         var sx = x2-x1, sy = y2-y1;
         var xx = x0-x1, yy = y0-y1, xy;               /* relative values for checks */
         var dx, dy, err, cur = xx*sy-yy*sx;                            /* curvature */
       
-        this.assert(xx*sx <= 0 && yy*sy <= 0);       /* sign of gradient must not change */
       
         if (sx*sx+sy*sy > xx*xx+yy*yy) {                 /* begin with shorter part */
           x2 = x0; x0 = sx+x1; y2 = y0; y0 = sy+y1; cur = -cur;       /* swap P0 P2 */
@@ -177,23 +174,23 @@ var Cuerda = function(juego) {
           dy = 4.0*sx*cur*(y0-y1)+yy-xy;
           xx += xx; yy += yy; err = dx+dy+xy;                     /* error 1st step */
           do {
-            this.setPixel(ctx,x0,y0);                                          /* plot curve */
+            this.setPixel_(ctx,x0,y0);                                          /* plot curve */
             if (x0 == x2 && y0 == y2) return;       /* last pixel -> curve finished */
             y1 = 2*err < dx;                       /* save value for test of y step */
             if (2*err > dy) { x0 += sx; dx -= xy; err += dy += yy; }      /* x step */
             if (    y1    ) { y0 += sy; dy -= xy; err += dx += xx; }      /* y step */
           } while (dy < 0 && dx > 0);        /* gradient negates -> algorithm fails */
         }
-        this.plotLine(ctx, x0,y0, x2,y2);                       /* plot remaining part to end */
+        this.plotLine_(ctx, x0,y0, x2,y2);                       /* plot remaining part to end */
     }
 
-    this.plotLine = function(ctx, x0, y0, x1, y1){
+    this.plotLine_ = function(ctx, x0, y0, x1, y1){
         var dx =  Math.abs(x1-x0), sx = x0<x1 ? 1 : -1;
         var dy = -Math.abs(y1-y0), sy = y0<y1 ? 1 : -1;
         var err = dx+dy, e2;                                   /* error value e_xy */
      
         for (;;){                                                          /* loop */
-           this.setPixel(ctx,x0,y0);
+           this.setPixel_(ctx,x0,y0);
            if (x0 == x1 && y0 == y1) break;
            e2 = 2*err;
            if (e2 >= dy) { err += dy; x0 += sx; }                        /* x step */
@@ -202,20 +199,13 @@ var Cuerda = function(juego) {
     }
 
     
-    this.setPixel = function(ctx, x, y){
+    this.setPixel_ = function(ctx, x, y){
         var zoom = 4;
         //ctx.fillStyle = '#ff0000';
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(x*zoom,y*zoom,zoom,zoom);
         
         juego.cuerda_.push(y*zoom);
-    }
-
-
-    
-    this.assert = function(a){
-        if (!a) console.log("Assertion failed in bresenham.js "+a);
-        return a;
     }
 
     

@@ -5,35 +5,35 @@
 **************************************************/
 var Engine = function(juego, mobile) {
 
-    juego.counter = 0; 
+    juego.counter_ = 0; 
 
     
 
     this.dt = 0;
-    this.now,
+    this.now_,
     this.last = juego.timestamp_();
     this.then_ = juego.timestamp_();
 
     this.frame_ = function(){
 
         //debug start
-        //window.stats.begin();
+        //w.stats.begin();
 
 
         mobile.controla_if_mobile_();
 
-        if(window.innerWidth < 820){
-            ancho_total_ = window.innerWidth * 2,
-            alto_total_  = window.innerHeight * 2;
+        if(w.innerWidth < 820){
+            juego.ancho_total_ = w.innerWidth * 2,
+            juego.alto_total_  = w.innerHeight * 2;
 
         }
         else{
-            ancho_total_ = window.innerWidth,
-            alto_total_  = window.innerHeight;
+            juego.ancho_total_ = w.innerWidth,
+            juego.alto_total_  = w.innerHeight;
         }
         
-        juego.canvas_.width  = ancho_total_;
-        juego.canvas_.height = alto_total_;
+        juego.canvas_.width  = juego.ancho_total_;
+        juego.canvas_.height = juego.alto_total_;
 
         if(!juego.empezado_){
             juego.muestra_menu_(juego.ctx, juego.modo_seleccionado_);
@@ -45,32 +45,32 @@ var Engine = function(juego, mobile) {
             return;
         }
 
-        this.now = juego.timestamp_();
+        this.now_ = juego.timestamp_();
         
-        this.dt = this.dt + Math.min(1, (this.now - this.last) / 1000);
+        this.dt = this.dt + Math.min(1, (this.now_ - this.last) / 1000);
 
         while(this.dt > juego.step_) {
             this.dt = this.dt - juego.step_;
 
-            var elapsed = this.now - this.then_;
+            var elapsed = this.now_ - this.then_;
     
-            if (elapsed > juego.fpsInterval) {
+            if (elapsed > juego.fpsInterval_) {
                 juego.update_(juego.step_);
             }
             
-            this.then_ = this.now - (elapsed % juego.fpsInterval);
-            this.last = this.now;
+            this.then_ = this.now_ - (elapsed % juego.fpsInterval_);
+            this.last = this.now_;
         }
 
 
         juego.pre_shake_();
-        juego.render(juego.ctx, juego.counter, this.dt);
+        juego.render(juego.ctx, juego.counter_, this.dt);
         juego.post_shake_();
         
-        juego.counter++;
+        juego.counter_++;
         
         //debug start
-        //window.stats.end();
+        //w.stats.end();
 
         requestAnimationFrame(this.frame_.bind(this), canvas);
     }   
