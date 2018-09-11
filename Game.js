@@ -412,6 +412,17 @@ var Game = function() {
         ctx.fillStyle= "#0a2830";
         ctx.fillRect(0, alto_total_ /3 , 80, 1500);
         ctx.fillRect(ancho_total_ - 80, alto_total_ / 3, 80, 1500);
+
+        ctx.fillStyle="#ffffff";
+        ctx.fillRect(0, alto_total_/2 - 50, 40, 100);
+        ctx.fillRect(0, alto_total_/2 + 100, 40, 100);
+        ctx.fillRect(0, alto_total_/2 + 250, 40, 100);
+
+        ctx.fillRect(ancho_total_ - 40, alto_total_/2 - 50, 40, 50);
+        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 30, 40, 50);
+        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 110, 40, 50);
+        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 190, 40, 50);
+        ctx.fillRect(ancho_total_ - 40, alto_total_/2 + 270, 40, 50);
     };
     
     this.render_ostiazo_ = function(ctx, dt) {
@@ -1064,21 +1075,28 @@ var Game = function() {
             if(this.modo_ === 2 || this.select_cpu_){
                 
                 var que_pinta2 = this.p2;
+                var suena = false;
                 if(this.select_cpu_){
                     var que_pinta2 = this.cpu_;
                     var diff_select_cpu = this.tiempo_select_cpu_ - this.timestamp_();
                     if(this.ultimo_select_cpu_ < this.timestamp_()){
                         this.player2_tipo_ = Math.floor(Math.random()*(5 - this.level_)) + this.level_;
-                        this.ultimo_select_cpu_ = this.timestamp_() + 150;
+                        
+                        this.ultimo_select_cpu_ = this.timestamp_() + 150 - ((3000-diff_select_cpu)/100);
+                        suena = true;
                     }
                     if(diff_select_cpu < 0){
                         this.player2_tipo_ = this.level_;
+                        suena = false;
                         if(diff_select_cpu < -2000){
                             //console.log("empieza aqui otra vez?")
                             this.setup_();
                             this.empieza_();
                             this.empezado_ = true;
                         }
+                    }
+                    if(suena){
+                        window.menu_audio.play();
                     }
 
 
@@ -1177,7 +1195,7 @@ var Game = function() {
     this.mueve_menu_ = function (abajo) {
 
         //aal moverme por el menu, hago sonar un sonidico
-        window.bloqueo_audio.play();
+        window.menu_audio.play();
 
         //cambio el modo
         if(abajo){
@@ -1190,7 +1208,7 @@ var Game = function() {
 
     this.mueve_selec_player_ = function (player1, dir) {
 
-        window.bloqueo_audio.play();
+        window.menu_audio.play();
         if(player1 || this.modo_ == 1){
             switch(dir) {
                 case "up":  
@@ -1243,7 +1261,7 @@ var Game = function() {
     }
 
     this.selecciona_menu_ = function () {
-        window.ataque_audio.play();
+        window.menu_audio.play();
         this.modo_seleccionado_ = true;
         this.numero_jugadores_ = this.modo_;
 

@@ -45,6 +45,11 @@ var Music = function(juego, mobile, engine) {
         viento_player.init(viento);
         var flag_viento = false;
         window.viento_audio;
+        
+        var menu_player = new CPlayer();
+        menu_player.init(menu);
+        var flag_menu = false;
+        window.menu_audio;
 
 
         var done = false;
@@ -110,10 +115,16 @@ var Music = function(juego, mobile, engine) {
                 }
             }
             
+            if(!flag_menu){
+                if(menu_player.generate() >= 1){
+                    flag_menu = true;
+                }
+            }
+            
             
             
 
-            done = (flag_song && flag_bloqueo && flag_ataque && flag_ostia && flag_ostia_final && flag_sirena && flag_viento);
+            done = (flag_song && flag_bloqueo && flag_ataque && flag_ostia && flag_ostia_final && flag_sirena && flag_viento && flag_menu);
 
             if (done) {
 
@@ -151,6 +162,11 @@ var Music = function(juego, mobile, engine) {
                 var wave7 = viento_player.createWave();
                 window.viento_audio = document.createElement("audio");
                 window.viento_audio.src = URL.createObjectURL(new Blob([wave7], {type: "audio/wav"}));
+                
+                
+                var wave8 = menu_player.createWave();
+                window.menu_audio = document.createElement("audio");
+                window.menu_audio.src = URL.createObjectURL(new Blob([wave8], {type: "audio/wav"}));
                 
             }
         }, 40);
