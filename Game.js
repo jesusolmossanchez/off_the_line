@@ -343,6 +343,18 @@ var Game = function() {
 
     };
 
+    
+    this.pinta_play_again_ = function(ctx) {
+        
+        this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 170, this.alto_total_ - 100, this.play_again_ , this.marcador_size_ * 2);
+        
+        ctx.strokeStyle="#ffffff";
+        ctx.lineWidth=10;
+        ctx.strokeRect(this.ancho_total_/2 - 190, this.alto_total_ - 120, 400, 80);
+
+        document.getElementById("p_a").style.zIndex = 9;
+    };
+
     this.siguiente_oponente_ = function(ctx){
         this.pinta_filas_columnas_(ctx, this.ancho_total_/2 - 330, 250, this.you_win_, this.marcador_size_ * 4);
 
@@ -694,15 +706,15 @@ var Game = function() {
         this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[this.numero_], size_cuenta_atras);
 
         if(this.modo_ == 1){
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.RED_);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.RED_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.colors_1_2_[1]);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.colors_1_2_[1]);
         }
         else{
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.RED_);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.RED_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.colors_1_2_[1]);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.colors_1_2_[1]);
 
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.BLUE_);
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.BLUE_);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.colors_1_2_[2]);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.colors_1_2_[2]);
 
         }
         
@@ -1150,12 +1162,12 @@ var Game = function() {
 
                 var x_p2 = x_selec_player + 320;
                 var y_p2 = y_selec_player - 30;
-                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.BLUE_);
-                ctx.strokeStyle = this.COLOR_.BLUE_;
+                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.colors_1_2_[2]);
+                ctx.strokeStyle = this.colors_1_2_[2];
                 ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 if(this.player2_selected_){
                     this.ctx_.globalAlpha = 0.5;
-                    this.ctx_.fillStyle = this.COLOR_.BLUE_;
+                    this.ctx_.fillStyle = this.colors_1_2_[2];
                     this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     this.ctx_.globalAlpha = 1.0;
                 }
@@ -1182,14 +1194,14 @@ var Game = function() {
             var x_p1 = x_selec_player + 15;
             var y_p1 = y_selec_player - 30;
 
-            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.RED_);
-            ctx.strokeStyle = this.COLOR_.RED_;
+            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.colors_1_2_[1]);
+            ctx.strokeStyle = this.colors_1_2_[1];
             ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
 
 
             if(this.player1_selected_){
                 this.ctx_.globalAlpha = 0.5;
-                this.ctx_.fillStyle = this.COLOR_.RED_;
+                this.ctx_.fillStyle = this.colors_1_2_[1];
                 this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 this.ctx_.globalAlpha = 1.0;
             }
@@ -1291,7 +1303,7 @@ var Game = function() {
         if(!player1){
             this.player2_selected_ = true;
             player_pinta_ = this.player2_tipo_;
-            color = this.COLOR_.BLUE_;
+            color = this.colors_1_2_[2];
         }
         else{
             this.player1_selected_ = true;
@@ -1434,6 +1446,15 @@ var Game = function() {
         ];
 
 
+    this.play_again_=  [           
+            [1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  , 1,  ,  , 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1, 1,  ,  , 1],
+            [1, 1,  , 1,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  ,  ,  ,  , 1, 1,  , 1,  ,  ,  ,  , 1, 1, 1,  , 1],
+            [1, 1, 1, 1,  , 1, 1,  ,  ,  , 1, 1, 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1, 1, 1, 1,  , 1,  , 1, 1,  , 1, 1, 1, 1,  , 1, 1,  , 1, 1,  , 1, 1],
+            [1, 1,  ,  ,  , 1, 1,  ,  ,  , 1, 1,  , 1,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1,  ,  , 1,  , 1, 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1],
+            [1, 1,  ,  ,  , 1, 1, 1, 1,  , 1, 1,  , 1,  ,  , 1, 1,  ,  ,  ,  , 1, 1,  , 1,  , 1, 1, 1, 1,  , 1, 1,  , 1,  , 1, 1,  , 1, 1,  ,  , 1]
+    ];
+
+
     this.ancho_selec_player_ = 370;
     this.alto_selec_player_ = 140;
 
@@ -1480,10 +1501,14 @@ var Game = function() {
                       GREY_: '#333', 
                       SLATE_: '#53777A', 
                       GOLD_: 'gold',
-                      RED_: '#ff0000'
+                      RED_: '#ff0000' 
                   },
 
+    this.colors_1_2_    = [],
+    this.colors_1_2_[1]    = "#cdcb11",
+    this.colors_1_2_[2]    = "#56248a",
     this.player_colors_    = [],
+    /*
     this.player_colors_[1]   = {
         cabeza_: '#F5E5FC',
         cuerpo_: '#8AE1FC',
@@ -1504,6 +1529,27 @@ var Game = function() {
         cuerpo_: '#EEDDCC',
         pies_: '#EE1111',
     },
+    */
+    this.player_colors_[1]   = {
+        cabeza_: '#f7cb60',
+        cuerpo_: '#6bfc64',
+        pies_: '#06b131',
+    },
+    this.player_colors_[2]   = {
+        cabeza_: '#ffffae',
+        cuerpo_: '#31deff',
+        pies_: '#2194e8',
+    },
+    this.player_colors_[4]   = {
+        cabeza_: '#4e3902',
+        cuerpo_: '#fd662d',
+        pies_: '#e8690c',
+    },
+    this.player_colors_[3]   = {
+        cabeza_: '#eab49b',
+        cuerpo_: '#eef347',
+        pies_: '#ffb604',
+    }
    
     this.KEY_      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
       

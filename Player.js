@@ -78,7 +78,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
                 this.color_             = juego.COLOR_.PURPLE_;
                 break;
             case 4:
-                this.maxdx_             = 250 * 0.7;
+                this.maxdx_             = 250 * 0.9;
                 this.maxdy_             = 800 * 0.7;
                 this.pow_               = 15;
                 this.delay_ostiazo_     = 500;
@@ -545,7 +545,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         if(this.dx > 0 
             && (this.x + this.ancho_*1.5 >= player_contrario.x)
             && (this.x < player_contrario.x)
-            && (this.y > player_contrario.y - this.alto_)
+            && (this.y > player_contrario.y - this.alto_/2)
             && (this.y < player_contrario.y + this.alto_*2)
         ){
             this.dx = 0;
@@ -553,7 +553,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         if(this.dx < 0
             &&(this.x <= player_contrario.x + this.ancho_*1.5)
             &&(this.x > player_contrario.x)
-            && (this.y > player_contrario.y - this.alto_)
+            && (this.y > player_contrario.y - this.alto_/2)
             && (this.y < player_contrario.y + this.alto_*2)
         ){
             this.dx = 0;
@@ -1076,7 +1076,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         
         //palo
         //juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, "#ff0000");
-        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, juego.COLOR_.BLACK_);
+        
+        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, juego.colors_1_2_[this.player_num_]);
         
        
 
@@ -1122,23 +1123,22 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             }
             else{
                 juego.game_over_(ctx);
+                juego.pinta_play_again_(ctx);
             }
         }
 
-        var opacidad = 1;
-        
-        ctx.fillStyle="rgba(11, 204, 0, "+opacidad+")";
+        ctx.fillStyle="rgb(11,204,0)";
         if(percent < 0.8){
-            ctx.fillStyle="rgba(224, 239, 20, "+opacidad+")";
+            ctx.fillStyle="rgb(224,239,20)";
         }
         if(percent < 0.6){
-            ctx.fillStyle="rgba(204, 199, 0, "+opacidad+")";
+            ctx.fillStyle="rgb(204,199,0)";
         }
         if(percent < 0.4){
-            ctx.fillStyle="rgba(239, 92, 20, "+opacidad+")";
+            ctx.fillStyle="rgb(239,92,20)";
         }
         if(percent < 0.2){
-            ctx.fillStyle="rgba(255, 0, 0, "+opacidad+")";
+            ctx.fillStyle="rgb(255,0,0)";
         }
 
         var y_vida = 50;
@@ -1147,10 +1147,11 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             x_vida = juego.ancho_total_ - 50 - ancho_cargador;
         }
 
+        
         ctx.fillRect(x_vida, y_vida, percent * ancho_cargador, alto_cargador);
 
-        ctx.strokeStyle = "rgba(255,255,255,"+opacidad+")";
-        ctx.lineWidth = 5;
+        ctx.strokeStyle = juego.colors_1_2_[this.player_num_];
+        ctx.lineWidth = 8;
         ctx.strokeRect(x_vida, y_vida, ancho_cargador, alto_cargador);
 
 
@@ -1169,16 +1170,28 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
         var percent_salto = 0.99;
         //Cambia posicion X
-        if(Math.random() > 0.95){
-            if(distancia > 100){
-                percent_salto = 0.94;
+        if(Math.random() > 0.96){
+            if(distancia > this.ancho_ + 200){
                 this.left = true;
                 this.right = false;
             }
-            if(distancia < -40){
-                percent_salto = 0.94;
+            else if(distancia < -1 * (this.ancho_ + 200)){
                 this.right = true;
                 this.left = false;
+            }
+            else{
+                if(Math.random() > 0.5){
+                    if(distancia<0){
+                        this.right = true;
+                        this.left = false;
+                        percent_salto = 0.2;
+                    }
+                    else{
+                        this.left = true;
+                        this.right = false;
+                        percent_salto = 0.2;
+                    }
+                }
             }
         }
         if(Math.random() > percent_salto){
@@ -1231,7 +1244,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             if(Math.random()<0.7){
                 this.accion = true;
             }
-            this.tiempo_next_ostiazo_ = juego.timestamp_() + Math.random()*(5-juego.level_)*400;
+            this.tiempo_next_ostiazo_ = juego.timestamp_() + Math.random()*(5-juego.level_)*200;
         }
         else{
             this.accion = false;

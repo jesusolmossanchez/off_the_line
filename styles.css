@@ -76,3 +76,16 @@ body {
     pointer-events: none;
     opacity: 0.35;
 }
+#p_a{
+    position: absolute;
+    bottom: 40px;
+    width: 420px;
+    height: 88px;
+    left: calc(50% - 200px);
+    z-index: -1;
+}
+
+
+
+
+

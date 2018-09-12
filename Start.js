@@ -47,6 +47,8 @@
 
     document.addEventListener("visibilitychange", handleVisibilityChange, false);
     /* Fin control de pestaña actual */
-
+    document.getElementById('p_a').addEventListener('click', function(e){ 
+        location.reload();
+    });
 
 })();
