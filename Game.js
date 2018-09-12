@@ -452,14 +452,14 @@ var Game = function() {
     };
 
     this.suena_sirena_ = function(){
-        var random = Math.random()*20000;
+        var random = Math.random()*40000;
         w.sirena_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_sirena_()},random);
     }
 
     this.suena_viento_ = function(){
-        var random = Math.random()*25000;
+        var random = Math.random()*20000;
         w.viento_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_viento_()},random);

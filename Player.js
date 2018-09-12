@@ -498,8 +498,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         //Comprobación que no pasa de limite a la derecha
         if(this.dx > 0 && 
             (this.x + this.ancho_ >= (juego.ancho_total_ - 80) && (this.y + this.alto_ - 40 > juego.alto_total_/3))){ //Comprobación de si está fuera de la pantalla
-                console.log(this.y + this.alto_)
-                console.log("ed", juego.alto_total_/3)
             this.x = juego.ancho_total_ - this.ancho_ - 80;
             this.dx = 0;
         }
@@ -525,12 +523,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
                     this.dy = - this.dy/3;
                     this.tiempo_enfadado_ = juego.timestamp_();
                     this.jumping_ = false;
-                    /*
-                    var seft = this;
-                    setTimeout(function(){
-                        seft.jumping_ = false;
-                        },200);
-                        */
                     this.y = juego.alto_total_ /3 - this.alto_;
                 }
             }
