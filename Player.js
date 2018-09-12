@@ -58,26 +58,30 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
     this.maxdx_             = 250;
     this.maxdy_             = 800;
-    this.pow_               = 8;
+    this.pow_               = 12;
+    this.delay_ostiazo_     = 300;
 
     this.cambia_tipo_ = function(tipo) {
         switch (tipo){
             case 2:
-                this.maxdx_             = 250 * 1.5;
-                this.maxdy_             = 800 * 1.5;
-                this.pow_               = 3;
+                this.maxdx_             = 250 * 1.4;
+                this.maxdy_             = 800 * 1.4;
+                this.pow_               = 6;
+                this.delay_ostiazo_     = 200;
                 this.color_             = juego.COLOR_.PINK_;
                 break;
             case 3:
                 this.maxdx_             = 250 * 2;
                 this.maxdy_             = 800 * 0.8;
-                this.pow_               = 4;
+                this.pow_               = 8;
+                this.delay_ostiazo_     = 150;
                 this.color_             = juego.COLOR_.PURPLE_;
                 break;
             case 4:
                 this.maxdx_             = 250 * 0.7;
                 this.maxdy_             = 800 * 0.7;
                 this.pow_               = 15;
+                this.delay_ostiazo_     = 500;
                 this.color_             = juego.COLOR_.GOLD_;
                 break;
         }
@@ -418,7 +422,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         
             //Si se pulsa acción
             if(this.accion){
-                if ((juego.timestamp_() > this.tiempo_enfadado_ + 300)
+                if ((juego.timestamp_() > this.tiempo_enfadado_ + this.delay_ostiazo_)
                     && juego.timestamp_() > this.tiempo_ostiazo_ + 100){
 
                         var mas_enfado = 0;
@@ -521,7 +525,6 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             if(this.x <= 70 || (this.x + this.ancho_ >= (juego.ancho_total_ - 70))){
                 if(this.dy > 0){
                     this.dy = - this.dy/3;
-                    this.tiempo_enfadado_ = juego.timestamp_();
                     this.jumping_ = false;
                     this.y = juego.alto_total_ /3 - this.alto_;
                 }
@@ -815,13 +818,14 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         if(this.estoy_muerto_){
             
             que_cabeza = 1;
-            mas_menos_cabeza_x = 5;
-            cabeza_golpe = 1 * this.block_size_;
+            mas_menos_cabeza_x = 1;
+            
+            cabeza_golpe = 0;
 
             que_cuerpo = 0;
             pos_cuerpo = "golpe"
             que_pie = 5;
-            mas_abajo = 2 * this.block_size_;
+            mas_abajo = 0;
             rotacion = -25 * Math.PI / 180;
         }
         else if(this.jumping_){
@@ -1033,18 +1037,20 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         //juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, this.color_);
         juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, juego.player_colors_[this.tipo_].cuerpo_);
         
-        
+        var r_cabeza = 0;
         if(this.tiempo_ostiazo_ > juego.timestamp_()){
-            ctx.rotate(20 * Math.PI / 180);
+            r_cabeza = 20;
         }
+        if(this.estoy_muerto_){
+            r_cabeza = -20;
+        }
+        ctx.rotate(r_cabeza * Math.PI / 180);
 
         //CABEZA
         //juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  this.color_);
         juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  juego.player_colors_[this.tipo_].cabeza_);
         
-        if(this.tiempo_ostiazo_ > juego.timestamp_()){
-            ctx.rotate(-20 * Math.PI / 180);
-        }
+        ctx.rotate(r_cabeza*(-1) * Math.PI / 180);
         
         //PIES
         //juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), this.pies_[que_pie], this.block_size_, this.color_);
@@ -1111,7 +1117,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             juego.tiempo_shacke_ = juego.timestamp_() + 500;
             juego.intensidad_shacke_ = 20;
             juego.fpsInterval_     = 1000 / 20;
-            if(juego.modo_ == 1 && juego.level_ < 4){
+            if(juego.modo_ == 1 && juego.level_ < 4 && this.player_num_ != 1){
                 juego.siguiente_oponente_(ctx);
             }
             else{
@@ -1161,18 +1167,21 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
     this.cpu_ai_ = function() {
         var distancia = this.x - juego.player_.x;
 
+        var percent_salto = 0.99;
         //Cambia posicion X
-        if(Math.random() > 0.98){
+        if(Math.random() > 0.95){
             if(distancia > 100){
+                percent_salto = 0.94;
                 this.left = true;
                 this.right = false;
             }
-            if(distancia < 40){
+            if(distancia < -40){
+                percent_salto = 0.94;
                 this.right = true;
                 this.left = false;
             }
         }
-        if(Math.random() > 0.99){
+        if(Math.random() > percent_salto){
             this.jump_ = true;
         }
         else{
@@ -1219,10 +1228,10 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
         //Mete ostiazo
         if(this.tiempo_next_ostiazo_ < juego.timestamp_() && Math.abs(distancia) < 150){
-            if(Math.random()<0.8){
+            if(Math.random()<0.7){
                 this.accion = true;
             }
-            this.tiempo_next_ostiazo_ = juego.timestamp_() + Math.random()*(5-juego.level_)*500;
+            this.tiempo_next_ostiazo_ = juego.timestamp_() + Math.random()*(5-juego.level_)*400;
         }
         else{
             this.accion = false;

@@ -378,6 +378,7 @@ var Game = function() {
         //Renderizo los objetos
         this.render_paisaje_(ctx, dt);
 
+        //this.muestra_logo_(ctx);
         
         if(this.tiempo_cuenta_atras_ > this.timestamp_()){
             this.pinta_cuenta_atras_(ctx);
