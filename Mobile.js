@@ -100,6 +100,10 @@ var Mobile = function(juego) {
             });
 
             document.getElementById('ac_m').addEventListener('touchstart', function(e){ 
+                if(!juego.musica_sonando_){
+                    w.musica_principal.play();
+                    juego.musica_sonando_ = true;
+                }
                 if(juego.empezado_){
                     juego.player_.accion = true;
                 }

@@ -15,6 +15,12 @@ var Game = function() {
     };
 
     this.onkey_ = function(ev, key, down) {
+
+        if(!this.musica_sonando_){
+            w.musica_principal.play();
+            this.musica_sonando_ = true;
+        }
+
         switch(key) {
             case this.KEY_.LEFT:  
                 ev.preventDefault(); 
@@ -460,8 +466,13 @@ var Game = function() {
     }
 
     this.render_paisaje_ = function(ctx, dt) {
+        
+        var varia = 0;
+        if(this.counter_){
+            varia = this.counter_/100;
+        }
 
-        var alto_luz = this.alto_total_/4 + this.counter_/100;
+        var alto_luz = this.alto_total_/4 + varia;
     
 
         var grd=ctx.createLinearGradient(0, 0, 0 , alto_luz);
@@ -470,8 +481,8 @@ var Game = function() {
         ctx.fillStyle=grd;
         ctx.fillRect(0,0,this.ancho_total_,this.alto_total_);
         
-        var x_sol = -350 + this.counter_/100;
-        var y_sol = -150 + this.counter_/100;
+        var x_sol = -350 + varia;
+        var y_sol = -150 + varia;
         var w_sol = 60;
         var h_sol_line = 15;
         //SOL
@@ -682,15 +693,15 @@ var Game = function() {
         this.pinta_filas_columnas_(ctx, x_logo, y_logo, numeros[this.numero_], size_cuenta_atras);
 
         if(this.modo_ == 1){
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW_);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.RED_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.RED_);
         }
         else{
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.YELLOW_);
-            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.YELLOW_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2, this.player_.y - 50, this.p1 , 3, this.COLOR_.RED_);
+            this.pinta_filas_columnas_(ctx, this.player_.x + this.player_.ancho_/2 + 5, this.player_.y - 30, this.triangulin_ , 3, this.COLOR_.RED_);
 
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.PURPLE_);
-            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.PURPLE_);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 15, this.player2_.y - 50, this.p2 , 3, this.COLOR_.BLUE_);
+            this.pinta_filas_columnas_(ctx, this.player2_.x + this.player2_.ancho_/2 - 10, this.player2_.y - 30, this.triangulin_ , 3, this.COLOR_.BLUE_);
 
         }
         
@@ -713,6 +724,7 @@ var Game = function() {
         var x_logo = this.ancho_total_/2 - (size_logo_px * logo[0].length)/2;
         var y_logo = this.alto_total_/4;
 
+        //this.render_paisaje_(ctx);
         this.pinta_filas_columnas_(ctx, x_logo, y_logo, logo, size_logo_px);
         
     };
@@ -830,7 +842,7 @@ var Game = function() {
             this.y_selector_player_1_ = this.alto_total_ / 4;
             
             this.x_selector_player_2_ = this.ancho_total_ / 2.3 + 6*35;
-            this.y_selector_player_2_ = this.alto_total_ / 2;
+            this.y_selector_player_2_ = this.alto_total_ / 1.8;
 
             var fake_player = new Player(this, this.x_selector_player_1_ - 85, this.y_selector_player_1_ + 10, 0, 60000, 1, false, 1, 4);
 
@@ -1137,12 +1149,12 @@ var Game = function() {
 
                 var x_p2 = x_selec_player + 320;
                 var y_p2 = y_selec_player - 30;
-                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.PURPLE_);
-                ctx.strokeStyle = this.COLOR_.PURPLE_;
+                this.pinta_filas_columnas_(ctx, x_p2, y_p2, que_pinta2, 4, this.COLOR_.BLUE_);
+                ctx.strokeStyle = this.COLOR_.BLUE_;
                 ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 if(this.player2_selected_){
                     this.ctx_.globalAlpha = 0.5;
-                    this.ctx_.fillStyle = this.COLOR_.PURPLE_;
+                    this.ctx_.fillStyle = this.COLOR_.BLUE_;
                     this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                     this.ctx_.globalAlpha = 1.0;
                 }
@@ -1169,14 +1181,14 @@ var Game = function() {
             var x_p1 = x_selec_player + 15;
             var y_p1 = y_selec_player - 30;
 
-            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.YELLOW_);
-            ctx.strokeStyle = this.COLOR_.YELLOW_;
+            this.pinta_filas_columnas_(ctx, x_p1, y_p1, this.p1, 4, this.COLOR_.RED_);
+            ctx.strokeStyle = this.COLOR_.RED_;
             ctx.strokeRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
 
 
             if(this.player1_selected_){
                 this.ctx_.globalAlpha = 0.5;
-                this.ctx_.fillStyle = this.COLOR_.YELLOW_;
+                this.ctx_.fillStyle = this.COLOR_.RED_;
                 this.ctx_.fillRect(x_selec_player, y_selec_player, this.ancho_selec_player_, this.alto_selec_player_);
                 this.ctx_.globalAlpha = 1.0;
             }
@@ -1277,7 +1289,7 @@ var Game = function() {
         if(!player1){
             this.player2_selected_ = true;
             player_pinta_ = this.player2_tipo_;
-            color = this.COLOR_.PURPLE_;
+            color = this.COLOR_.BLUE_;
         }
         else{
             this.player1_selected_ = true;
@@ -1462,10 +1474,34 @@ var Game = function() {
                       BRICK_: '#D95B43', 
                       PINK_: '#C02942', 
                       PURPLE_: '#542437', 
+                      BLUE_: '#0808b1', 
                       GREY_: '#333', 
                       SLATE_: '#53777A', 
-                      GOLD_: 'gold'
+                      GOLD_: 'gold',
+                      RED_: '#ff0000'
                   },
+
+    this.player_colors_    = [],
+    this.player_colors_[1]   = {
+        cabeza_: '#F5E5FC',
+        cuerpo_: '#8AE1FC',
+        pies_: '#48B8D0',
+    },
+    this.player_colors_[2]   = {
+        cabeza_: '#C1D7AE',
+        cuerpo_: '#8CC084',
+        pies_: '#968E85',
+    },
+    this.player_colors_[3]   = {
+        cabeza_: '#D89A9E',
+        cuerpo_: '#C37D92',
+        pies_: '#846267',
+    },
+    this.player_colors_[4]   = {
+        cabeza_: '#221100',
+        cuerpo_: '#EEDDCC',
+        pies_: '#EE1111',
+    },
    
     this.KEY_      = { ENTER: 13, SHIFT: 16, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, Z: 90, X: 88, R: 82, D: 68, F: 70, G: 71 },
       

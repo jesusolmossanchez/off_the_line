@@ -28,6 +28,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
     this.estoy_muerto_     = false;
 
+    
+
     this.color_ = juego.COLOR_.YELLOW_;
 
     this.tiempo_cambia_posicion_ = juego.timestamp_();
@@ -95,7 +97,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
 
     this.vida_inicial_      = 150;
     if(cpu){
-        this.vida_inicial_      = 300;
+        this.vida_inicial_      = 200;
     }
 
     this.vida_             = this.vida_inicial_;
@@ -495,18 +497,20 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         /** LIMITES DE LA PANTALLA */
         //Comprobación que no pasa de limite a la derecha
         if(this.dx > 0 && 
-            (this.x + this.ancho_ >= (juego.ancho_total_ - 80) && (this.y + this.alto_ > juego.alto_total_ /3))){ //Comprobación de si está fuera de la pantalla
+            (this.x + this.ancho_ >= (juego.ancho_total_ - 80) && (this.y + this.alto_ - 40 > juego.alto_total_/3))){ //Comprobación de si está fuera de la pantalla
+                console.log(this.y + this.alto_)
+                console.log("ed", juego.alto_total_/3)
             this.x = juego.ancho_total_ - this.ancho_ - 80;
             this.dx = 0;
         }
         //Comprobación que no pasa de limite a la izquierda
-        if(this.dx < 0 && (this.x <= 80 && (this.y + this.alto_ > juego.alto_total_ /3))){
+        if(this.dx < 0 && (this.x <= 80 && (this.y + this.alto_ - 40 > juego.alto_total_ /3))){
             this.x = 80;
             this.dx = 0;
         }
         if(this.x >= juego.ancho_total_ - this.ancho_){
             var ed_cerca = 0;
-            if(this.y + this.alto_ > juego.alto_total_ /3){
+            if(this.y + this.alto_ - 40 > juego.alto_total_ /3){
                 ed_cerca = 80;
             }
             this.x = juego.ancho_total_ - this.ancho_ - ed_cerca;
@@ -515,17 +519,19 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
             this.x = 0;
         }
 
-
-        if(this.y + this.alto_ < juego.alto_total_ /3 && this.y > 0){
+        if(this.y + this.alto_ > juego.alto_total_ /3 && this.dy > 0){
             if(this.x <= 70 || (this.x + this.ancho_ >= (juego.ancho_total_ - 70))){
                 if(this.dy > 0){
                     this.dy = - this.dy/3;
                     this.tiempo_enfadado_ = juego.timestamp_();
+                    this.jumping_ = false;
+                    /*
                     var seft = this;
                     setTimeout(function(){
                         seft.jumping_ = false;
                         },200);
-                    this.y = juego.alto_total_ /3 - this.alto_ - 1;
+                        */
+                    this.y = juego.alto_total_ /3 - this.alto_;
                 }
             }
         }
@@ -1032,7 +1038,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         
 
         //CUERPO
-        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, this.color_);
+        //juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, this.color_);
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 6) + mas_abajo + idle_movimiento2, this.cuerpo_[pos_cuerpo][que_cuerpo], this.block_size_, juego.player_colors_[this.tipo_].cuerpo_);
         
         
         if(this.tiempo_ostiazo_ > juego.timestamp_()){
@@ -1040,14 +1047,16 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         }
 
         //CABEZA
-        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  this.color_);
+        //juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  this.color_);
+        juego.pinta_filas_columnas_(ctx, x_player + (this.block_size_ * 0) - (mas_menos_cabeza_x * this.block_size_/2), y_player + (this.block_size_ * 1) - this.alto_/2 + mas_abajo + idle_movimiento + cabeza_golpe, this.cabeza_[que_cabeza], this.block_size_,  juego.player_colors_[this.tipo_].cabeza_);
         
         if(this.tiempo_ostiazo_ > juego.timestamp_()){
             ctx.rotate(-20 * Math.PI / 180);
         }
         
         //PIES
-        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), this.pies_[que_pie], this.block_size_, this.color_);
+        //juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), this.pies_[que_pie], this.block_size_, this.color_);
+        juego.pinta_filas_columnas_(ctx, x_player - this.ancho_/2, y_player - this.alto_/2 + (this.block_size_ * 12), this.pies_[que_pie], this.block_size_, juego.player_colors_[this.tipo_].pies_);
         
         
         if(this.jumping_){
@@ -1068,7 +1077,8 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
         
         
         //palo
-        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, "#ff0000");
+        //juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, "#ff0000");
+        juego.pinta_filas_columnas_(ctx, x_player - (this.block_size_ * corrige_x_palo), y_player - (this.block_size_ * (corrige_y_palo - 1)) + mas_abajo + idle_movimiento2, this.palo_[que_palo], this.block_size_, juego.COLOR_.BLACK_);
         
        
 

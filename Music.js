@@ -131,11 +131,14 @@ var Music = function(juego, mobile, engine) {
                 //Cuando todo está OK y antes de limpiar este intervalo, genero un elemento de audio para cada sonido
 
                 var wave = music_player.createWave();
-                var audio = document.createElement("audio");
-                audio.src = URL.createObjectURL(new Blob([wave], {type: "audio/wav"}));
-                audio.loop=true;
-                audio.play();
-                audio.volume = 0.1;
+                w.musica_principal = document.createElement("audio");
+                w.musica_principal.src = URL.createObjectURL(new Blob([wave], {type: "audio/wav"}));
+                w.musica_principal.loop=true;
+                w.musica_principal.volume = 0.1;
+                w.musica_principal.onplay = function() { 
+                    juego.musica_sonando_ = true;
+                };
+                w.musica_principal.play();
 
                 var wave2 = bloqueo_player.createWave();
                 w.bloqueo_audio_ = document.createElement("audio");
