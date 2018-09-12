@@ -718,3 +718,51 @@ var menu = {
   endPattern: 0,  // End pattern
   numChannels: 1  // Number of channels
 };
+
+var menu_ok = {
+  songData: [
+    { // Instrument 0
+      i: [
+      3, // OSC1_WAVEFORM
+      255, // OSC1_VOL
+      128, // OSC1_SEMI
+      0, // OSC1_XENV
+      1, // OSC2_WAVEFORM
+      154, // OSC2_VOL
+      128, // OSC2_SEMI
+      9, // OSC2_DETUNE
+      0, // OSC2_XENV
+      0, // NOISE_VOL
+      7, // ENV_ATTACK
+      5, // ENV_SUSTAIN
+      52, // ENV_RELEASE
+      0, // ARP_CHORD
+      0, // ARP_SPEED
+      2, // LFO_WAVEFORM
+      131, // LFO_AMT
+      4, // LFO_FREQ
+      1, // LFO_FX_FREQ
+      3, // FX_FILTER
+      255, // FX_FREQ
+      0, // FX_RESONANCE
+      0, // FX_DIST
+      32, // FX_DRIVE
+      47, // FX_PAN_AMT
+      3, // FX_PAN_FREQ
+      124, // FX_DELAY_AMT
+      6 // FX_DELAY_TIME
+      ],
+      // Patterns
+      p: [1],
+      // Columns
+      c: [
+        {n: [152,144,147,152],
+         f: []}
+      ]
+    },
+  ],
+  rowLen: 2756,   // In sample lengths
+  patternLen: 32,  // Rows per pattern
+  endPattern: 0,  // End pattern
+  numChannels: 1  // Number of channels
+};

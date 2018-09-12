@@ -1268,7 +1268,8 @@ var Game = function() {
     }
 
     this.selecciona_menu_ = function () {
-        w.menu_audio_.play();
+        
+        w.menu_ok_audio_.play();
         this.modo_seleccionado_ = true;
         this.numero_jugadores_ = this.modo_;
 
@@ -1310,7 +1311,7 @@ var Game = function() {
         }
         
         
-        w.ataque_audio_.play();
+        w.menu_ok_audio_.play();
     }
     
 

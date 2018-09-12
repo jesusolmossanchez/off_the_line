@@ -50,6 +50,11 @@ var Music = function(juego, mobile, engine) {
         menu_player.init(menu);
         var flag_menu = false;
         w.menu_audio_;
+        
+        var menu_ok_player = new CPlayer();
+        menu_ok_player.init(menu_ok);
+        var flag_menu_ok = false;
+        w.menu_ok_audio_;
 
 
         var done = false;
@@ -121,6 +126,12 @@ var Music = function(juego, mobile, engine) {
                 }
             }
             
+            if(!flag_menu_ok){
+                if(menu_ok_player.generate() >= 1){
+                    flag_menu_ok = true;
+                }
+            }
+            
             
             
 
@@ -170,6 +181,12 @@ var Music = function(juego, mobile, engine) {
                 var wave8 = menu_player.createWave();
                 w.menu_audio_ = document.createElement("audio");
                 w.menu_audio_.src = URL.createObjectURL(new Blob([wave8], {type: "audio/wav"}));
+                
+                
+                
+                var wave9 = menu_ok_player.createWave();
+                w.menu_ok_audio_ = document.createElement("audio");
+                w.menu_ok_audio_.src = URL.createObjectURL(new Blob([wave9], {type: "audio/wav"}));
                 
             }
         }, 40);
