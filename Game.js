@@ -465,14 +465,14 @@ var Game = function() {
     };
 
     this.suena_sirena_ = function(){
-        var random = Math.random()*40000;
+        var random = Math.random()*60000;
         w.sirena_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_sirena_()},random);
     }
 
     this.suena_viento_ = function(){
-        var random = Math.random()*20000;
+        var random = Math.random()*30000;
         w.viento_audio_.play();
         var self = this;
         setTimeout(function(){self.suena_viento_()},random);
@@ -1108,16 +1108,19 @@ var Game = function() {
                     if(diff_select_cpu < 0){
                         this.player2_tipo_ = this.level_;
                         suena = false;
+                        w.menu_ok_audio_.play();
                         if(diff_select_cpu < -2000){
                             //console.log("empieza aqui otra vez?")
                             this.setup_();
                             this.empieza_();
                             this.empezado_ = true;
+                            
                         }
                     }
                     if(suena){
                         w.menu_audio_.play();
                     }
+                    
 
 
                 }
@@ -1293,6 +1296,8 @@ var Game = function() {
 
     this.selec_player_ = function (player1) {
         
+        w.menu_ok_audio_.currentTime = 0; 
+        w.menu_ok_audio_.play();
         if(!player1 && this.player2_selected_){
             return;
         }
@@ -1323,8 +1328,6 @@ var Game = function() {
             
         }
         
-        
-        w.menu_ok_audio_.play();
     }
     
 
