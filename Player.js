@@ -843,7 +843,7 @@ var Player = function(juego, x, y, gravedad, impulso, player_num, cpu, tipo, blo
                     mas_abajo = 2 * this.block_size_;
                     rotacion = 40 * Math.PI / 180;
                     
-                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 2), y_player - this.alto_/2 + (this.block_size_ * 3), 0, this.block_size_*1.3, "rgba(241,143,1, 0.6)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
+                    var ostia_nueva = new Ostiazo(x_player + (this.block_size_ * 2), y_player - this.alto_/2 + (this.block_size_ * 3), 0, this.block_size_*1.3, "rgba(84,173,40, 0.6)", x_translate, y_translate, this.izquierda_, ostia_rotacion);
                     juego.ostiazos_.push(ostia_nueva);
 
                 

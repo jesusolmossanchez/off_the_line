@@ -482,7 +482,7 @@ var Game = function() {
         
         var varia = 0;
         if(this.counter_){
-            varia = this.counter_/100;
+            varia = this.counter_/70;
         }
 
         var alto_luz = this.alto_total_/4 + varia;
@@ -525,7 +525,7 @@ var Game = function() {
 
         
         ctx.fillRect(1005, this.alto_total_/2 - 200, 100, 1300);
-        ctx.fillRect(1165, this.alto_total_/2 - 150, 70, 1320);
+        ctx.fillRect(1165, this.alto_total_/2 - 150, 90, 1320);
         ctx.fillRect(1350, this.alto_total_/2 - 130, 120, 1220);
         ctx.fillRect(1650, this.alto_total_/2 - 180, 160, 1320);
         ctx.fillRect(1850, this.alto_total_/2 - 50, 110, 1220);
@@ -560,7 +560,7 @@ var Game = function() {
         ctx.fillRect(850, this.alto_total_/1.5 - 50, 180, 1250);
 
         ctx.fillRect(1045, this.alto_total_/1.5 - 200, 200, 1350);
-        ctx.fillRect(1235, this.alto_total_/1.5 - 150, 130, 1370);
+        ctx.fillRect(1250, this.alto_total_/1.5 - 150, 130, 1370);
         ctx.fillRect(1390, this.alto_total_/1.5 - 130, 180, 1310);
         ctx.fillRect(1590, this.alto_total_/1.5 - 180, 200, 1370);
         ctx.fillRect(1850, this.alto_total_/1.5 - 50, 180, 1250);
